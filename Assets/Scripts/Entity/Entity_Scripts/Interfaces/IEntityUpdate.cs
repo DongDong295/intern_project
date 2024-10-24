@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IEntityUpdate
 {
-    public void OnUpdate(float deltaTime);
-    public void OnFixedUpdate(float deltaTime);
+    void OnUpdate(float deltaTime);
+    void OnFixedUpdate(float deltaTime);
 }
