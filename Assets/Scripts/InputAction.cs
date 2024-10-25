@@ -12,7 +12,7 @@ public enum CharacterInputAction
 
 public struct InputActionMessage : IMessage
 {
-    CharacterInputAction action;
+    public CharacterInputAction action;
     public InputActionMessage(CharacterInputAction input)
     {
         action = input;

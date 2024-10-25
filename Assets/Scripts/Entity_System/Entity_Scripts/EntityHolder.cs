@@ -15,7 +15,6 @@ public class EntityHolder : MonoBehaviour
         var behaviours = GetComponents<IEntityBehaviour>();
         foreach (var behaviour in behaviours)
         {
-            Debug.Log(behaviour);
             behaviour.Initialize(model);
             if(behaviour is IEntityUpdate)
                 _updateBehaviour.Add((IEntityUpdate)behaviour);
@@ -40,7 +39,7 @@ public class EntityHolder : MonoBehaviour
         else
             foreach (var behaviour in _updateBehaviour)
             {
-                behaviour.OnFixedUpdate(Time.deltaTime);
+                behaviour.OnFixedUpdate(Time.fixedDeltaTime);
             }
     }
 }

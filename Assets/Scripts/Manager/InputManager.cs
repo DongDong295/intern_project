@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.WebSockets;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using ZBase.Foundation.PubSub;
@@ -18,6 +19,7 @@ public class InputManager : MonoSingleton<InputManager>
     {
         InputMovement();
         CursorPosition();
+        InputAction();
     }
 
     public Vector3 InputMovement()
@@ -36,8 +38,13 @@ public class InputManager : MonoSingleton<InputManager>
 
     public void InputAction()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space)) 
+        {
             SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.Dash));
+        }
+        if (Input.GetMouseButton(0))
+        {
+            SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.Primary));
         }
     }
 }
