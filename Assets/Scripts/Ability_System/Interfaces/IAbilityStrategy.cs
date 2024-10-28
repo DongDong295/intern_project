@@ -1,23 +1,9 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public interface IAbilityStrategy
 {
-    public abstract void Init(IAbilityData data);
-    public void OnUsePrimary()
-    {
-    }
-    public void OnUseQ()
-    {
-
-    }
-    public void OnUseE()
-    {
-
-    }
-    public void OnUseUltimate()
-    {
-
-    }
+    public virtual async UniTask Init(IAbilityData data) { await UniTask.FromResult(1); }
 }

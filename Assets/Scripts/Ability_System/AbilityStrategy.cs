@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class AbilityStrategyFactory
 {
-    public static IAbilityStrategy CreateStrategy(AbilityType type)
+    /*public static IAbilityStrategy CreateStrategy(AbilityType type)
     {
         switch (type)
         {
@@ -24,39 +24,38 @@ public class AbilityStrategyFactory
                 break;
         }
         return null;
-    }
+    }*/
 }
 
-public class AbilityStrategy : IAbilityStrategy
+public class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 {
     private CastType _castType;
     private AbilityState _state;
     private IAbilityData _abilityData;
     private float _cooldown;
 
-    public virtual void Init(IAbilityData data)
+    public virtual async UniTask Init(IAbilityData data)
     {
         _state = AbilityState.Ready;        
         _abilityData = data;  
         _cooldown = _abilityData.Cooldown;
         _castType = _abilityData.CastType;
-  
+        await UniTask.CompletedTask;
     }
 
-    public virtual void OnUse() {
+    public virtual async UniTask OnUse() {
         if (_state == AbilityState.Ready)
         {
-            InitiateAbility();
-            Debug.Log("Im good");
+            await InitiateAbility();
         }
         else
-            Debug.Log("Ability not ready!");
+            return;
     }
 
-    public virtual void InitiateAbility() { _state = AbilityState.Using; }
+    public virtual async UniTask InitiateAbility() { _state = AbilityState.Using; await UniTask.CompletedTask; }
 
     public virtual async UniTask OnFinish() { 
-        _state = AbilityState.Finish; 
+        _state = AbilityState.Finish;
         await StartAbilityCooldown();
     }
 

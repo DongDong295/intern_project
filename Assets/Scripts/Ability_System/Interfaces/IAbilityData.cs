@@ -8,6 +8,8 @@ public interface IAbilityData
     public CastType CastType { get; }
 
     public AbilityType AbilityType { get; }
+
+    public Target Target { get; }
 }
 
 public enum CastType
@@ -25,4 +27,11 @@ public enum AbilityType
     AbilityQ,
     AbilityE,
     Ultimate
+}
+
+public enum Target
+{
+    None,
+    Self,
+    Other
 }
