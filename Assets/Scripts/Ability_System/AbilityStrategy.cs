@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Runtime.DataConfig;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,22 +30,25 @@ public class AbilityStrategyFactory
 
 public class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 {
-    private CastType _castType;
-    private AbilityState _state;
-    private IAbilityData _abilityData;
-    private float _cooldown;
+    protected CastType castType;
+    protected AbilityState state;
+    protected AbilityConfigItem abilityData;
+    protected float cooldown;
+    protected Vector3 castPosition;
+    protected List<IEntityData> hitList;
 
-    public virtual async UniTask Init(IAbilityData data)
+    public virtual async UniTask Init(AbilityConfigItem data)
     {
-        _state = AbilityState.Ready;        
-        _abilityData = data;  
-        _cooldown = _abilityData.Cooldown;
-        _castType = _abilityData.CastType;
+        hitList = new List<IEntityData>();
+        state = AbilityState.Ready;        
+        abilityData = data;  
+        cooldown = abilityData.cooldown;
+        castType = abilityData.castType;
         await UniTask.CompletedTask;
     }
 
     public virtual async UniTask OnUse() {
-        if (_state == AbilityState.Ready)
+        if (state == AbilityState.Ready)
         {
             await InitiateAbility();
         }
@@ -52,20 +56,20 @@ public class AbilityStrategy : MonoBehaviour, IAbilityStrategy
             return;
     }
 
-    public virtual async UniTask InitiateAbility() { _state = AbilityState.Using; await UniTask.CompletedTask; }
+    public virtual async UniTask InitiateAbility() { state = AbilityState.Using; await UniTask.CompletedTask; }
 
     public virtual async UniTask OnFinish() { 
-        _state = AbilityState.Finish;
+        state = AbilityState.Finish;
         await StartAbilityCooldown();
     }
 
     public virtual async UniTask StartAbilityCooldown() { 
-        _state = AbilityState.Cooldown;
-        await UniTask.Delay(TimeSpan.FromSeconds(_cooldown));
+        state = AbilityState.Cooldown;
+        await UniTask.Delay(TimeSpan.FromSeconds(cooldown));
         OnFinishCooldown();
     }
 
-    public virtual void OnFinishCooldown() { _state = AbilityState.Ready; }
+    public virtual void OnFinishCooldown() { state = AbilityState.Ready; }
 
 }
 public enum AbilityState

@@ -7,27 +7,31 @@ using Cysharp.Threading.Tasks;
 public class EntityManager : MonoSingleton<EntityManager>
 {
     public EntityHolder CurrentCharacter;
-    public List<IEntityUpdate> UpdateEntitites;
+    public List<IEntityUpdate> UpdateEntity;
     protected override void Awake()
     {
         base.Awake();
-        UpdateEntitites = new List<IEntityUpdate>();
     }
 
     private void Start()
     {
+        UpdateEntity = new List<IEntityUpdate>();
         InitializeCharacterBehaviour();
     }
 
     private void Update()
     {
-        foreach (var entity in UpdateEntitites)
-        {
-            if(entity is IEntityUpdate)
-            {
-                entity.OnUpdate(Time.deltaTime);
+        if(UpdateEntity.Count > 0)
+            foreach (var entity in UpdateEntity) { 
+                if(entity is IEntityUpdate)
+                {
+                    entity.OnUpdate(Time.deltaTime);
+                }
+                if(entity == null)
+                {
+                    UpdateEntity.Remove(entity);
+                }
             }
-        }
     }
 
     private CharacterModel CreateCharacterModel()
@@ -35,13 +39,13 @@ public class EntityManager : MonoSingleton<EntityManager>
         var data = DataManager.Instance.Data;
         var characterModel = new CharacterModel();
         characterModel.InitMovementData(data.Speed, data.DashRange, data.DashSpeed, data.DashDuration);
-        Debug.Log(characterModel.Speed);
         characterModel.InitEventData();
-        characterModel.InitAbility(DataManager.Instance.AbilityData);
+        characterModel.InitAbilityQ(DataManager.Instance.AbilityConfig[0]);
+        characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
         return characterModel;
     }
 
-    public async UniTask InitializeCharacterBehaviour()
+    public async UniTaskVoid InitializeCharacterBehaviour()
     {
         await CurrentCharacter.InitializeBehaviour(CreateCharacterModel());
     }

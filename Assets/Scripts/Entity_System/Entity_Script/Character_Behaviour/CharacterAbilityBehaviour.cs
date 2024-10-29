@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEntityActionEventData>
@@ -20,10 +21,9 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
             //_abilityStrategies.Add(AbilityStrategyFactory.CreateStrategy(type));
         //}
         _entityActionEventData.ActionEvent += OnUsePrimary;
-        for(int i = 0; i < _abilityStrategies.Count; i++)
-        {
-            await _abilityStrategies[i].Init(_entityAbilityData.AbilityDatas[i]);
-        }
+        _entityActionEventData.ActionEvent += OnUseQ;
+        await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0]);
+        await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1]);
         await UniTask.FromResult(true);
     }
 
@@ -32,8 +32,12 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         if (action == CharacterInputAction.Primary)
             _abilityStrategies[0].OnUse();
     }
-    void OnUseQ()
+    void OnUseQ(CharacterInputAction action)
     {
+        if (action == CharacterInputAction.AbilityQ)
+        {
+            _abilityStrategies[1].OnUse();
+        }
 
     }
     void OnUseE()

@@ -1,15 +1,23 @@
+using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public partial class EntityModel : IEntityAbilityData
 {
-    protected List<AbilityData> abilityDatas;
-    
-    public List<AbilityData> AbilityDatas => abilityDatas;
+    protected AbilityConfig qAbilityConfig;
+    protected AbilityConfig primaryAbilityConfig;
+    public AbilityConfig QAbilityConfig => this.qAbilityConfig;
+    public AbilityConfig PrimaryAbilityConfig => this.primaryAbilityConfig;
 
-    public void InitAbility(List<AbilityData> data)
+    public void InitAbilityQ(AbilityConfig data)
     {
-        abilityDatas = data;
+        qAbilityConfig = data;
+        Debug.Log(qAbilityConfig.items[1].cooldown);
+    }
+    public void InitAbilityPrimary(AbilityConfig data)
+    {
+        primaryAbilityConfig = data;
+        Debug.Log(primaryAbilityConfig.items[0].cooldown);
     }
 }

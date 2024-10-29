@@ -33,6 +33,7 @@ public class InputManager : MonoSingleton<InputManager>
     public Vector3 CursorPosition()
     {
         var cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        cursorPosition.z = 0;
         return cursorPosition;
     }
 
@@ -41,6 +42,10 @@ public class InputManager : MonoSingleton<InputManager>
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
             SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.Dash));
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.AbilityQ));
         }
         if (Input.GetMouseButton(0))
         {

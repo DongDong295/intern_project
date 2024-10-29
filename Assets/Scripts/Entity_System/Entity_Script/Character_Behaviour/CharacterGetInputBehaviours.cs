@@ -22,8 +22,8 @@ public class CharacterGetInputBehaviours : EntityBehavior<IEntityActionEventData
     {
         if (message.action == CharacterInputAction.Primary)
             _entityActionEventData.ActionEvent.Invoke(CharacterInputAction.Primary);
-        //if (message.action == CharacterInputAction.AbilityQ)
-            //_entityActionEventData.ActionEvent.Invoke(CharacterInputAction.AbilityQ);
+        if (message.action == CharacterInputAction.AbilityQ)
+            _entityActionEventData.ActionEvent.Invoke(CharacterInputAction.AbilityQ);
         if (message.action == CharacterInputAction.Dash)
             _entityActionEventData.ActionEvent.Invoke(CharacterInputAction.Dash);
     }

@@ -18,7 +18,6 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
 
     public override async UniTask InitializeData(IEntityMovementData movementData, IEntityActionEventData actionEventData)
     {    
-        Debug.Log("Xx");
         _movementData = movementData;
         _entityActionEventData = actionEventData;
 

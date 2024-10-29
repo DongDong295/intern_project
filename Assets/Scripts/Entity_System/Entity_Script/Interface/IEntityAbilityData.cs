@@ -1,8 +1,10 @@
+using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public interface IEntityAbilityData : IEntityData
 {
-    public List<AbilityData> AbilityDatas { get; }
+    public AbilityConfig PrimaryAbilityConfig { get; }
+    public AbilityConfig QAbilityConfig { get; }
 }

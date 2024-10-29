@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f90c27c51c90fd408fe1d9d539c91be, type: 3}
   m_Name: CsvDataController
   m_EditorClassIdentifier: 
-  csvDataName: TestConfig2
+  csvDataName: AOEAbilityConfig
   readerData:
-  - {fileID: 11400000, guid: f41c0075311554e4b9383553fda887d0, type: 2}
-  - {fileID: 11400000, guid: 87ba1bb8b5a08194184fbfa36d3f7245, type: 2}
+  - {fileID: 11400000, guid: 636caeb9d426b244aac80c4cd19309f0, type: 2}
+  - {fileID: 11400000, guid: 1b4e089982d416a4c956212a7512c35d, type: 2}
+  - {fileID: 11400000, guid: ab24922c1bbecfe4b992e09973bcd060, type: 2}

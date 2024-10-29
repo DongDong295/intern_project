@@ -1,34 +1,22 @@
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;
+using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCharacterPrimary1 : ProjectileAbilityStrategy, IEntityData
+public class TestCharacterPrimary1 : ProjectileAbilityStrategy
 {
-    protected float cooldown;
+    [SerializeField] ProjectileAbilityConfig _projectiledConfig;
 
-    protected CastType castType;
-
-    protected AbilityType abilityType;
-
-    protected Target target;
-
-    [SerializeField] private GameObject _bulletTestPrefab;
-    private GameObject _bulletTest;
-
-    public override async UniTask Init(IAbilityData data)
-    {
-        await base.Init(data);
-        cooldown = data.Cooldown;
-        castType = data.CastType;
-        abilityType = data.AbilityType;
-        target = data.Target;
-    }
+    [SerializeField] private GameObject _projectileTestPrefab;
 
     public override async UniTask InitiateAbility()
     {
-        _bulletTest = Instantiate(_bulletTestPrefab, transform.position, transform.rotation);
-
+        castPosition = transform.position;
+        var bullet = Instantiate(_projectileTestPrefab, transform.position, transform.rotation);
+        var direction = (InputManager.Instance.CursorPosition() - transform.position).normalized;
+        await bullet.GetComponent<ProjectileStrategy>().Init(_projectiledConfig.items[0], direction);
         await base.InitiateAbility();
         await OnFinish();
     }
