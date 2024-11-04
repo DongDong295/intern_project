@@ -47,6 +47,10 @@ public class InputManager : MonoSingleton<InputManager>
         {
             SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.AbilityQ));
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.AbilityE));
+        }
         if (Input.GetMouseButton(0))
         {
             SimpleMessenger.Publish(new InputActionMessage(CharacterInputAction.Primary));

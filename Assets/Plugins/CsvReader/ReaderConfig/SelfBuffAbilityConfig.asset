@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f48964f8dfc931343af9c4058de12db4, type: 3}
-  m_Name: AbilityConfig
+  m_Name: SelfBuffAbilityConfig
   m_EditorClassIdentifier: 
   classInfomations:
-  - className: Runtime.DataConfig.AbilityConfig
+  - className: Runtime.DataConfig.SelfBuffAbilityConfig
     csvInformations:
     - csvType: 0
-      className: Runtime.DataConfig.AbilityConfig
-      csvFile: {fileID: 4900000, guid: ec345219939f4484bbd4ff110827d1d8, type: 3}
-      csvPath: Assets/CSV/Csv/TestCharacterAbilityConfig.csv
+      className: Runtime.DataConfig.SelfBuffAbilityConfig
+      csvFile: {fileID: 4900000, guid: ef6f42db731129b4bae8f04cfe19b35b, type: 3}
+      csvPath: Assets/CSV/Csv/TestCharacterEAbilityConfig.csv
       csvFolderPath: 
       separateScriptableObject: 0
       fileStartWith: 

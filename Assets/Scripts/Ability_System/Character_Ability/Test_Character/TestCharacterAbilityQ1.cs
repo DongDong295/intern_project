@@ -7,32 +7,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCharacterAbilityQ1 : AOEAbilityStrategy
+public class TestCharacterAbilityQ1 : AOEAbilityStrategy, IEntityUpdate
 {
     public float _mollyMoveSpeed;
 
     [SerializeField] AOEAbilityConfig config;
 
-    [SerializeField] Collider2D _hitbox;
-
     [SerializeField] GameObject _mollyPrefab;
+
+    [SerializeField] GameObject _mollyField;
 
     private GameObject _molly;
     private float _arcHeight;
 
-    public override async UniTask InitiateAbility()
+
+    protected async override UniTask SetUpInitializeAbility()
     {
+        Init(config.items[0]);
+        Debug.Log(AbilityDuration);
         _molly = Instantiate(_mollyPrefab, transform.position, transform.rotation);
-        _mollyMoveSpeed = 1;
+        _mollyMoveSpeed = 3.5f;
         _arcHeight = 3;
         await MoveMollyInArc(InputManager.Instance.CursorPosition());
         await OnFinish();
     }
+
     public async UniTask MoveMollyInArc(Vector3 targetPos)
     {
         Vector3 startPos = _molly.transform.position;
         float time = 0f;
-        float duration = 1f;
+        float duration = 0.5f;
 
         while (time < duration)
         {
@@ -44,11 +48,19 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
             currentPos.y += arc;
 
             _molly.transform.position = currentPos;
-
             await UniTask.Yield();
         }
-
         await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+        var field = Instantiate(_mollyField, _molly.transform.position, transform.rotation);
+        Destroy(field, AbilityDuration);
     }
 
+    public void OnUpdate(float deltaTime)
+    {
+
+    }
+
+    public void OnFixedUpdate(float fixedDeltaTime)
+    {
+    }
 }

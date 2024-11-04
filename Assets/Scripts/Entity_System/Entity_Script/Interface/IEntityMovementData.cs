@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public interface IEntityMovementData : IEntityData
 {
-    public float Speed { get; }
+    public float Speed { get; set; }
 
     public float DashRange { get; }
 

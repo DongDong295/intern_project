@@ -15,9 +15,9 @@ public class TestCharacterPrimaryProjectile : ProjectileStrategy
     }
 
     public override void OnUpdate(float deltaTime)
-    {        
-        Check();        
+    {             
         Move(deltaTime);
+        Check();
     }
     
     public void Move(float deltaTime)

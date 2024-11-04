@@ -12,5 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0da1c27b88b67438f6af39c02df7ea, type: 3}
   m_Name: Runtime.DataConfig.AOEAbilityConfig
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 0}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: items
+      Entry: 7
+      Data: 0|Runtime.DataConfig.AOEAbilityConfigItem[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|Runtime.DataConfig.AOEAbilityConfigItem, Assembly-CSharp
+    - Name: abilityDuration
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

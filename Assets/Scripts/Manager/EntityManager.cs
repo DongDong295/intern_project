@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Runtime.Core.Singleton;
 using Cysharp.Threading.Tasks;
+using System.Linq;
 
 public class EntityManager : MonoSingleton<EntityManager>
 {
@@ -22,7 +23,7 @@ public class EntityManager : MonoSingleton<EntityManager>
     private void Update()
     {
         if(UpdateEntity.Count > 0)
-            foreach (var entity in UpdateEntity) { 
+            foreach (var entity in UpdateEntity.ToList()) { 
                 if(entity is IEntityUpdate)
                 {
                     entity.OnUpdate(Time.deltaTime);
@@ -42,6 +43,7 @@ public class EntityManager : MonoSingleton<EntityManager>
         characterModel.InitEventData();
         characterModel.InitAbilityQ(DataManager.Instance.AbilityConfig[0]);
         characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
+        characterModel.InitAbilityE(DataManager.Instance.AbilityConfig[2]);
         return characterModel;
     }
 

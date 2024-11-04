@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 5
   DashRange: 3
-  DashSpeed: 5
+  DashSpeed: 10
   DashDuration: 0.2

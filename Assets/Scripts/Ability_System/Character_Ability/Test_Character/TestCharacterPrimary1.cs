@@ -11,13 +11,12 @@ public class TestCharacterPrimary1 : ProjectileAbilityStrategy
 
     [SerializeField] private GameObject _projectileTestPrefab;
 
-    public override async UniTask InitiateAbility()
+    protected override async UniTask SetUpInitializeAbility()
     {
         castPosition = transform.position;
         var bullet = Instantiate(_projectileTestPrefab, transform.position, transform.rotation);
         var direction = (InputManager.Instance.CursorPosition() - transform.position).normalized;
         await bullet.GetComponent<ProjectileStrategy>().Init(_projectiledConfig.items[0], direction);
-        await base.InitiateAbility();
         await OnFinish();
     }
 }

@@ -34,4 +34,14 @@ public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData>, I
         if(_data.CanMove)
             _rb.velocity = InputManager.Instance.InputMovement() * _speed;
     }
+
+    public void IncreaseCharacterSpeed(float speed)
+    {
+        _speed += speed;
+    }
+
+    public void DecreaseCharacterSpeed(float speed)
+    {
+        _speed -= speed;
+    }
 }

@@ -17,7 +17,11 @@ public partial class EntityModel : IEntityMovementData
 
     protected bool canDash;
 
-    public float Speed => speed;
+    public float Speed
+    {
+        get => speed;
+        set => speed = value;
+    }
 
     public float DashSpeed => dashSpeed;
 
@@ -29,7 +33,12 @@ public partial class EntityModel : IEntityMovementData
 
     public bool CanMove => canMove = true;
 
-    public bool CanDash => canDash = true;  
+    public bool CanDash => canDash = true;
+
+    float IEntityMovementData.Speed {
+        get => speed;
+        set => Speed = value;
+    }
 
     public void InitMovementData(float speed, float dashRange, float dashSpeed, float dashDuration)
     {
@@ -38,4 +47,5 @@ public partial class EntityModel : IEntityMovementData
         this.dashDuration = dashDuration;
         this.dashRange = dashRange;
     }
+
 }

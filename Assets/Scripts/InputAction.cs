@@ -8,6 +8,7 @@ public enum CharacterInputAction
     None,
     Primary,
     AbilityQ,
+    AbilityE,
     Dash
 }
 

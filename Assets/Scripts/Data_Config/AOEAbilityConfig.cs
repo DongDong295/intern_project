@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Runtime.DataConfig
 {
-    public class AOEDataConfigItem
+    public class AOEAbilityConfigItem
     {
         public float abilityDuration;
     }
     public class AOEAbilityConfig : SerializedScriptableObject
     {
-        public AOEAbilityConfig[] items;
+        public AOEAbilityConfigItem[] items;
     }
 }
 

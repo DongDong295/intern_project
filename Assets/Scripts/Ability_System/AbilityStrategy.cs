@@ -28,18 +28,18 @@ public class AbilityStrategyFactory
     }*/
 }
 
-public class AbilityStrategy : MonoBehaviour, IAbilityStrategy
+public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 {
     protected CastType castType;
     protected AbilityState state;
     protected AbilityConfigItem abilityData;
     protected float cooldown;
     protected Vector3 castPosition;
-    protected List<IEntityData> hitList;
+    protected List<EntityHolder> hitList;
 
     public virtual async UniTask Init(AbilityConfigItem data)
     {
-        hitList = new List<IEntityData>();
+        hitList = new List<EntityHolder>();
         state = AbilityState.Ready;        
         abilityData = data;  
         cooldown = abilityData.cooldown;
@@ -48,30 +48,38 @@ public class AbilityStrategy : MonoBehaviour, IAbilityStrategy
     }
 
     public virtual async UniTask OnUse() {
-        if (state == AbilityState.Ready)
+        if (this.state == AbilityState.Ready)
         {
             await InitiateAbility();
         }
         else
-            return;
+        {
+            Debug.Log(state);
+        } 
     }
 
-    public virtual async UniTask InitiateAbility() { state = AbilityState.Using; await UniTask.CompletedTask; }
+    public virtual async UniTask InitiateAbility() {
+        this.state = AbilityState.Using;
+        await SetUpInitializeAbility();
+    }
+
+    protected abstract UniTask SetUpInitializeAbility();
 
     public virtual async UniTask OnFinish() { 
-        state = AbilityState.Finish;
+        this.state = AbilityState.Finish;
         await StartAbilityCooldown();
     }
 
     public virtual async UniTask StartAbilityCooldown() { 
-        state = AbilityState.Cooldown;
+        this.state = AbilityState.Cooldown;
         await UniTask.Delay(TimeSpan.FromSeconds(cooldown));
         OnFinishCooldown();
     }
 
-    public virtual void OnFinishCooldown() { state = AbilityState.Ready; }
+    public virtual void OnFinishCooldown() { this.state = AbilityState.Ready; }
 
 }
+
 public enum AbilityState
 {
     Ready,

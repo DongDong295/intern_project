@@ -22,8 +22,11 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         //}
         _entityActionEventData.ActionEvent += OnUsePrimary;
         _entityActionEventData.ActionEvent += OnUseQ;
+        _entityActionEventData.ActionEvent += OnUseE;
+
         await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0]);
         await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1]);
+        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2]);
         await UniTask.FromResult(true);
     }
 
@@ -40,9 +43,12 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         }
 
     }
-    void OnUseE()
+    void OnUseE(CharacterInputAction action)
     {
-
+        if (action == CharacterInputAction.AbilityE)
+        {
+            _abilityStrategies[2].OnUse();
+        }
     }
     void OnUseUltimate()
     {

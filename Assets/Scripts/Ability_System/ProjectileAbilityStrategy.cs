@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,4 +13,8 @@ public class ProjectileAbilityStrategy : AbilityStrategy
 
     protected GameObject bulletPrefab;
     protected Vector3 moveDirection;
+
+    protected override async UniTask SetUpInitializeAbility()
+    {
+    }
 }

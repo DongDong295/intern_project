@@ -9,7 +9,7 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     protected override void Awake()
     {
-        GameState = GameState.Start;
+        GameState = GameState.Prepare;
     }
     void Start()
     {
@@ -30,7 +30,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 public enum GameState
 {
     None,
+    Prepare,
     Start,
     Playing,
+    Pause,
     End
 }
