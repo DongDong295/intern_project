@@ -7,9 +7,9 @@ using Runtime.DataConfig;
 public class DataManager : MonoSingleton<DataManager>
 {
     public List<AbilityConfig> AbilityConfig;
-    public CharacterData Data;
+    public CharacterMovementDataConfig Data;
+
     protected override void Awake()
     {
-
     }
 }

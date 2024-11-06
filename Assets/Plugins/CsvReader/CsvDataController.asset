@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f90c27c51c90fd408fe1d9d539c91be, type: 3}
   m_Name: CsvDataController
   m_EditorClassIdentifier: 
-  csvDataName: AOEAbilityConfig
+  csvDataName: CharacterMovementData
   readerData:
   - {fileID: 11400000, guid: 636caeb9d426b244aac80c4cd19309f0, type: 2}
   - {fileID: 11400000, guid: 1b4e089982d416a4c956212a7512c35d, type: 2}
+  - {fileID: 11400000, guid: 85cb638ccad08034c9dd0dc23a3b021b, type: 2}
   - {fileID: 11400000, guid: ab24922c1bbecfe4b992e09973bcd060, type: 2}
   - {fileID: 11400000, guid: 0f8d3418e6f65bc469b8cb3987c670b0, type: 2}

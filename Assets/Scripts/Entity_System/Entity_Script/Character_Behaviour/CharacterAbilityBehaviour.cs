@@ -33,13 +33,13 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
     void OnUsePrimary(CharacterInputAction action)
     {
         if (action == CharacterInputAction.Primary)
-            _abilityStrategies[0].OnUse();
+            _abilityStrategies[0].OnUse().Forget();
     }
     void OnUseQ(CharacterInputAction action)
     {
         if (action == CharacterInputAction.AbilityQ)
         {
-            _abilityStrategies[1].OnUse();
+           _abilityStrategies[1].OnUse().Forget();
         }
 
     }
@@ -53,5 +53,14 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
     void OnUseUltimate()
     {
 
+    }
+
+    public override UniTask DeInitialize()
+    {
+        foreach (var abilityStrategy in _abilityStrategies)
+        {
+            abilityStrategy.DeInitialize();
+        }
+        return UniTask.CompletedTask;
     }
 }

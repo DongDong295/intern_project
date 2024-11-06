@@ -8,6 +8,7 @@ namespace Runtime.DataConfig
     public class ProjectileAbilityConfigItem
     {
         public float projectileSpeed;
+        public float abilityDamage;
         public float projectileRange;
         public bool canPierce;
         public bool canSearchEnemy;

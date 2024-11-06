@@ -2,14 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Runtime.Core.Singleton;
+using UnityEditor;
 
 public class GameplayManager : MonoSingleton<GameplayManager>
 {
     public GameState GameState;
+    public List<GameState> PauseState;
+
 
     protected override void Awake()
     {
         GameState = GameState.Prepare;
+        PauseState = new List<GameState>();
     }
     void Start()
     {
@@ -21,9 +25,9 @@ public class GameplayManager : MonoSingleton<GameplayManager>
         
     }
 
-    public GameState GetGameState()
+    public void ChangeState(GameState gameState)
     {
-        return GameState;
+        GameState = gameState;
     }
 }
 

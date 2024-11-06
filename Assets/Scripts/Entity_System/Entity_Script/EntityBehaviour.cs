@@ -16,6 +16,8 @@ public abstract class EntityBehavior<T> : EntityBehaviour where T : IEntityData
     }
 
     public abstract UniTask InitializeData(T data);
+
+    public abstract UniTask DeInitialize();
 }
 
 public abstract class EntityBehavior<T1, T2> : EntityBehaviour where T1 : IEntityData
@@ -27,5 +29,7 @@ public abstract class EntityBehavior<T1, T2> : EntityBehaviour where T1 : IEntit
     }
 
     public abstract UniTask InitializeData(T1 data, T2 data2);
+
+    public abstract UniTask DeInitialize();
 }
 

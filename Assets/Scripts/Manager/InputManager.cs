@@ -11,15 +11,12 @@ using ZBase.Foundation.PubSub;
 public class InputManager : MonoSingleton<InputManager>
 {
     public Vector2 MoveDirection;
-    void Start()
-    {
-        
-    }
     void Update()
     {
         InputMovement();
         CursorPosition();
         InputAction();
+        PlayerInput();
     }
 
     public Vector3 InputMovement()
@@ -35,6 +32,14 @@ public class InputManager : MonoSingleton<InputManager>
         var cursorPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         cursorPosition.z = 0;
         return cursorPosition;
+    }
+
+    public void PlayerInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SimpleMessenger.Publish(new PlayerInputMessage(PlayerInputAction.Pause));
+        }
     }
 
     public void InputAction()

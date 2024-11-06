@@ -12,6 +12,7 @@
     "com.unity.visualscripting": "1.9.4",
     "com.zbase.csv-reader": "https://github.com/Zitga-Tech/ZBase.Csv-Reader.git?path=/Packages/ZBase.CsvReader",
     "com.zbase.foundation.pubsub": "1.5.1",
+    "com.zbase.unityscreennavigator": "https://github.com/Zitga-Tech/ZBase.UnityScreenNavigator.git?path=/Packages/ZBase.UnityScreenNavigator",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

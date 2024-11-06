@@ -8,16 +8,18 @@ using System.Linq;
 public class EntityManager : MonoSingleton<EntityManager>
 {
     public EntityHolder CurrentCharacter;
+    public EntityHolder Dummy;
     public List<IEntityUpdate> UpdateEntity;
     protected override void Awake()
     {
         base.Awake();
+        UpdateEntity = new List<IEntityUpdate>();
     }
 
     private void Start()
     {
-        UpdateEntity = new List<IEntityUpdate>();
-        InitializeCharacterBehaviour();
+        InitializeCharacterBehaviour().Forget();
+        InitializeEnemyBehaviour().Forget();
     }
 
     private void Update()
@@ -39,16 +41,29 @@ public class EntityManager : MonoSingleton<EntityManager>
     {
         var data = DataManager.Instance.Data;
         var characterModel = new CharacterModel();
-        characterModel.InitMovementData(data.Speed, data.DashRange, data.DashSpeed, data.DashDuration);
+        characterModel.InitMovementData(data.items[0]);
         characterModel.InitEventData();
-        characterModel.InitAbilityQ(DataManager.Instance.AbilityConfig[0]);
+        characterModel.InitHealthData(5);
         characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
+        characterModel.InitAbilityQ(DataManager.Instance.AbilityConfig[0]);
         characterModel.InitAbilityE(DataManager.Instance.AbilityConfig[2]);
         return characterModel;
+    }
+
+    private EnemyModel CreateEnemyModel()
+    {
+        var enemyModel = new EnemyModel();
+        enemyModel.InitHealthData(1000);
+        return enemyModel;
     }
 
     public async UniTaskVoid InitializeCharacterBehaviour()
     {
         await CurrentCharacter.InitializeBehaviour(CreateCharacterModel());
+    }
+
+    public async UniTaskVoid InitializeEnemyBehaviour()
+    {
+        await Dummy.InitializeBehaviour(CreateEnemyModel());
     }
 }

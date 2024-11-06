@@ -8,6 +8,7 @@ namespace Runtime.DataConfig
     public class AOEAbilityConfigItem
     {
         public float abilityDuration;
+        public float abilityDamage;
     }
     public class AOEAbilityConfig : SerializedScriptableObject
     {

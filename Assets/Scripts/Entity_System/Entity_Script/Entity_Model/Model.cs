@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterModel : EntityModel { }
+public class EntityModel : IEntityData { }
 
-public class EnemyModel : EntityModel { }
+public partial class CharacterModel : EntityModel { }
+
+public partial class EnemyModel : EntityModel { }   

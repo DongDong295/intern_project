@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntityActionEventData>, IEntityUpdate
@@ -9,12 +10,15 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
     [SerializeField] Rigidbody2D _rb;
 
     private bool _canDash;
+    private float _dashCounter;
+    private float _dashCooldown;
     private float _dashRange;
     private float _dashSpeed;
     private float _dashDuration;
     private bool _isDashing;
     private IEntityMovementData _movementData;
     private IEntityActionEventData _entityActionEventData;
+    private CancellationTokenSource _cts;
 
     public override async UniTask InitializeData(IEntityMovementData movementData, IEntityActionEventData actionEventData)
     {    
@@ -25,8 +29,11 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
         _dashRange = _movementData.DashRange;
         _dashSpeed = _movementData.DashSpeed;
         _dashDuration = _movementData.DashDuration;
+        _dashCounter = _movementData.DashCounter;
+        _dashCooldown = _movementData.DashCooldown;
 
         _isDashing = false;
+
         actionEventData.ActionEvent += OnDash;
         await UniTask.FromResult(1);
     }
@@ -42,11 +49,14 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
 
     async void OnDash(CharacterInputAction action)
     {
-        if(action == CharacterInputAction.Dash)
+        if(action == CharacterInputAction.Dash && _dashCounter > 0)
         {
-            Debug.Log("Dash");
+            _cts?.Cancel();
+            _cts = new CancellationTokenSource();
             _isDashing = true;
+            _dashCounter -= 1;
             await FinishDash();
+            Cooldown().Forget();
         }
     }
 
@@ -62,5 +72,19 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
     {
         await UniTask.Delay(TimeSpan.FromSeconds(_dashDuration));
         _isDashing = false;
+    }
+
+    async UniTask Cooldown()
+    {
+        while(_dashCounter < 3)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(_dashCooldown), cancellationToken: _cts.Token);
+            _dashCounter += 1;
+        }
+    }
+
+    public override UniTask DeInitialize()
+    {
+        throw new NotImplementedException();
     }
 }

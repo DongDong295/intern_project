@@ -16,4 +16,8 @@ public interface IEntityMovementData : IEntityData
     public bool CanMove { get; } 
 
     public bool CanDash {  get; }
+
+    public int DashCounter {  get; }
+
+    public float DashCooldown { get; }
 }

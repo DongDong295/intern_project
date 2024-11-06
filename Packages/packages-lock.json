@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.cysharp.unitask": {
-      "version": "2.3.3",
+      "version": "2.5.10",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -271,6 +271,15 @@
         "com.zbase.foundation": "1.0.5"
       },
       "url": "https://package.openupm.com"
+    },
+    "com.zbase.unityscreennavigator": {
+      "version": "https://github.com/Zitga-Tech/ZBase.UnityScreenNavigator.git?path=/Packages/ZBase.UnityScreenNavigator",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "90b532d9831965cf5452912db0f0ae25696d61ea"
     },
     "org.nuget.system.runtime.compilerservices.unsafe": {
       "version": "6.0.0",

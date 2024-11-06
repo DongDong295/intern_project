@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectileStrategy : MonoBehaviour, IProjectile, IEntityUpdate
+public class ProjectileStrategy : ProjectileAbilityStrategy, IProjectile, IEntityUpdate
 {
     protected float speed;
     protected float range;
@@ -64,4 +64,6 @@ public class ProjectileStrategy : MonoBehaviour, IProjectile, IEntityUpdate
     public virtual void OnFixedUpdate(float fixedDeltaTime){}
 
     public virtual void OnUpdate(float deltaTime){}
+
+    public virtual void DeInit() { }
 }

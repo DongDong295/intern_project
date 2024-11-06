@@ -1,4 +1,4 @@
 cooldown,cast_type,ability_type,target
-0.1,SingleCast,Primary,Other
-2,SingleCast,AbilityQ,Other
-3,SingleCast,AbilityE,Self
+0.125,SingleCast,Primary,Other
+4,SingleCast,AbilityQ,Other
+6,SingleCast,AbilityE,Self

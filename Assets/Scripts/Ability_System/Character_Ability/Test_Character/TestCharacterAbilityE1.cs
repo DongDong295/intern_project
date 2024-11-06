@@ -8,7 +8,6 @@ using UnityEngine;
 public class TestCharacterAbilityE1 : SelfBuffAbilityStrategy
 {
     [SerializeField] SelfBuffAbilityConfig configs;
-
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(configs.items[0]);

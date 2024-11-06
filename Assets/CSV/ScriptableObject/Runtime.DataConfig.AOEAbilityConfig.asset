@@ -32,7 +32,10 @@ MonoBehaviour:
       Data: 1|Runtime.DataConfig.AOEAbilityConfigItem, Assembly-CSharp
     - Name: abilityDuration
       Entry: 4
-      Data: 2
+      Data: 5
+    - Name: abilityDamage
+      Entry: 4
+      Data: 10
     - Name: 
       Entry: 8
       Data: 

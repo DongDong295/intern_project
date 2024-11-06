@@ -1,47 +1,39 @@
 using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Triggers;
 using Runtime.DataConfig;
-using Sirenix.Reflection.Editor;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestCharacterAbilityQ1 : AOEAbilityStrategy, IEntityUpdate
+public class TestCharacterAbilityQ1 : AOEAbilityStrategy
 {
-    public float _mollyMoveSpeed;
-
-    [SerializeField] AOEAbilityConfig config;
-
-    [SerializeField] GameObject _mollyPrefab;
-
-    [SerializeField] GameObject _mollyField;
+    [SerializeField] private AOEAbilityConfig config;
+    [SerializeField] private GameObject _mollyPrefab;
+    [SerializeField] private GameObject _mollyFieldPrefab;
 
     private GameObject _molly;
-    private float _arcHeight;
-
+    private float _mollyMoveSpeed = 3.5f;
+    private float _arcHeight = 3f;
+    private Vector3 _originalScale;
+    private Vector3 _targetScale = new Vector3(5f, 5f, 0f);
 
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(config.items[0]);
-        Debug.Log(AbilityDuration);
         _molly = Instantiate(_mollyPrefab, transform.position, transform.rotation);
-        _mollyMoveSpeed = 3.5f;
-        _arcHeight = 3;
-        await MoveMollyInArc(InputManager.Instance.CursorPosition());
         await OnFinish();
+        await MoveMollyInArc(InputManager.Instance.CursorPosition());
     }
 
     public async UniTask MoveMollyInArc(Vector3 targetPos)
     {
         Vector3 startPos = _molly.transform.position;
-        float time = 0f;
         float duration = 0.5f;
+        float timeElapsed = 0f;
 
-        while (time < duration)
+        while (timeElapsed < duration)
         {
-            time += Time.deltaTime * _mollyMoveSpeed;
-            float normalizedTime = Mathf.Clamp01(time / duration);
+            timeElapsed += Time.deltaTime * _mollyMoveSpeed;
+            float normalizedTime = Mathf.Clamp01(timeElapsed / duration);
 
             Vector3 currentPos = Vector3.Lerp(startPos, targetPos, normalizedTime);
             float arc = _arcHeight * Mathf.Sin(Mathf.PI * normalizedTime);
@@ -50,17 +42,51 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy, IEntityUpdate
             _molly.transform.position = currentPos;
             await UniTask.Yield();
         }
-        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
-        var field = Instantiate(_mollyField, _molly.transform.position, transform.rotation);
-        Destroy(field, AbilityDuration);
+
+        var _activeField = Instantiate(_mollyFieldPrefab, _molly.transform.position, transform.rotation);
+        _activeField.GetComponent<MollyDamageField>().owner = this;
+        _originalScale = _activeField.transform.localScale;
+        await ScaleFieldOverTime(_activeField);
+        await DamageEnemy();
+        await DestroyActiveField(_activeField);
     }
 
-    public void OnUpdate(float deltaTime)
+    public async UniTask ScaleFieldOverTime(GameObject field)
     {
+        float scaleDuration = 0.75f;
+        float elapsedTime = 0f;
 
+        while (elapsedTime < scaleDuration)
+        {
+            float normalizedTime = elapsedTime / scaleDuration;
+            field.transform.localScale = Vector3.Lerp(_originalScale, _targetScale, normalizedTime);
+            elapsedTime += Time.deltaTime;
+            await UniTask.Yield();
+        }
+
+        field.transform.localScale = _targetScale;
     }
 
-    public void OnFixedUpdate(float fixedDeltaTime)
+    public async UniTask DamageEnemy()
     {
+        var time = 0f;
+        while(time < AbilityDuration)
+        {
+            if(hitList != null)
+            {
+                foreach(var hit in hitList)
+                {
+                    hit.GetComponent<EnemyHealthBehaviour>().TakeDamage(AbilityDamage);
+                }
+            }
+            await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+            time += 0.5f;
+        }
+    }
+    
+    async UniTask DestroyActiveField(GameObject activeField)
+    {
+        Destroy(activeField);
+        await UniTask.CompletedTask;
     }
 }

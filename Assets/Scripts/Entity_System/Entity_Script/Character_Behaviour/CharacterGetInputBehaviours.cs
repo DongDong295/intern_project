@@ -9,6 +9,12 @@ public class CharacterGetInputBehaviours : EntityBehavior<IEntityActionEventData
 {
     private List<ISubscription> _subscriptions;
     private IEntityActionEventData _entityActionEventData;
+
+    public override UniTask DeInitialize()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override async UniTask InitializeData(IEntityActionEventData data)
     {
         _entityActionEventData = data;

@@ -44,4 +44,9 @@ public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData>, I
     {
         _speed -= speed;
     }
+
+    public override UniTask DeInitialize()
+    {
+        throw new System.NotImplementedException();
+    }
 }

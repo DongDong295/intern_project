@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ public class EntityHolder : MonoBehaviour
         foreach (var behaviour in behaviours)
         {
             await behaviour.Initialize(model);
-            if(behaviour is IEntityUpdate)
+            if (behaviour is IEntityUpdate)
                 _updateBehaviour.Add((IEntityUpdate)behaviour);
         }
     }

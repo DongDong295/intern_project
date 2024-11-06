@@ -3,6 +3,7 @@ using Runtime.DataConfig;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class AbilityStrategyFactory
@@ -36,6 +37,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
     protected float cooldown;
     protected Vector3 castPosition;
     protected List<EntityHolder> hitList;
+    protected CancellationTokenSource cts;
 
     public virtual async UniTask Init(AbilityConfigItem data)
     {
@@ -47,6 +49,11 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         await UniTask.CompletedTask;
     }
 
+    public virtual void DeInitialize()
+    {
+        cts?.Cancel();
+    }
+
     public virtual async UniTask OnUse() {
         if (this.state == AbilityState.Ready)
         {
@@ -54,12 +61,14 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         }
         else
         {
-            Debug.Log(state);
         } 
     }
 
     public virtual async UniTask InitiateAbility() {
         this.state = AbilityState.Using;
+        cts?.Cancel();
+        cts = new CancellationTokenSource();
+        StartAbilityCooldown().Forget();
         await SetUpInitializeAbility();
     }
 
@@ -67,17 +76,30 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 
     public virtual async UniTask OnFinish() { 
         this.state = AbilityState.Finish;
-        await StartAbilityCooldown();
     }
 
     public virtual async UniTask StartAbilityCooldown() { 
         this.state = AbilityState.Cooldown;
-        await UniTask.Delay(TimeSpan.FromSeconds(cooldown));
+        await UniTask.Delay(TimeSpan.FromSeconds(cooldown), cancellationToken: cts.Token);
         OnFinishCooldown();
     }
 
+    public void FinishCooldown() { 
+        cts?.Cancel();
+    }
     public virtual void OnFinishCooldown() { this.state = AbilityState.Ready; }
 
+    public virtual void AddHitList(EntityHolder enemy) { 
+        hitList.Add(enemy);
+    }
+
+    public virtual void RemoveHitList(EntityHolder enemy)
+    {
+        if (hitList.Contains(enemy))
+        {
+            hitList.Remove(enemy);
+        }
+    }
 }
 
 public enum AbilityState

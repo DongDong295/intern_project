@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Runtime.DataConfig
 {
-    public class  TestConfigItem
+    public class TestConfigItem
     {
         public int id;
         public int test;

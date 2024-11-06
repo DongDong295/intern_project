@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IEntityHealthData : IEntityData
+public interface IEntityHealthData : IEntityData
 {
-    public float Health {  get; private set; }
-    public bool isAlive { get; private set; }
+    public float Health {  get; }
+    public bool IsAlive { get; }
 }

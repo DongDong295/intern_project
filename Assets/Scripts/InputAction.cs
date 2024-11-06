@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,10 +13,25 @@ public enum CharacterInputAction
     Dash
 }
 
+public enum PlayerInputAction{
+    None,
+    Pause
+}
+
+
 public struct InputActionMessage : IMessage
 {
     public CharacterInputAction action;
     public InputActionMessage(CharacterInputAction input)
+    {
+        action = input;
+    }
+}
+
+public struct PlayerInputMessage : IMessage
+{
+    public PlayerInputAction action;
+    public PlayerInputMessage(PlayerInputAction input)
     {
         action = input;
     }

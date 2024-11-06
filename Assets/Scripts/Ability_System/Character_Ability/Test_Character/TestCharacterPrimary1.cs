@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks.Triggers;
 using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TestCharacterPrimary1 : ProjectileAbilityStrategy
@@ -11,12 +12,26 @@ public class TestCharacterPrimary1 : ProjectileAbilityStrategy
 
     [SerializeField] private GameObject _projectileTestPrefab;
 
+    [SerializeField] private Transform _shootPoint;
     protected override async UniTask SetUpInitializeAbility()
     {
+        await Init(_projectiledConfig.items[0]);
+        moveDirection = (InputManager.Instance.CursorPosition() - transform.position).normalized;
         castPosition = transform.position;
-        var bullet = Instantiate(_projectileTestPrefab, transform.position, transform.rotation);
-        var direction = (InputManager.Instance.CursorPosition() - transform.position).normalized;
-        await bullet.GetComponent<ProjectileStrategy>().Init(_projectiledConfig.items[0], direction);
+
+        var bullet = Instantiate(_projectileTestPrefab, _shootPoint.position, transform.rotation);
+        await bullet.GetComponent<TestCharacterPrimaryProjectile>().InitProjectile(_projectiledConfig.items[0], castPosition, moveDirection, this);
         await OnFinish();
+    }
+    public void DamageEnemy()
+    {
+        if (hitList != null)
+        {
+            foreach (var hit in hitList.ToList())
+            {
+                hit.GetComponent<EnemyHealthBehaviour>().GetHit(abilityDamage);
+                hitList.Remove(hit);
+            }
+        }
     }
 }

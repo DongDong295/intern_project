@@ -32,10 +32,13 @@ MonoBehaviour:
       Data: 1|Runtime.DataConfig.ProjectileAbilityConfigItem, Assembly-CSharp
     - Name: projectileSpeed
       Entry: 4
-      Data: 60
+      Data: 45
+    - Name: abilityDamage
+      Entry: 4
+      Data: 20
     - Name: projectileRange
       Entry: 4
-      Data: 10
+      Data: 20
     - Name: canPierce
       Entry: 5
       Data: false
