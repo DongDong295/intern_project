@@ -8,6 +8,7 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
 {
     private IEntityAbilityData _entityAbilityData;
     private IEntityActionEventData _entityActionEventData;
+
     //[SerializeField] private List<AbilityType> types;
 
     [SerializeField] private List<AbilityStrategy> _abilityStrategies;
@@ -41,13 +42,12 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         {
            _abilityStrategies[1].OnUse().Forget();
         }
-
     }
     void OnUseE(CharacterInputAction action)
     {
         if (action == CharacterInputAction.AbilityE)
         {
-            _abilityStrategies[2].OnUse();
+            _abilityStrategies[2].OnUse().Forget();
         }
     }
     void OnUseUltimate()

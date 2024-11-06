@@ -11,8 +11,5 @@ public class TestCharacterAbilityE1 : SelfBuffAbilityStrategy
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(configs.items[0]);
-        var modifer = GetComponent<CharacterStatsModifier>();
-        await modifer.IncreaseSpeed(speedBuffAmount, speedDuration);
-        await OnFinish();
     }
 }

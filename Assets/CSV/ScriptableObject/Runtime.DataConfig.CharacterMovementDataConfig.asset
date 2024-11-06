@@ -47,7 +47,7 @@ MonoBehaviour:
       Data: 3
     - Name: characterDashCooldown
       Entry: 4
-      Data: 1.5
+      Data: 1
     - Name: 
       Entry: 8
       Data: 

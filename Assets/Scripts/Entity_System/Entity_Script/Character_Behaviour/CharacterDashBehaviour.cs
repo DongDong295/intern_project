@@ -8,7 +8,6 @@ using UnityEngine;
 public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntityActionEventData>, IEntityUpdate
 {
     [SerializeField] Rigidbody2D _rb;
-
     private bool _canDash;
     private float _dashCounter;
     private float _dashCooldown;

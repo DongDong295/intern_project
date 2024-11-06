@@ -16,18 +16,15 @@ public partial class CharacterModel : IEntityAbilityData
     public void InitAbilityPrimary(AbilityConfig data)
     {
         primaryAbilityConfig = data;
-        Debug.Log(primaryAbilityConfig.items[0].cooldown);
     }
 
     public void InitAbilityQ(AbilityConfig data)
     {
         qAbilityConfig = data;
-        Debug.Log(qAbilityConfig.items[1].cooldown);
     }
 
     public void InitAbilityE(AbilityConfig data)
     {
         eAbilityConfig = data;
-        Debug.Log(eAbilityConfig.items[2].cooldown);
     }
 }
