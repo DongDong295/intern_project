@@ -7,6 +7,7 @@ using UnityEngine;
 public class CharacterLookAtCursorBehaviour : EntityBehaviour, IEntityUpdate
 {
     [SerializeField] GameObject weaponHolder;
+
     public void OnUpdate(float deltaTime)
     {
         RotateWeapon();

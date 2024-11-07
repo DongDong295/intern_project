@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public partial class CharacterModel : IEntityMovementData 
+public partial class EntityModel : IEntityMovementData 
 {
     protected float speed;
 

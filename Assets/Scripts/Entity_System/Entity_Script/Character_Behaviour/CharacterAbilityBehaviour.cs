@@ -12,7 +12,7 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
     //[SerializeField] private List<AbilityType> types;
 
     [SerializeField] private List<AbilityStrategy> _abilityStrategies;
-
+    private AbilityType _abilityType;
     public override async UniTask InitializeData(IEntityAbilityData entityAbilityData, IEntityActionEventData entityActionEventData)
     {
         _entityAbilityData = entityAbilityData;
@@ -53,6 +53,14 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
     void OnUseUltimate()
     {
 
+    }
+
+    public void OnChangeDamage(StatsModifyMessage message)
+    {
+        if(message.abilityType == AbilityType.Primary)
+        {
+        
+        }
     }
 
     public override UniTask DeInitialize()

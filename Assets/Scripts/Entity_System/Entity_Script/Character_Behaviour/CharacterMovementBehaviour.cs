@@ -5,17 +5,21 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using UnityEngine.PlayerLoop;
 
-public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData>, IEntityUpdate
+public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData, IEntityStatsModifyEventData>, IEntityUpdate
 {
     [SerializeField] Rigidbody2D _rb;
 
     private float _speed;
 
     private IEntityMovementData _data;
-    public override async UniTask InitializeData(IEntityMovementData data)
+    private IEntityStatsModifyEventData _eventData;
+    public override async UniTask InitializeData(IEntityMovementData data, IEntityStatsModifyEventData eventData)
     {
         _data = data;
+        _eventData = eventData;
         _speed = _data.Speed;
+
+        eventData.ChangeStatsEvent += OnChangeSpeed;
         await UniTask.FromResult(1);
     }
 
@@ -35,14 +39,13 @@ public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData>, I
             _rb.velocity = InputManager.Instance.InputMovement() * _speed;
     }
 
-    public void IncreaseCharacterSpeed(float speed)
+    public void OnChangeSpeed(StatsModifyMessage message)
     {
-        _speed += speed;
-    }
-
-    public void DecreaseCharacterSpeed(float speed)
-    {
-        _speed -= speed;
+        if(message.statsType == EntityStatsType.Speed)
+        {
+            _speed += message.modifyValue;
+        }
+            
     }
 
     public override UniTask DeInitialize()

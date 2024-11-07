@@ -10,11 +10,6 @@ public class CharacterGetInputBehaviours : EntityBehavior<IEntityActionEventData
     private List<ISubscription> _subscriptions;
     private IEntityActionEventData _entityActionEventData;
 
-    public override UniTask DeInitialize()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override async UniTask InitializeData(IEntityActionEventData data)
     {
         _entityActionEventData = data;
@@ -34,5 +29,9 @@ public class CharacterGetInputBehaviours : EntityBehavior<IEntityActionEventData
             _entityActionEventData.ActionEvent.Invoke(CharacterInputAction.AbilityE);
         if (message.action == CharacterInputAction.Dash)
             _entityActionEventData.ActionEvent.Invoke(CharacterInputAction.Dash);
+    }
+    public override UniTask DeInitialize()
+    {
+        throw new System.NotImplementedException();
     }
 }

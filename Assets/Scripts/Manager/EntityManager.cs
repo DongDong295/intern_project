@@ -42,6 +42,7 @@ public class EntityManager : MonoSingleton<EntityManager>
         var data = DataManager.Instance.Data;
         var characterModel = new CharacterModel();
         characterModel.InitMovementData(data.items[0]);
+        characterModel.InitStatsModifyEvent();
         characterModel.InitEventData();
         characterModel.InitHealthData(5);
         characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
@@ -50,7 +51,7 @@ public class EntityManager : MonoSingleton<EntityManager>
         return characterModel;
     }
 
-    private EnemyModel CreateEnemyModel()
+    private EntityModel CreateEnemyModel()
     {
         var enemyModel = new EnemyModel();
         enemyModel.InitHealthData(1000);

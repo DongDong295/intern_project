@@ -61,6 +61,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         }
         else
         {
+
         } 
     }
 
@@ -68,7 +69,6 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         this.state = AbilityState.Using;
         cts?.Cancel();
         cts = new CancellationTokenSource();
-        StartAbilityCooldown().Forget();
         await SetUpInitializeAbility();
     }
 
@@ -76,6 +76,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 
     public virtual async UniTask OnFinish() { 
         this.state = AbilityState.Finish;
+        await StartAbilityCooldown();
     }
 
     public virtual async UniTask StartAbilityCooldown() { 

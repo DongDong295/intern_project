@@ -15,9 +15,9 @@ public interface IAbilityData
 public enum CastType
 {
     None,
-    SingleCast,
-    Multicast,
-    Channel
+    SingleCast = 1,
+    Multicast = 2,
+    Channel = 3
 }
 
 public enum AbilityType

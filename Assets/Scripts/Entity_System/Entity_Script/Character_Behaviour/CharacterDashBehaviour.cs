@@ -82,6 +82,14 @@ public class CharacterDashBehaviour : EntityBehavior<IEntityMovementData, IEntit
         }
     }
 
+    public void OnDashCounterChange(StatsModifyMessage message)
+    {
+        if(message.statsType == EntityStatsType.DashCounter)
+        {
+            _dashCounter += (int)message.modifyValue;
+        }
+    }
+
     public override UniTask DeInitialize()
     {
         throw new NotImplementedException();

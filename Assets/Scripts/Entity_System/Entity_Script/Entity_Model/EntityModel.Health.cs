@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class CharacterModel : IEntityHealthData
+public partial class EntityModel : IEntityHealthData
 {
     private float health;
     public bool isAlive;

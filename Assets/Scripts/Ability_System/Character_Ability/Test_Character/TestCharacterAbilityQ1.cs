@@ -20,8 +20,9 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
     {
         Init(config.items[0]);
         _molly = Instantiate(_mollyPrefab, transform.position, transform.rotation);
-        await OnFinish();
         await MoveMollyInArc(InputManager.Instance.CursorPosition());
+        OnFinish().Forget();
+        await ActiveField();
     }
 
     public async UniTask MoveMollyInArc(Vector3 targetPos)
@@ -42,7 +43,10 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
             _molly.transform.position = currentPos;
             await UniTask.Yield();
         }
+    }
 
+    public async UniTask ActiveField()
+    {
         var _activeField = Instantiate(_mollyFieldPrefab, _molly.transform.position, transform.rotation);
         _activeField.GetComponent<MollyDamageField>().owner = this;
         _originalScale = _activeField.transform.localScale;

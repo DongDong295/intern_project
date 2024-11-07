@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public partial class CharacterModel : IEntityAbilityData
+public partial class EntityModel : IEntityAbilityData 
 {
     protected AbilityConfig qAbilityConfig;
     protected AbilityConfig eAbilityConfig;

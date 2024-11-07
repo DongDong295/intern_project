@@ -21,7 +21,7 @@ public abstract class EntityBehavior<T> : EntityBehaviour where T : IEntityData
 }
 
 public abstract class EntityBehavior<T1, T2> : EntityBehaviour where T1 : IEntityData
-                                                              where T2 : IEntityData
+                                                               where T2 : IEntityData
 {
     public override async UniTask Initialize(IEntityData data)
     {

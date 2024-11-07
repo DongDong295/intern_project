@@ -8,11 +8,6 @@ public class CharacterHealthBehaviour : EntityBehavior<IEntityHealthData>
     private IEntityHealthData _entityHealthData;
     private float _health;
 
-    public override UniTask DeInitialize()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override async UniTask InitializeData(IEntityHealthData data)
     {
         _entityHealthData = data;
@@ -22,5 +17,10 @@ public class CharacterHealthBehaviour : EntityBehavior<IEntityHealthData>
 
     public void TakeDamage(float damage)
     {
+    }
+
+    public override UniTask DeInitialize()
+    {
+        throw new System.NotImplementedException();
     }
 }

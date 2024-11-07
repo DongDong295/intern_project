@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,23 @@ public class EntityHolder : MonoBehaviour
 {
     private bool _built = false;
     private List<IEntityUpdate> _updateBehaviour;
-    public async UniTask InitializeBehaviour(EntityModel model)
+
+    public async UniTask InitializeBehaviour(IEntityData data)
     {
         _built = true;
         _updateBehaviour = new List<IEntityUpdate>();
         var behaviours = GetComponents<IEntityBehaviour>();
         foreach (var behaviour in behaviours)
         {
-            await behaviour.Initialize(model);
+            try
+            {
+                await behaviour.Initialize(data);
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("GO HERE");
+            }
+
             if (behaviour is IEntityUpdate)
                 _updateBehaviour.Add((IEntityUpdate)behaviour);
         }
