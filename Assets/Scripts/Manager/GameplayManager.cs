@@ -6,14 +6,13 @@ using UnityEditor;
 
 public class GameplayManager : MonoSingleton<GameplayManager>
 {
-    public GameState GameState;
+    public GameState CurrentGameState;
     public List<GameState> PauseState;
 
 
     protected override void Awake()
     {
-        GameState = GameState.Prepare;
-        PauseState = new List<GameState>();
+        CurrentGameState = GameState.Prepare;
     }
     void Start()
     {
@@ -22,13 +21,13 @@ public class GameplayManager : MonoSingleton<GameplayManager>
 
     void Update()
     {
-        
     }
 
     public void ChangeState(GameState gameState)
     {
-        GameState = gameState;
+        CurrentGameState = gameState;
     }
+
 }
 
 public enum GameState

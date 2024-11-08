@@ -33,3 +33,17 @@ public abstract class EntityBehavior<T1, T2> : EntityBehaviour where T1 : IEntit
     public abstract UniTask DeInitialize();
 }
 
+public abstract class EntityBehavior<T1, T2, T3> : EntityBehaviour where T1 : IEntityData
+                                                                   where T2 : IEntityData
+                                                                   where T3 : IEntityData
+{
+    public override async UniTask Initialize(IEntityData data)
+    {
+        await InitializeData((T1)data, (T2)data, (T3) data);
+    }
+
+    public abstract UniTask InitializeData(T1 data, T2 data2, T3 data3);
+
+    public abstract UniTask DeInitialize();
+}
+

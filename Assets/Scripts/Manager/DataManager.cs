@@ -11,5 +11,6 @@ public class DataManager : MonoSingleton<DataManager>
 
     protected override void Awake()
     {
+
     }
 }

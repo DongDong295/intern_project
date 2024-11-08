@@ -8,6 +8,7 @@ public partial class EntityModel : IEntityAbilityData
     protected AbilityConfig qAbilityConfig;
     protected AbilityConfig eAbilityConfig;
     protected AbilityConfig primaryAbilityConfig;
+
     public AbilityConfig QAbilityConfig => this.qAbilityConfig;
 
     public AbilityConfig EAbilityConfig => this.eAbilityConfig;

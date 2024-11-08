@@ -4,7 +4,6 @@ using UnityEngine;
 
 public interface IAbilityData
 {
-    public float Cooldown { get; }
     public CastType CastType { get; }
 
     public AbilityType AbilityType { get; }

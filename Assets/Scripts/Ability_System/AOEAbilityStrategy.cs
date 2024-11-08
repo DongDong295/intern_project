@@ -11,13 +11,24 @@ public class AOEAbilityStrategy : AbilityStrategy
     protected float AbilityDuration;
     protected float AbilityDamage;
 
+    public override async UniTask DamageEnemy()
+    {
+        await UniTask.CompletedTask;
+    }
+
+    public override async UniTask InitAbility()
+    {
+        await UniTask.CompletedTask;
+    }
+
     protected void Init(AOEAbilityConfigItem item)
     {
         AbilityDuration = item.abilityDuration;
-        AbilityDamage = item.abilityDamage;
+        AbilityDamage = entityStatsModifyData.GetStats(EntityStatsType.AbilityQDamage);
     }
 
     protected override async UniTask SetUpInitializeAbility()
     {
+        await UniTask.CompletedTask;
     }
 }

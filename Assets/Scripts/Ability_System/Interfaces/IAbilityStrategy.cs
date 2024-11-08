@@ -5,5 +5,5 @@ using UnityEngine;
 
 public interface IAbilityStrategy
 {
-    public virtual async UniTask Init(IAbilityData data) { await UniTask.CompletedTask; }
+    //public virtual async UniTask Init(IAbilityData data) { await UniTask.CompletedTask; }
 }

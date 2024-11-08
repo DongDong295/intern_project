@@ -5,12 +5,12 @@ using UnityEngine;
 using UnityEngine.XR;
 using ZBase.Foundation.PubSub;
 
-public class CharacterStatsModifyBehaviour : EntityBehavior<IEntityStatsModifyEventData>
+public class CharacterStatsModifyBehaviour : EntityBehavior<IEntityStatsModifyData>
 {
     private List<ISubscription> _subscriptions;
-    private IEntityStatsModifyEventData _entityStatsModifyEventData;
+    private IEntityStatsModifyData _entityStatsModifyEventData;
 
-    public override async UniTask InitializeData(IEntityStatsModifyEventData data)
+    public override async UniTask InitializeData(IEntityStatsModifyData data)
     {
         _subscriptions = new List<ISubscription>();
         _entityStatsModifyEventData = data;

@@ -2,6 +2,7 @@ using Runtime.Core.Singleton;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.WebSockets;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,10 +14,10 @@ public class InputManager : MonoSingleton<InputManager>
     public Vector2 MoveDirection;
     void Update()
     {
+        PlayerInput();
         InputMovement();
         CursorPosition();
         InputAction();
-        PlayerInput();
     }
 
     public Vector3 InputMovement()

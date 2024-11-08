@@ -31,6 +31,7 @@ public class AbilityStrategyFactory
 
 public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 {
+    protected EntityHolder owner;
     protected CastType castType;
     protected AbilityState state;
     protected AbilityConfigItem abilityData;
@@ -38,16 +39,52 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
     protected Vector3 castPosition;
     protected List<EntityHolder> hitList;
     protected CancellationTokenSource cts;
+    protected IEntityStatsModifyData entityStatsModifyData;
 
-    public virtual async UniTask Init(AbilityConfigItem data)
+    public virtual async UniTask Init(AbilityConfigItem data, IEntityStatsModifyData modifyData)
     {
+        owner = GetComponent<EntityHolder>();
         hitList = new List<EntityHolder>();
         state = AbilityState.Ready;        
         abilityData = data;  
+        entityStatsModifyData = modifyData;
         cooldown = abilityData.cooldown;
         castType = abilityData.castType;
+        RegisterAbilityCooldow();
+        await InitAbility();
         await UniTask.CompletedTask;
     }
+
+    private void RegisterAbilityCooldow()
+    {
+        switch (abilityData.abilityType)
+        {
+            case AbilityType.Primary:
+                entityStatsModifyData.RegisterBaseStats(EntityStatsType.PrimaryCooldown, cooldown);
+                break;
+            case AbilityType.AbilityQ:
+                entityStatsModifyData.RegisterBaseStats(EntityStatsType.AbilityQCooldown, cooldown);
+                break;
+            case AbilityType.AbilityE:
+                entityStatsModifyData.RegisterBaseStats(EntityStatsType.AbilityECooldown, cooldown);
+                break;
+            default: break;
+        }
+    }
+
+    private float GetAbilityCooldown(AbilityType type)
+    {
+        switch(type){
+            case AbilityType.Primary:
+                return entityStatsModifyData.GetStats(EntityStatsType.PrimaryCooldown);
+            case AbilityType.AbilityQ:
+                return entityStatsModifyData.GetStats(EntityStatsType.AbilityQCooldown);
+            case AbilityType.AbilityE:
+                return entityStatsModifyData.GetStats(EntityStatsType.AbilityECooldown);
+            default: return 0;
+        }
+    }
+    public abstract UniTask InitAbility();
 
     public virtual void DeInitialize()
     {
@@ -81,7 +118,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 
     public virtual async UniTask StartAbilityCooldown() { 
         this.state = AbilityState.Cooldown;
-        await UniTask.Delay(TimeSpan.FromSeconds(cooldown), cancellationToken: cts.Token);
+        await UniTask.Delay(TimeSpan.FromSeconds(GetAbilityCooldown(abilityData.abilityType)), cancellationToken: cts.Token);
         OnFinishCooldown();
     }
 
@@ -100,6 +137,13 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         {
             hitList.Remove(enemy);
         }
+    }
+
+    public abstract UniTask DamageEnemy();
+
+    public AbilityType GetAbilityType()
+    {
+        return abilityData.abilityType;
     }
 }
 

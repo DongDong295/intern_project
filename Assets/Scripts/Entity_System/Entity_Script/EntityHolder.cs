@@ -18,15 +18,7 @@ public class EntityHolder : MonoBehaviour
         var behaviours = GetComponents<IEntityBehaviour>();
         foreach (var behaviour in behaviours)
         {
-            try
-            {
-                await behaviour.Initialize(data);
-            }
-            catch(Exception e)
-            {
-                Debug.LogError("GO HERE");
-            }
-
+            await behaviour.Initialize(data);
             if (behaviour is IEntityUpdate)
                 _updateBehaviour.Add((IEntityUpdate)behaviour);
         }

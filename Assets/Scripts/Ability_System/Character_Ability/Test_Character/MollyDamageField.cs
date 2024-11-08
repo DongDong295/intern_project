@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MollyDamageField : MonoBehaviour
 {
-    public TestCharacterAbilityQ1 owner;
+    public AbilityStrategy owner;
     public List<EntityHolder> hit;
 
     public void Start()

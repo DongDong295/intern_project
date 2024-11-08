@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7114862072643425049}
   - component: {fileID: 8644418344608204638}
+  - component: {fileID: 3553802789289678308}
   m_Layer: 0
   m_Name: Molly_projectile
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3553802789289678308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288887380949320620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5291e91e408c4814d9f905fe78be1fa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
+  _mollyFieldPrefab: {fileID: 311858160806892084, guid: f714ef575a8284f48a96145705b5f5e9, type: 3}

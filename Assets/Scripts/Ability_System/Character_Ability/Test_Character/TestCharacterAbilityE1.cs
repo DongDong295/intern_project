@@ -6,23 +6,33 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class TestCharacterAbilityE1 : SelfBuffAbilityStrategy
 {
     [SerializeField] SelfBuffAbilityConfig configs;
 
     private CancellationTokenSource _cts;
+
+    public override async UniTask InitAbility()
+    {
+        await UniTask.CompletedTask;
+    }
+
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(configs.items[0]);
-        SimpleMessenger.Publish(new StatsModifyMessage(EntityStatsType.Speed, speedBuffAmount));
-        await UniTask.Delay(TimeSpan.FromSeconds(speedDuration));
+        entityStatsModifyData.IncreaseStats(EntityStatsType.PrimaryDamage, primaryBuffAmount);
+        entityStatsModifyData.IncreaseStats(EntityStatsType.Speed, speedBuffAmount);
+        //SimpleMessenger.Publish(new StatsModifyMessage(EntityStatsType.Speed, speedBuffAmount));
+        await UniTask.Delay(TimeSpan.FromSeconds(speedDuration), cancellationToken: _cts.Token);
         OnFinish().Forget();
     }
     public override async UniTask OnFinish()
     {
-        SimpleMessenger.Publish(new StatsModifyMessage(EntityStatsType.Speed, -speedBuffAmount));
+        entityStatsModifyData.DecreaseStats(EntityStatsType.PrimaryDamage, primaryBuffAmount);
+        entityStatsModifyData.DecreaseStats(EntityStatsType.Speed, speedBuffAmount);
+        //SimpleMessenger.Publish(new StatsModifyMessage(EntityStatsType.Speed, -speedBuffAmount));
         await base.OnFinish();
-        Debug.Log("Finish Cooldown");
     }
 }

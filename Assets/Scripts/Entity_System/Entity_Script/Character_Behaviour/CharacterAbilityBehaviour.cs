@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEntityActionEventData>
+public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEntityActionEventData, IEntityStatsModifyData>
 {
     private IEntityAbilityData _entityAbilityData;
     private IEntityActionEventData _entityActionEventData;
-
-    //[SerializeField] private List<AbilityType> types;
+    private IEntityStatsModifyData _entityStatsModifyData;
 
     [SerializeField] private List<AbilityStrategy> _abilityStrategies;
+
     private AbilityType _abilityType;
-    public override async UniTask InitializeData(IEntityAbilityData entityAbilityData, IEntityActionEventData entityActionEventData)
+    public override async UniTask InitializeData(IEntityAbilityData entityAbilityData, IEntityActionEventData entityActionEventData, IEntityStatsModifyData entityStatsModifyData)
     {
         _entityAbilityData = entityAbilityData;
         _entityActionEventData = entityActionEventData;
+        _entityStatsModifyData = entityStatsModifyData;
         //_abilityStrategies = entityAbilityData.AbilityStrategies;        
         //foreach (var type in types) {
             //_abilityStrategies.Add(AbilityStrategyFactory.CreateStrategy(type));
@@ -25,9 +26,9 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         _entityActionEventData.ActionEvent += OnUseQ;
         _entityActionEventData.ActionEvent += OnUseE;
 
-        await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0]);
-        await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1]);
-        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2]);
+        await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0], entityStatsModifyData);
+        await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1], entityStatsModifyData);
+        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2], entityStatsModifyData);
         await UniTask.FromResult(true);
     }
 
@@ -50,17 +51,15 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
             _abilityStrategies[2].OnUse().Forget();
         }
     }
+
     void OnUseUltimate()
     {
 
     }
 
-    public void OnChangeDamage(StatsModifyMessage message)
+    public void SetAbility(AbilityStrategy ability)
     {
-        if(message.abilityType == AbilityType.Primary)
-        {
-        
-        }
+
     }
 
     public override UniTask DeInitialize()

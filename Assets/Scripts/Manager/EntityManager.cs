@@ -10,10 +10,13 @@ public class EntityManager : MonoSingleton<EntityManager>
     public EntityHolder CurrentCharacter;
     public EntityHolder Dummy;
     public List<IEntityUpdate> UpdateEntity;
+
+    public float DeltaTime;
     protected override void Awake()
     {
         base.Awake();
         UpdateEntity = new List<IEntityUpdate>();
+        DeltaTime = Time.deltaTime;
     }
 
     private void Start()
@@ -28,7 +31,7 @@ public class EntityManager : MonoSingleton<EntityManager>
             foreach (var entity in UpdateEntity.ToList()) { 
                 if(entity is IEntityUpdate)
                 {
-                    entity.OnUpdate(Time.deltaTime);
+                    entity.OnUpdate(DeltaTime);
                 }
                 if(entity == null)
                 {
@@ -42,7 +45,7 @@ public class EntityManager : MonoSingleton<EntityManager>
         var data = DataManager.Instance.Data;
         var characterModel = new CharacterModel();
         characterModel.InitMovementData(data.items[0]);
-        characterModel.InitStatsModifyEvent();
+        characterModel.InitStats();
         characterModel.InitEventData();
         characterModel.InitHealthData(5);
         characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
