@@ -1,2 +1,2 @@
 projectile_speed,ability_damage,projectile_range,can_pierce,can_search_enemy,search_range
-45,20,20,FALSE,FALSE,0
+15,20,20,FALSE,FALSE,0

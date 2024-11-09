@@ -57,13 +57,12 @@ public class TestCharacterPrimaryProjectile : MonoBehaviour, IEntityUpdate
             {
                 var enemy = collision.gameObject.GetComponent<EntityHolder>();
                 _owner.AddHitList(enemy);
-                Debug.Log("XX");
-                DeInit();
+                DeInit().Forget();
             }
         }
         else
         {
-            DeInit();
+            DeInit().Forget();
         }
     }
 
@@ -71,13 +70,13 @@ public class TestCharacterPrimaryProjectile : MonoBehaviour, IEntityUpdate
     {
         if(Vector3.Distance(_castPosition, transform.position) > _projectileRange)
         {
-            DeInit();
+            DeInit().Forget();
         }
     }
 
-    public void DeInit()
+    public async UniTask DeInit()
     {
-        _owner.DamageEnemy();
+        await _owner.DamageEnemy();
         EntityManager.Instance.UpdateEntity.Remove(this);
         Destroy(gameObject);
     }

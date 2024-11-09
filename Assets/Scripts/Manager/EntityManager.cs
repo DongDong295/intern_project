@@ -58,6 +58,7 @@ public class EntityManager : MonoSingleton<EntityManager>
     {
         var enemyModel = new EnemyModel();
         enemyModel.InitHealthData(1000);
+        enemyModel.InitPathfiding();
         return enemyModel;
     }
 
