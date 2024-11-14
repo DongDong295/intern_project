@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using ZBase.UnityScreenNavigator.Core.Sheets;
 
 public class TestCharacterPrimaryProjectile : MonoBehaviour, IEntityUpdate
 {
@@ -15,6 +16,7 @@ public class TestCharacterPrimaryProjectile : MonoBehaviour, IEntityUpdate
     private float _projectileRange;
     private float _searchRange;
 
+    Rigidbody2D _rb;
     private TestCharacterPrimary1 _owner;
     private Vector3 _castPosition;
     private CancellationTokenSource _tokenSource;
@@ -30,39 +32,50 @@ public class TestCharacterPrimaryProjectile : MonoBehaviour, IEntityUpdate
         _searchRange = data.searchRange;
         _owner = owner;
         _castPosition = castPosition;
+        _rb = GetComponent<Rigidbody2D>();
         EntityManager.Instance.UpdateEntity.Add(this);
         await UniTask.CompletedTask;
     }
 
     public void OnUpdate(float deltaTime)
     {
-        Move(deltaTime);
         Check();
+        Move(deltaTime);
     }
 
-    public void OnFixedUpdate(float deltaTime)
+    public void OnFixedUpdate(float fixedDeltaTime)
     {
+        //Move(fixedDeltaTime);
     }
 
     public void Move(float deltaTime)
     {
-        transform.position = transform.position + _moveDirection.normalized * _projectileSpeed * deltaTime;
+        //transform.position = transform.position + _moveDirection.normalized * _projectileSpeed * deltaTime;
+        _rb.MovePosition(_rb.position + (Vector2)_moveDirection.normalized * _projectileSpeed * deltaTime);
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if(collision.gameObject != null)
         {
-            if (!_canPierce)
+            if (collision.gameObject.CompareTag("Enemy"))
             {
-                var enemy = collision.gameObject.GetComponent<EntityHolder>();
-                _owner.AddHitList(enemy);
-                DeInit().Forget();
+                if (!_canPierce)
+                {
+                    var enemy = collision.gameObject.GetComponent<EntityHolder>();
+                    _owner.AddHitList(enemy);
+                    DeInit().Forget();
+                }
             }
-        }
-        else
-        {
-            DeInit().Forget();
+            else if (collision.gameObject.CompareTag("Obstacle"))
+            {
+                DeInit().Forget();  
+            }
+            else
+            {
+                return;
+            }
         }
     }
 

@@ -13,11 +13,25 @@ public interface IEntityMovementData : IEntityData
 
     public float DashSpeed { get; }
 
-    public bool CanMove { get; } 
+    public bool CanMove { get; set; } 
 
     public bool CanDash {  get; }
 
     public int DashCounter {  get; }
 
     public float DashCooldown { get; }
+
+    public Vector3 MoveDirection { get; set; }
+
+    public Vector3 CurrentPosition { get; set; }
+
+    public void SetMoveDirection(Vector3 direction)
+    {
+        MoveDirection = direction;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return CurrentPosition;
+    }
 }

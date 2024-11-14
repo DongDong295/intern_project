@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48964f8dfc931343af9c4058de12db4, type: 3}
+  m_Name: MovementData
+  m_EditorClassIdentifier: 
+  classInfomations:
+  - className: Runtime.DataConfig.MovementDataConfig
+    csvInformations:
+    - csvType: 0
+      className: Runtime.DataConfig.MovementDataConfig
+      csvFile: {fileID: 4900000, guid: 97f612b80f0cbc74792c79f49101be91, type: 3}
+      csvPath: Assets/CSV/Csv/MovementData.csv
+      csvFolderPath: 
+      separateScriptableObject: 0
+      fileStartWith: 
+      fieldSetValue: items
+      convertMethod: 

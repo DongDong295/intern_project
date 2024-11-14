@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: items
+    - Name: testCharacter
       Entry: 7
       Data: 0|Runtime.DataConfig.AbilityConfigItem[], Assembly-CSharp
     - Name: 
@@ -78,6 +78,36 @@ MonoBehaviour:
     - Name: target
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: dummy
+      Entry: 7
+      Data: 4|Runtime.DataConfig.AbilityConfigItem[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 5|Runtime.DataConfig.AbilityConfigItem, Assembly-CSharp
+    - Name: cooldown
+      Entry: 4
+      Data: 1
+    - Name: castType
+      Entry: 3
+      Data: 1
+    - Name: abilityType
+      Entry: 3
+      Data: 1
+    - Name: target
+      Entry: 3
+      Data: 2
     - Name: 
       Entry: 8
       Data: 

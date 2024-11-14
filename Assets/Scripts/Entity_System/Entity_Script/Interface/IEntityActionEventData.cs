@@ -6,4 +6,6 @@ using UnityEngine;
 public interface IEntityActionEventData : IEntityData
 {
     public Action<CharacterInputAction> ActionEvent { get; set; }
+    
+    public Action<EnemyTriggerAction> EnemyActionEvent { get; set; }
 }

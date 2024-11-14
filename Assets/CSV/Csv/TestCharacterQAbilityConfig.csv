@@ -1,2 +1,2 @@
-ability_duration,ability_damage
-5,10
+ability_duration,ability_damage,knockback_force
+5,10,0

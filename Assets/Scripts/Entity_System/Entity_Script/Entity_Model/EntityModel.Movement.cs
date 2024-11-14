@@ -22,6 +22,10 @@ public partial class EntityModel : IEntityMovementData
 
     protected bool canDash;
 
+    protected Vector3 moveDirection;
+
+    protected Vector3 currentPosition;
+
     public float Speed
     {
         get => speed;
@@ -34,9 +38,11 @@ public partial class EntityModel : IEntityMovementData
 
     public float DashDuration => dashDuration;
 
+    public Vector3 MoveDirection { get => moveDirection; set => moveDirection = value; }
 
+    public Vector3 CurrentPosition { get => currentPosition; set => currentPosition = value; }
 
-    public bool CanMove => canMove = true;
+    public bool CanMove { get => canMove; set => canMove = value; }
 
     public bool CanDash => canDash = true;
 
@@ -44,18 +50,15 @@ public partial class EntityModel : IEntityMovementData
 
     public float DashCooldown => dashCooldown;
 
-    float IEntityMovementData.Speed {
-        get => speed;
-        set => Speed = value;
-    }
 
-    public void InitMovementData(CharacterMovementDataConfigItem data)
+    public void InitMovementData(MovementDataConfigItem data)
     {
-        this.speed = data.characterSpeed;
-        this.dashSpeed = data.characterDashSpeed;
-        this.dashDuration = data.characterDashDuration;
-        this.dashRange = data.characterDashRange;
-        this.dashCooldown = data.characterDashCooldown;
-        this.dashCounter = data.characterDashCounter;
+        canMove = true;
+        this.speed = data.speed;
+        this.dashSpeed = data.dashSpeed;
+        this.dashDuration = data.dashDuration;
+        this.dashRange = data.dashRange;
+        this.dashCooldown = data.dashCooldown;
+        this.dashCounter = data.dashCounter;
     }
 }

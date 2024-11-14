@@ -11,12 +11,9 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
     [SerializeField] private GameObject _mollyPrefab;
     
     private GameObject _molly;
-    private float _mollyMoveSpeed = 3.5f;
-    private float _arcHeight = 3f;
-    private Vector3 _originalScale;
-    private Vector3 _targetScale = new Vector3(5f, 5f, 0f);
+    //private Vector3 _targetScale = new Vector3(5f, 5f, 0f);
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
         entityStatsModifyData.RegisterBaseStats(EntityStatsType.AbilityQDamage, config.items[0].abilityDamage);
         await UniTask.CompletedTask;
@@ -41,7 +38,7 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
             {
                 foreach(var hit in hitList)
                 {
-                    hit.GetComponent<EnemyHealthBehaviour>().TakeDamage(entityStatsModifyData.GetStats(EntityStatsType.AbilityQDamage));
+                    hit.GetComponent<EnemyHealthBehaviour>().TakeDamage(new DamageInformation(entityStatsModifyData.GetStats(EntityStatsType.AbilityQDamage), 5));
                 }
             }
             await UniTask.Delay(TimeSpan.FromSeconds(0.5f));

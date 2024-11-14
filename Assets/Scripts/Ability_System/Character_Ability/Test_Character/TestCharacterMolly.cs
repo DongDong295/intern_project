@@ -16,10 +16,14 @@ public class TestCharacterMolly : MonoBehaviour
     private Vector3 _targetPos;
     private Vector3 _originalScale;
     private Vector3 _targetScale = new Vector3(5f, 5f, 0f);
+    private List<string> _targetTags;
 
     public void Init(Vector3 targetPos)
     {
         _targetPos = targetPos;
+        _targetTags = new List<string>();
+        _targetTags.Add("Enemy");
+
         MoveMollyInArc().Forget();
     }
 
@@ -47,7 +51,8 @@ public class TestCharacterMolly : MonoBehaviour
     public async UniTask ActiveField()
     {
         var _activeField = Instantiate(_mollyFieldPrefab, _targetPos, transform.rotation);
-        _activeField.GetComponent<MollyDamageField>().owner = owner;
+        
+        _activeField.GetComponent<DOTField>().InitField(owner, _targetTags);
         _originalScale = _activeField.transform.localScale;
         await ScaleFieldOverTime(_activeField);
         await owner.DamageEnemy();

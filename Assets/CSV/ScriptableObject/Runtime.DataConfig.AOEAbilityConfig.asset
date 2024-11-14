@@ -36,6 +36,9 @@ MonoBehaviour:
     - Name: abilityDamage
       Entry: 4
       Data: 10
+    - Name: knockbackForce
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 

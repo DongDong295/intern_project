@@ -54,10 +54,10 @@ MonoBehaviour:
     - Name: qDuration
       Entry: 4
       Data: 0
-    - Name: ebuffAmount
+    - Name: eBuffAmount
       Entry: 4
       Data: 0
-    - Name: ebuffDuration
+    - Name: eDuration
       Entry: 4
       Data: 0
     - Name: ultBuffAmount

@@ -7,9 +7,12 @@ public enum EntityStatsType
 {
     None,
     Speed,
+    KnockbackForce,
     DashSpeed,
     DashCounter,
+    AttackRange,
     Health,
+    CastTime,
     PrimaryCooldown,
     PrimaryDamage,
     AbilityQCooldown,

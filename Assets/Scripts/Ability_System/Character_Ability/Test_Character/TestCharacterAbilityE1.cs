@@ -14,21 +14,24 @@ public class TestCharacterAbilityE1 : SelfBuffAbilityStrategy
 
     private CancellationTokenSource _cts;
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
+        _cts = new CancellationTokenSource();
         await UniTask.CompletedTask;
     }
 
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(configs.items[0]);
+        cts?.Cancel();
+        cts = new CancellationTokenSource();    
         entityStatsModifyData.IncreaseStats(EntityStatsType.PrimaryDamage, primaryBuffAmount);
         entityStatsModifyData.IncreaseStats(EntityStatsType.Speed, speedBuffAmount);
         //SimpleMessenger.Publish(new StatsModifyMessage(EntityStatsType.Speed, speedBuffAmount));
         await UniTask.Delay(TimeSpan.FromSeconds(speedDuration), cancellationToken: _cts.Token);
         OnFinish().Forget();
     }
-    public override async UniTask OnFinish()
+    protected override async UniTask OnFinish()
     {
         entityStatsModifyData.DecreaseStats(EntityStatsType.PrimaryDamage, primaryBuffAmount);
         entityStatsModifyData.DecreaseStats(EntityStatsType.Speed, speedBuffAmount);

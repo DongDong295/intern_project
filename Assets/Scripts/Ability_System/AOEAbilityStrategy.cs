@@ -16,7 +16,7 @@ public class AOEAbilityStrategy : AbilityStrategy
         await UniTask.CompletedTask;
     }
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
         await UniTask.CompletedTask;
     }

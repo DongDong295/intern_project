@@ -5,11 +5,15 @@ using Pathfinding;
 using Cysharp.Threading.Tasks;
 public interface IEntityPathfinding : IEntityData
 {
-    public void CalculatePath(Vector3 characterPos) { }
+    public async UniTask CalculatePath(Vector3 characterPos) { }
 
-    public async void OnFinishCalculate(Path path) { await UniTask.CompletedTask; }
+    public void OnFinishCalculatePath() { }
+
+    //public async void OnFinishCalculatePath(Path path) { await UniTask.CompletedTask; }
 
     public async UniTask FollowPath() { await UniTask.CompletedTask; }
 
     public abstract bool GetIsPathNull();
+
+    public abstract Vector3 GetPosition();
 }

@@ -6,11 +6,29 @@ using Runtime.DataConfig;
 
 public class DataManager : MonoSingleton<DataManager>
 {
-    public List<AbilityConfig> AbilityConfig;
-    public CharacterMovementDataConfig Data;
+    public AbilityConfig CharacterAbilityConfig;
+    public AbilityConfigItem[] AbilityData;
+
+    public MovementDataConfig Data;
 
     protected override void Awake()
     {
 
+    }
+    protected void Start()
+    {
+        LoadCharacterAbilityData();
+    }
+
+    void LoadCharacterAbilityData()
+    {
+        switch (EntityManager.Instance.CharacterId)
+        {
+            case 0:
+                AbilityData = CharacterAbilityConfig.testCharacter;
+                break;
+
+            default: break;
+        }
     }
 }

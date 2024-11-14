@@ -15,9 +15,10 @@ public class TestCharacterPrimary1 : ProjectileAbilityStrategy
 
     [SerializeField] private Transform _shootPoint;
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
         entityStatsModifyData.RegisterBaseStats(EntityStatsType.PrimaryDamage, _projectiledConfig.items[0].abilityDamage);
+        entityStatsModifyData.RegisterBaseStats(EntityStatsType.KnockbackForce, _projectiledConfig.items[0].knockbackForce);
         await UniTask.CompletedTask;
     }
 
@@ -38,7 +39,8 @@ public class TestCharacterPrimary1 : ProjectileAbilityStrategy
         {
             foreach (var hit in hitList.ToList())
             {
-                hit.GetComponent<EnemyHealthBehaviour>().GetHit(entityStatsModifyData.GetStats(EntityStatsType.PrimaryDamage));
+                hit.GetComponent<EnemyHealthBehaviour>().GetHit(new DamageInformation(entityStatsModifyData.GetStats(EntityStatsType.PrimaryDamage), 
+                    entityStatsModifyData.GetStats(EntityStatsType.KnockbackForce)), owner.transform.position);
                 hitList.Remove(hit);
             }
         }

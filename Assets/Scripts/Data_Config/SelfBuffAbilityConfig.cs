@@ -15,8 +15,8 @@ namespace Runtime.DataConfig
         public float primaryDuration;
         public float qBuffAmount;
         public float qDuration;
-        public float ebuffAmount;
-        public float ebuffDuration;
+        public float eBuffAmount;
+        public float eDuration;
         public float ultBuffAmount;
         public float ultDuration;
     }

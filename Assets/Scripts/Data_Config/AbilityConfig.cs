@@ -17,6 +17,7 @@ namespace Runtime.DataConfig
 
     public class AbilityConfig : SerializedScriptableObject
     {
-        public AbilityConfigItem[] items;
+        public AbilityConfigItem[] testCharacter;
+        public AbilityConfigItem[] dummy;
     }
 }

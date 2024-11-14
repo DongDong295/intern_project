@@ -72,7 +72,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         }
     }
 
-    private float GetAbilityCooldown(AbilityType type)
+    public float GetAbilityCooldown(AbilityType type)
     {
         switch(type){
             case AbilityType.Primary:
@@ -84,7 +84,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
             default: return 0;
         }
     }
-    public abstract UniTask InitAbility();
+    protected abstract UniTask InitAbility();
 
     public virtual void DeInitialize()
     {
@@ -102,7 +102,7 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
         } 
     }
 
-    public virtual async UniTask InitiateAbility() {
+    protected virtual async UniTask InitiateAbility() {
         this.state = AbilityState.Using;
         cts?.Cancel();
         cts = new CancellationTokenSource();
@@ -111,21 +111,21 @@ public abstract class AbilityStrategy : MonoBehaviour, IAbilityStrategy
 
     protected abstract UniTask SetUpInitializeAbility();
 
-    public virtual async UniTask OnFinish() { 
+    protected virtual async UniTask OnFinish() { 
         this.state = AbilityState.Finish;
         await StartAbilityCooldown();
     }
 
-    public virtual async UniTask StartAbilityCooldown() { 
+    protected virtual async UniTask StartAbilityCooldown() { 
         this.state = AbilityState.Cooldown;
         await UniTask.Delay(TimeSpan.FromSeconds(GetAbilityCooldown(abilityData.abilityType)), cancellationToken: cts.Token);
         OnFinishCooldown();
     }
 
-    public void FinishCooldown() { 
+    protected void FinishCooldown() { 
         cts?.Cancel();
     }
-    public virtual void OnFinishCooldown() { this.state = AbilityState.Ready; }
+    protected virtual void OnFinishCooldown() { this.state = AbilityState.Ready; }
 
     public virtual void AddHitList(EntityHolder enemy) { 
         hitList.Add(enemy);

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -26,9 +27,16 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         _entityActionEventData.ActionEvent += OnUseQ;
         _entityActionEventData.ActionEvent += OnUseE;
 
-        await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0], entityStatsModifyData);
+        /*await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0], entityStatsModifyData);
         await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1], entityStatsModifyData);
-        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2], entityStatsModifyData);
+        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2], entityStatsModifyData);*/
+        for(int i = 0; i < _abilityStrategies.Count; i++)
+        {
+            Debug.Log(_abilityStrategies[i]);
+            Debug.Log(DataManager.Instance.AbilityData[i]);
+            await _abilityStrategies[i].Init(DataManager.Instance.AbilityData[i], entityStatsModifyData);
+        }
+
         await UniTask.FromResult(true);
     }
 

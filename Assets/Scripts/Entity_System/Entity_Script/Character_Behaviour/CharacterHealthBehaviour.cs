@@ -15,6 +15,11 @@ public class CharacterHealthBehaviour : EntityBehavior<IEntityHealthData>
         await UniTask.FromResult(1);
     }
 
+    public void GetHit(DamageInformation data)
+    {
+
+    }
+
     public void TakeDamage(float damage)
     {
     }

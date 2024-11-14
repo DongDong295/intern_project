@@ -13,20 +13,20 @@ public class CharacterMovementBehaviour : EntityBehavior<IEntityMovementData, IE
 
     private IEntityMovementData _data;
     private IEntityStatsModifyData _statsData;
+
     public override async UniTask InitializeData(IEntityMovementData data, IEntityStatsModifyData statsData)
     {
         _data = data;
         _statsData = statsData;
         _speed = _data.Speed;
         _statsData.RegisterBaseStats(EntityStatsType.Speed, _speed);
-
         statsData.ChangeStatsEvent += OnChangeSpeed;
         await UniTask.FromResult(1);
     }
 
     public void OnUpdate(float deltaTime)
     {
-
+        _data.CurrentPosition = _rb.transform.position;
     }
 
     public void OnFixedUpdate(float deltaTime)

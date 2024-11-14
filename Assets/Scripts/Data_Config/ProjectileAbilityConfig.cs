@@ -13,6 +13,7 @@ namespace Runtime.DataConfig
         public bool canPierce;
         public bool canSearchEnemy;
         public float searchRange;
+        public float knockbackForce;
     }
 
     public class ProjectileAbilityConfig : SerializedScriptableObject

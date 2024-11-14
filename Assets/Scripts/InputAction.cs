@@ -13,11 +13,26 @@ public enum CharacterInputAction
     Dash
 }
 
+public enum EnemyTriggerAction
+{
+    None,
+    Chase,
+    Attack
+}
+
 public enum PlayerInputAction{
     None,
     Pause
 }
 
+public struct EnemeyActionTriggerMessage : IMessage
+{
+    public EnemyTriggerAction action;
+    public EnemeyActionTriggerMessage(EnemyTriggerAction input)
+    {
+        action = input;
+    }
+}
 
 public struct InputActionMessage : IMessage
 {

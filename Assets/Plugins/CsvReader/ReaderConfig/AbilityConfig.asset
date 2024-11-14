@@ -22,5 +22,14 @@ MonoBehaviour:
       csvFolderPath: 
       separateScriptableObject: 0
       fileStartWith: 
-      fieldSetValue: items
+      fieldSetValue: testCharacter
+      convertMethod: 
+    - csvType: 0
+      className: Runtime.DataConfig.AbilityConfig
+      csvFile: {fileID: 4900000, guid: f08ac5c0c09a4bd4a85b1993604fc2c1, type: 3}
+      csvPath: Assets/CSV/Csv/DummyAbilityConfig.csv
+      csvFolderPath: 
+      separateScriptableObject: 0
+      fileStartWith: 
+      fieldSetValue: dummy
       convertMethod: 

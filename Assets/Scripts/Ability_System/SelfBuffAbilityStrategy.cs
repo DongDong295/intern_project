@@ -11,7 +11,7 @@ public class SelfBuffAbilityStrategy : AbilityStrategy {
     protected float primaryBuffAmount;
     protected float primaryBuffDuration;
 
-    public void Init(SelfBuffAbilityConfigItem config)
+    protected void Init(SelfBuffAbilityConfigItem config)
     {
         speedBuffAmount = config.speedBuffAmount;
         speedDuration = config.speedDuration;
@@ -19,7 +19,7 @@ public class SelfBuffAbilityStrategy : AbilityStrategy {
         primaryBuffDuration = config.primaryDuration;
     }
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
         await UniTask.CompletedTask;
     }

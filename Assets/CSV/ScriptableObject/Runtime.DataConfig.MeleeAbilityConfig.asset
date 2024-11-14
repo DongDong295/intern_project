@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07b6c34e11b48174b937e7567eddbed1, type: 3}
-  m_Name: Runtime.DataConfig.CharacterMovementDataConfig
+  m_Script: {fileID: 11500000, guid: 418e9e41264be3147b5bc5a3f827c4e8, type: 3}
+  m_Name: Runtime.DataConfig.MeleeAbilityConfig
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,31 +23,19 @@ MonoBehaviour:
     SerializationNodes:
     - Name: items
       Entry: 7
-      Data: 0|Runtime.DataConfig.CharacterMovementDataConfigItem[], Assembly-CSharp
+      Data: 0|Runtime.DataConfig.MeleeAbilityConfigItem[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 1|Runtime.DataConfig.CharacterMovementDataConfigItem, Assembly-CSharp
-    - Name: characterSpeed
-      Entry: 4
-      Data: 5
-    - Name: characterDashRange
-      Entry: 4
-      Data: 3
-    - Name: characterDashSpeed
+      Data: 1|Runtime.DataConfig.MeleeAbilityConfigItem, Assembly-CSharp
+    - Name: abilityDamage
       Entry: 4
       Data: 10
-    - Name: characterDashDuration
+    - Name: knockbackForce
       Entry: 4
-      Data: 0.2
-    - Name: characterDashCounter
-      Entry: 3
-      Data: 3
-    - Name: characterDashCooldown
-      Entry: 4
-      Data: 1
+      Data: 1.5
     - Name: 
       Entry: 8
       Data: 

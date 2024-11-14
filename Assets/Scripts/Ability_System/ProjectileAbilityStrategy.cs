@@ -12,6 +12,7 @@ public class ProjectileAbilityStrategy : AbilityStrategy
     public float abilityDamage;
     public bool canPierce;
     public bool canSearchEnemy;
+    public float knockbackForce;
     protected float searchRange;
     protected GameObject bulletPrefab;
     protected Vector3 moveDirection;
@@ -24,10 +25,11 @@ public class ProjectileAbilityStrategy : AbilityStrategy
         this.canPierce = data.canPierce;
         this.canSearchEnemy = data.canSearchEnemy;
         this.searchRange = data.searchRange;
+        this.knockbackForce = data.knockbackForce;
         await UniTask.CompletedTask;
     }
 
-    public override async UniTask InitAbility()
+    protected override async UniTask InitAbility()
     {
         await UniTask.CompletedTask;
     }

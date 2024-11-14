@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f48964f8dfc931343af9c4058de12db4, type: 3}
-  m_Name: CharacterMovementData
+  m_Name: MeleeAbilityConfig
   m_EditorClassIdentifier: 
   classInfomations:
-  - className: Runtime.DataConfig.CharacterMovementDataConfig
+  - className: Runtime.DataConfig.MeleeAbilityConfig
     csvInformations:
     - csvType: 0
-      className: Runtime.DataConfig.CharacterMovementDataConfig
-      csvFile: {fileID: 4900000, guid: 97f612b80f0cbc74792c79f49101be91, type: 3}
-      csvPath: Assets/CSV/Csv/CharacterMovementData.csv
+      className: Runtime.DataConfig.MeleeAbilityConfig
+      csvFile: {fileID: 4900000, guid: fcd7bf4690265df43bbf17a086353bcb, type: 3}
+      csvPath: Assets/CSV/Csv/DummyMeleeAbilityConfig.csv
       csvFolderPath: 
       separateScriptableObject: 0
       fileStartWith: 
-      fieldSetValue: items
+      fieldSetValue: dummy
       convertMethod: 
