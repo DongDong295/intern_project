@@ -1,4 +1,4 @@
-cooldown,cast_type,ability_type,target
-0.125,SingleCast,Primary,Other
-4,SingleCast,AbilityQ,Other
-6,SingleCast,AbilityE,Self
+cooldown,cast_type,ability_type,target,attack_range
+0.125,SingleCast,Primary,Other,0
+4,SingleCast,AbilityQ,Other,0
+6,Channel,AbilityE,Self,0

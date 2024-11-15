@@ -1,3 +1,4 @@
+using Runtime.DataConfig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,10 +12,11 @@ public partial class EntityModel : IEntityData {
     public string Name { get => name; set => name = value; }
 
     public EntityType Type { get => type; set => type = value; }
-    
-    public void InitModelCoreData()
-    {
 
+    List<EntityCoreDataConfigItem> characterConfigData, enemyConfigData;
+    
+    public void InitModelData(EntityCoreDataConfig config)
+    {
     }
 }
 

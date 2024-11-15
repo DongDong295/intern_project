@@ -1,2 +1,2 @@
-cooldown,cast_type,ability_type,target
-1,SingleCast,Primary,Other
+cooldown,cast_type,ability_type,target,attack_range
+3,SingleCast,Primary,Other,3

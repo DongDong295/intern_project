@@ -7,6 +7,8 @@ public interface IEntityMovementData : IEntityData
 {
     public float Speed { get; set; }
 
+    public bool IsReachTarget {  get; set; }
+
     public float DashRange { get; }
 
     public float DashDuration { get; }

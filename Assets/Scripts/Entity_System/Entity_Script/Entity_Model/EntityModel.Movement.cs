@@ -10,6 +10,8 @@ public partial class EntityModel : IEntityMovementData
 
     protected float dashRange;
 
+    protected bool isReachTarget;
+
     protected int dashCounter;
 
     protected float dashCooldown;
@@ -25,6 +27,8 @@ public partial class EntityModel : IEntityMovementData
     protected Vector3 moveDirection;
 
     protected Vector3 currentPosition;
+
+    public bool IsReachTarget { get => isReachTarget; set => isReachTarget = value; }
 
     public float Speed
     {

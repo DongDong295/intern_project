@@ -10,13 +10,11 @@ public class EnemyHealthBehaviour : EntityBehavior<IEntityHealthData, IEntityMov
     private IEntityMovementData _entityMovementData;
     [SerializeField] private float _health;
     private bool _isAlive;
-    private Rigidbody2D _rb;
 
     public override async UniTask InitializeData(IEntityHealthData data, IEntityMovementData movement)
     {
         _entityHealthData = data;
         _entityMovementData = movement;
-        _rb = GetComponent<Rigidbody2D>();
         _health = _entityHealthData.Health;
         _isAlive = data.IsAlive;
         await UniTask.CompletedTask;
@@ -25,9 +23,8 @@ public class EnemyHealthBehaviour : EntityBehavior<IEntityHealthData, IEntityMov
     public void GetHit(DamageInformation data, Vector3 ownerPos)
     {
         //Kiem tra buff/Debuff => apply Damage
-        var force = (-ownerPos + _rb.transform.position).normalized * data.KnockbackForce;
         TakeDamage(data);
-        ApplyKnockback(force).Forget();
+        //ApplyKnockback(force).Forget();
     }
 
     public void TakeDamage(DamageInformation data)
@@ -41,11 +38,6 @@ public class EnemyHealthBehaviour : EntityBehavior<IEntityHealthData, IEntityMov
 
     public async UniTask ApplyKnockback(Vector3 force)
     {
-        _entityMovementData.CanMove = false;
-        //_entityMovementData.MoveDirection = Vector3.zero;
-        _rb.AddForce(force, ForceMode2D.Impulse);
-        await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
-        _entityMovementData.CanMove = true;
     }
 
     public override UniTask DeInitialize()

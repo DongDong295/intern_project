@@ -14,27 +14,23 @@ public class EnemyNormalChaseStrategy : EnemyMovementStrategy
 
     public override void Update()
     {
-        if (!isFindingPath)
+        base.Update();
+        if (!isFindingPath && !haveReachTarget)
         {
             if (!havePath)
             {
-                isFindingPath = true;
                 FindPath();
             }
-            else if (PositionCheck() && UpdateTimeCheck())
+            else if (UpdateTimeCheck() && PositionCheck())
             {
-                isFindingPath = true;
                 FindPath();
             }
         }
-        base.Update();
     }
 
     public override void FindPath()
     {
-        //Debug.Log("Find");
-        //haveReachTarget = false;
-        LockMovement();
+        isFindingPath = true;
         PathfindingManager.Instance.GetChasePath(entityMovementData.CurrentPosition, PathfindingManager.Instance.TargetPosition, OnFinishFindPath);
     }
 
@@ -54,13 +50,9 @@ public class EnemyNormalChaseStrategy : EnemyMovementStrategy
             targetPosition = PathfindingManager.Instance.TargetPosition;
             return true;
         }
-        if(Vector3.Distance(entityMovementData.CurrentPosition, PathfindingManager.Instance.TargetPosition) > TargetDistanceThreshold && haveReachTarget)
-        {
-            //haveReachTarget = false;
-            return true;
-        }
         return false;
     }
+
 
     public bool UpdateTimeCheck()
     {

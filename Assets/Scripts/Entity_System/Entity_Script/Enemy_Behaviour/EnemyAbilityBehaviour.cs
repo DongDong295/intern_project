@@ -3,24 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAbilityBehaviour : EntityBehavior<IEntityActionEventData>
+public class EnemyAbilityBehaviour : EntityBehavior<IEntityActionEventData, IEntityStatsModifyData, IEntityMovementData>
 {
     private IEntityActionEventData _entityActionEventData;
+    private IEntityMovementData _entityMovementData;
 
     [SerializeField] private List<AbilityStrategy> _abilityStrategies;
 
-    public override async UniTask InitializeData(IEntityActionEventData eventData)
+    public override async UniTask InitializeData(IEntityActionEventData eventData, IEntityStatsModifyData entityStatsModifyData, IEntityMovementData movementData)
     {
         _entityActionEventData = eventData;
-        eventData.EnemyActionEvent += OnAttack;
+        _entityMovementData = movementData;
+        await _abilityStrategies[0].Init(DataManager.Instance.CharacterAbilityConfig.dummy[0], entityStatsModifyData);
+        _entityActionEventData.EnemyActionEvent += CheckForAttack;
         await UniTask.CompletedTask;
     }    
 
-    public void OnAttack(EnemyTriggerAction action)
+    public void CheckForAttack(EnemyTriggerAction action)
     {
         if(action == EnemyTriggerAction.Attack)
         {
-            _abilityStrategies[Random.Range(0, _abilityStrategies.Count)].OnUse().Forget();
+            _abilityStrategies[0].OnUse().Forget();
         }
     }
 

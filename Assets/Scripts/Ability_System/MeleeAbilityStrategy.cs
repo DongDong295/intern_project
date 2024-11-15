@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MeleeAbilityStrategy : AbilityStrategy
 {
-    [SerializeField] protected Collider2D hitBox;
+    [SerializeField] protected GameObject hitBox;
     public float AbilityDamage;
     public override async UniTask DamageEnemy()
     {
@@ -14,6 +14,7 @@ public class MeleeAbilityStrategy : AbilityStrategy
     }
     protected void Init(MeleeAbilityConfigItem item)
     {
+        //entityStatsModifyData.RegisterBaseStats(EntityStatsType.PrimaryDamage, item.abilityDamage);
         AbilityDamage = entityStatsModifyData.GetStats(EntityStatsType.PrimaryDamage);
     }
 
@@ -24,5 +25,6 @@ public class MeleeAbilityStrategy : AbilityStrategy
 
     protected override async UniTask SetUpInitializeAbility()
     {
+        await UniTask.CompletedTask;
     }
 }

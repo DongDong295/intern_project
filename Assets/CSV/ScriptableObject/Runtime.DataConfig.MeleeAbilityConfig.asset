@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: items
+    - Name: dummy
       Entry: 7
       Data: 0|Runtime.DataConfig.MeleeAbilityConfigItem[], Assembly-CSharp
     - Name: 

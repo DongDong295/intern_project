@@ -56,7 +56,7 @@ MonoBehaviour:
       Data: 2|Runtime.DataConfig.MovementDataConfigItem, Assembly-CSharp
     - Name: speed
       Entry: 4
-      Data: 5.5
+      Data: 30
     - Name: dashRange
       Entry: 4
       Data: 0

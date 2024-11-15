@@ -22,32 +22,37 @@ public abstract class EnemyMovementStrategy : IMovementStrategy
     public float TargetReachThreshold;
     public float TargetNodeReachThreshold;
     public float MinTimeToNextFind;
-
+    public float BalanceRate;
     public int CurrentIndexPosition;
 
     public EnemyMovementStrategy(IEntityStatsModifyData stats, IEntityMovementData movement)
     {
         havePath = false;
+        isFindingPath = false;
 
         entityMovementData = movement; 
         entityStatsModifyData = stats;
 
         
         CurrentIndexPosition = 0;
-        TargetDistanceThreshold = 0.5f;
+        TargetDistanceThreshold = 2f;
         TargetReachThreshold = 2.5f;
         TargetNodeReachThreshold = 0.5f;
         MinTimeToNextFind = 0.65f;
+        BalanceRate = 5f;
     }
     public virtual void Update()
-    {
-        //Debug.Log(Vector3.Distance(entityMovementData.CurrentPosition, CurrentPath[CurrentIndexPosition]));
+    { 
         MinTimeToNextFind -= Time.deltaTime;
         if (havePath && !haveReachTarget)
         {
             Move();
         }
-        //Debug.Log(CurrentIndexPosition);
+        if(Vector3.Distance(entityMovementData.CurrentPosition, PathfindingManager.Instance.TargetPosition) > TargetReachThreshold)
+        {
+            haveReachTarget = false;
+            entityMovementData.IsReachTarget = false;
+        }
     }
 
     public virtual void FixedUpdate()
@@ -55,15 +60,14 @@ public abstract class EnemyMovementStrategy : IMovementStrategy
     }
 
 
-    public void Move()
-    {
-        if (CurrentIndexPosition == CurrentPath.Count)
+    public void Move() { 
+        if(CurrentIndexPosition == CurrentPath.Count || Vector3.Distance(entityMovementData.CurrentPosition, PathfindingManager.Instance.TargetPosition) <= TargetReachThreshold)
         {
-            OnReachTarget();
-            return;
+            haveReachTarget = true;
+            entityMovementData.IsReachTarget = true;
+            LockMovement();
         }
         else
-        {
             if (Vector3.Distance(entityMovementData.CurrentPosition, CurrentPath[CurrentIndexPosition]) <= TargetNodeReachThreshold)
             {
                 CurrentIndexPosition++;
@@ -80,15 +84,8 @@ public abstract class EnemyMovementStrategy : IMovementStrategy
             {
                 entityMovementData.SetMoveDirection((CurrentPath[CurrentIndexPosition] - entityMovementData.CurrentPosition).normalized);
             }
-        }
     }
 
-    public void OnReachTarget()
-    {
-        Debug.Log("Reached");
-        LockMovement();
-        //haveReachTarget = true;
-    }
     public void LockMovement()
     {
         entityMovementData.SetMoveDirection(Vector3.zero);

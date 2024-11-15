@@ -5,30 +5,28 @@ using UnityEngine;
 public class MeleeHitbox : MonoBehaviour
 {
     private AbilityStrategy _owner;
-    private List<string> _targetTags;
-    private List<EntityHolder> _hit;
-    public void InitHitbox(AbilityStrategy owner, List<string> targetTags)
+    public void InitHitbox(AbilityStrategy owner)
     {
         _owner = owner;
-        _targetTags = targetTags;
-        _hit = new List<EntityHolder>();
+        Debug.Log(_owner);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_targetTags.Contains(collision.gameObject.tag))
+        if (collision.gameObject.CompareTag("Character"))
         {
             _owner.AddHitList(collision.gameObject.GetComponent<EntityHolder>());
-            _hit.Add(collision.gameObject.GetComponent<EntityHolder>());
-
         }
+        else
+            return;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_targetTags.Contains(collision.gameObject.tag))
+        if (collision.gameObject.CompareTag("Character"))
         {
             _owner.RemoveHitList(collision.gameObject.GetComponent<EntityHolder>());
-            _hit.Remove(collision.gameObject.GetComponent<EntityHolder>());
         }
+        else
+            return;
     }
 }

@@ -9,6 +9,8 @@ public class DataManager : MonoSingleton<DataManager>
     public AbilityConfig CharacterAbilityConfig;
     public AbilityConfigItem[] AbilityData;
 
+    public EntityCoreDataConfig EntityDataConfig;
+
     public MovementDataConfig Data;
 
     protected override void Awake()
@@ -30,5 +32,10 @@ public class DataManager : MonoSingleton<DataManager>
 
             default: break;
         }
+    }
+
+    void LoadEnemyAbilityData()
+    {
+
     }
 }

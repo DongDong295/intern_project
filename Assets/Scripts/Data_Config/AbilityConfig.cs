@@ -13,6 +13,7 @@ namespace Runtime.DataConfig
         public CastType castType;
         public AbilityType abilityType;
         public Target target;
+        public float attackRange; //Enemy Attack Range
     }
 
     public class AbilityConfig : SerializedScriptableObject

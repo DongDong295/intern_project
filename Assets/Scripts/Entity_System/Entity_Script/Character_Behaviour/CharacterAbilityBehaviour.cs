@@ -19,21 +19,13 @@ public class CharacterAbilityBehaviour : EntityBehavior<IEntityAbilityData, IEnt
         _entityAbilityData = entityAbilityData;
         _entityActionEventData = entityActionEventData;
         _entityStatsModifyData = entityStatsModifyData;
-        //_abilityStrategies = entityAbilityData.AbilityStrategies;        
-        //foreach (var type in types) {
-            //_abilityStrategies.Add(AbilityStrategyFactory.CreateStrategy(type));
-        //}
+
         _entityActionEventData.ActionEvent += OnUsePrimary;
         _entityActionEventData.ActionEvent += OnUseQ;
         _entityActionEventData.ActionEvent += OnUseE;
 
-        /*await _abilityStrategies[0].Init(_entityAbilityData.PrimaryAbilityConfig.items[0], entityStatsModifyData);
-        await _abilityStrategies[1].Init(_entityAbilityData.QAbilityConfig.items[1], entityStatsModifyData);
-        await _abilityStrategies[2].Init(_entityAbilityData.EAbilityConfig.items[2], entityStatsModifyData);*/
         for(int i = 0; i < _abilityStrategies.Count; i++)
         {
-            Debug.Log(_abilityStrategies[i]);
-            Debug.Log(DataManager.Instance.AbilityData[i]);
             await _abilityStrategies[i].Init(DataManager.Instance.AbilityData[i], entityStatsModifyData);
         }
 

@@ -69,9 +69,6 @@ public class EntityManager : MonoSingleton<EntityManager>
         characterModel.InitEventData();
         characterModel.InitHealthData(5);
         characterModel.InitAbility();
-        /*characterModel.InitAbilityPrimary(DataManager.Instance.AbilityConfig[1]);
-        characterModel.InitAbilityQ(DataManager.Instance.AbilityConfig[0]);
-        characterModel.InitAbilityE(DataManager.Instance.AbilityConfig[2]);*/
         return characterModel;
     }
 
@@ -81,6 +78,7 @@ public class EntityManager : MonoSingleton<EntityManager>
         var enemyModel = new EnemyModel();
         enemyModel.InitHealthData(1000);
         enemyModel.InitMovementData(data.items[1]);
+        enemyModel.InitAbility();
         enemyModel.InitStats();
         return enemyModel;
     }
@@ -93,5 +91,10 @@ public class EntityManager : MonoSingleton<EntityManager>
     public async UniTaskVoid InitializeEnemyBehaviour()
     {
         await Dummy.InitializeBehaviour(CreateEnemyModel());
+    }
+
+    public Vector3 GetCharacterPosition()
+    {
+        return CurrentCharacter.transform.position;
     }
 }

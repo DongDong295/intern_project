@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterHealthBehaviour : EntityBehavior<IEntityHealthData>
 {
     private IEntityHealthData _entityHealthData;
-    private float _health;
+    public float _health;
 
     public override async UniTask InitializeData(IEntityHealthData data)
     {
@@ -17,11 +17,13 @@ public class CharacterHealthBehaviour : EntityBehavior<IEntityHealthData>
 
     public void GetHit(DamageInformation data)
     {
-
+        //
+        TakeDamage(data.Damage);
     }
 
     public void TakeDamage(float damage)
     {
+        _health -= damage;
     }
 
     public override UniTask DeInitialize()

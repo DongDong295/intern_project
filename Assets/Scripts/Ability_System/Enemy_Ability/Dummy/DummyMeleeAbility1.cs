@@ -8,23 +8,27 @@ using UnityEngine;
 public class DummyMeleeAbility1 : MeleeAbilityStrategy
 {
     [SerializeField] MeleeAbilityConfig config;
+    
     protected override async UniTask InitAbility()
     {
         entityStatsModifyData.RegisterBaseStats(EntityStatsType.PrimaryDamage, config.dummy[0].abilityDamage);
+        entityStatsModifyData.RegisterBaseStats(EntityStatsType.KnockbackForce, config.dummy[0].knockbackForce);
+        hitBox.GetComponent<MeleeHitbox>().InitHitbox(this);
+        hitBox.SetActive(true);
         await UniTask.CompletedTask;
     }
 
     protected async override UniTask SetUpInitializeAbility()
     {
         Init(config.dummy[0]);
-        hitBox.enabled = true;
         await OnFinish();
     }
 
     protected override async UniTask OnFinish()
     {
-        await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+        await UniTask.Delay(TimeSpan.FromSeconds(0.4f));
         await DamageEnemy();
+        await base.OnFinish();
     }
 
     public override async UniTask DamageEnemy()
@@ -34,7 +38,8 @@ public class DummyMeleeAbility1 : MeleeAbilityStrategy
             {
                 foreach (var hit in hitList)
                 {
-                    hit.GetComponent<CharacterHealthBehaviour>().GetHit(new DamageInformation(entityStatsModifyData.GetStats(EntityStatsType.PrimaryDamage), 1));
+                    hit.GetComponent<CharacterHealthBehaviour>().GetHit(new DamageInformation(entityStatsModifyData.GetStats(EntityStatsType.PrimaryDamage), 
+                        entityStatsModifyData.GetStats(EntityStatsType.KnockbackForce)));
                 }
             }
         }

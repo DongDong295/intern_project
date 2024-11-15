@@ -23,9 +23,8 @@ public class TestCharacterAbilityQ1 : AOEAbilityStrategy
     {
         Init(config.items[0]);
         _molly = Instantiate(_mollyPrefab, transform.position, transform.rotation);
-        _molly.GetComponent<TestCharacterMolly>().owner = this;
         var targetPos = InputManager.Instance.CursorPosition();
-        _molly.GetComponent<TestCharacterMolly>().Init(targetPos);
+        _molly.GetComponent<TestCharacterMolly>().Init(this, targetPos);
         await OnFinish();
     }
 

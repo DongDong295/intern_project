@@ -10,19 +10,15 @@ public class DOTField : MonoBehaviour
     private AbilityStrategy _owner;
     private List<EntityHolder> _hit;
 
-    private List<string> _targetTag;
-    
-
-    public void InitField(AbilityStrategy owner, List<string> targetTag)
+    public void InitField(AbilityStrategy owner)
     {
         _hit = new List<EntityHolder>();
         _owner = owner;
-        _targetTag = targetTag;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_targetTag.Contains(collision.gameObject.tag))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             _owner.AddHitList(collision.gameObject.GetComponent<EntityHolder>());
             _hit.Add(collision.gameObject.GetComponent<EntityHolder>());
@@ -31,7 +27,7 @@ public class DOTField : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_targetTag.Contains(collision.gameObject.tag))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             _owner.RemoveHitList(collision.gameObject.GetComponent<EntityHolder>());
             _hit.Remove(collision.gameObject.GetComponent<EntityHolder>());
