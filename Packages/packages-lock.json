@@ -6,6 +6,22 @@
       "source": "local-tarball",
       "dependencies": {}
     },
+    "com.google.firebase.app": {
+      "version": "file:com.google.firebase.app-12.5.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.external-dependency-manager": "1.2.183"
+      }
+    },
+    "com.google.firebase.auth": {
+      "version": "file:com.google.firebase.auth-12.5.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "12.5.0"
+      }
+    },
     "com.unity.collab-proxy": {
       "version": "2.7.1",
       "depth": 0,
