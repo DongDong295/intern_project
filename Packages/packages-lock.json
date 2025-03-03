@@ -203,6 +203,17 @@
       },
       "url": "https://package.openupm.com"
     },
+    "com.zbase.foundation.pooling": {
+      "version": "https://github.com/Zitga-Tech/ZBase.Foundation.Pooling.git?path=Packages/ZBase.Foundation.Pooling",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "org.nuget.system.runtime.compilerservices.unsafe": "6.0.0",
+        "com.cysharp.unitask": "2.3.3",
+        "com.zbase.collections.pooled": "2.8.1"
+      },
+      "hash": "a08e1d16d94522875dd1254d67502740846bd047"
+    },
     "com.zbase.unityscreennavigator": {
       "version": "1.6.9",
       "depth": 0,
