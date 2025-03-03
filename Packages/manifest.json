@@ -42,7 +42,10 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "org.nuget.system.runtime.compilerservices.unsafe": "6.1.0",
+    "com.zbase.collections.pooled": "2.8.4",
+    "com.zbase.foundation": "1.0.6"
   },
   "scopedRegistries": [
     {
@@ -50,7 +53,10 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.cysharp.unitask",
-        "com.zbase.unityscreennavigator"
+        "com.zbase.collections.pooled",
+        "com.zbase.foundation",
+        "com.zbase.unityscreennavigator",
+        "org.nuget.system.runtime.compilerservices.unsafe"
       ]
     }
   ]

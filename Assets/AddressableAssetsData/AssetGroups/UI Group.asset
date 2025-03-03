@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI Group
+  m_EditorClassIdentifier: 
+  m_GroupName: UI Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 42250067a36dcd54fbcca2fdba06c640
+  m_SerializeEntries:
+  - m_GUID: 4243b69f598c8454496b7a6a979c3023
+    m_Address: Assets/Prefabs/UIPrefabs/ui-loading-screen.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 4ff07be1d96a6ce43bc4cc2ee9b47802, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c94f71eb9bafa7b45a590e4db081e83a, type: 2}
+    - {fileID: 11400000, guid: de5b8d4d04311e84696d7c6df44f110b, type: 2}
