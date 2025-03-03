@@ -18,7 +18,17 @@ MonoBehaviour:
   m_GUID: 42250067a36dcd54fbcca2fdba06c640
   m_SerializeEntries:
   - m_GUID: 4243b69f598c8454496b7a6a979c3023
-    m_Address: Assets/Prefabs/UIPrefabs/ui-loading-screen.prefab
+    m_Address: ui-loading-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7113c3d76d13b4d498f0c24aef175457
+    m_Address: ui-main-menu-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f72e5c23ff5a4c944855e84ef546237a
+    m_Address: ui-login-screen
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

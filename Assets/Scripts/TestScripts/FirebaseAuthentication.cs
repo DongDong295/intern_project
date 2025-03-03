@@ -1,37 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Firebase.Extensions;
 using Google;
 using UnityEngine;
 using UnityEngine.UI;
+using ZBase.Foundation.PubSub;
+using ZBase.Foundation.Singletons;
 
-public class FirebaseAuth : MonoBehaviour
+public class FirebaseAuthentication : FirebaseModule
 {
-    public string GoogleAPI = "YOUR_API_KEY";
-
     private GoogleSignInConfiguration configuration;
 
-    Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
-    Firebase.Auth.FirebaseAuth auth;
-    Firebase.Auth.FirebaseUser user;
+    private Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
+    private Firebase.Auth.FirebaseAuth auth;
+    private Firebase.Auth.FirebaseUser user;
 
-    private void Awake() {
+    public override UniTask InitModule()
+    {
+        base.InitModule();
+        InitFirebaseAuthentication();
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnPlayerLoginEvent>(SignInWithGoogle);
+        return UniTask.CompletedTask;
+    }
+
+    void InitFirebaseAuthentication() {
         configuration = new GoogleSignInConfiguration{
-            WebClientId = GoogleAPI,
+            WebClientId = Constants.GOOGLE_API_KEY,
             RequestIdToken = true,
         };
-    }
 
-    private void Start() {
-        InitFirebase();
-    }
-
-    void InitFirebase() {
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
     }
 
-    public void GoogleSignInClick() {
+    public void SignInWithGoogle(OnPlayerLoginEvent e) {
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
@@ -40,7 +43,7 @@ public class FirebaseAuth : MonoBehaviour
         GoogleSignIn.DefaultInstance.SignIn().ContinueWith(OnGoogleAuthenticatedFinished);
     }
 
-    void OnGoogleAuthenticatedFinished(Task<GoogleSignInUser> task) {
+    private void OnGoogleAuthenticatedFinished(Task<GoogleSignInUser> task) {
         if (task.IsFaulted) {
             Debug.LogError("Faulted");
         } else if (task.IsCanceled) {
@@ -59,6 +62,7 @@ public class FirebaseAuth : MonoBehaviour
                 }
 
                 user = auth.CurrentUser;
+                SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(true);
             });
         }
     }

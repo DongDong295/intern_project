@@ -46,7 +46,8 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.zbase.foundation.pubsub": "1.5.1"
   },
   "scopedRegistries": [
     {
@@ -56,6 +57,7 @@
         "com.cysharp.unitask",
         "com.zbase.collections.pooled",
         "com.zbase.foundation",
+        "com.zbase.foundation.pubsub",
         "com.zbase.unityscreennavigator",
         "org.nuget.system.runtime.compilerservices.unsafe"
       ]
