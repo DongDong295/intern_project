@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "2.5.10",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.google.external-dependency-manager": {
       "version": "file:com.google.external-dependency-manager-1.2.177.tgz",
       "depth": 0,
@@ -156,6 +163,15 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.zbase.unityscreennavigator": {
+      "version": "1.6.9",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "url": "https://package.openupm.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
