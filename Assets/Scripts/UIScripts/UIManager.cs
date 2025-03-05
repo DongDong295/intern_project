@@ -17,10 +17,9 @@ public class UIManager : MonoBehaviour
         await UniTask.WaitUntil(() => ScreenLauncher.ContainerManager != null);
         await UniTask.CompletedTask;
     }
-
     public async void OnShowScreen(ShowScreenEvent e){
-        Debug.Log("Called, showing now! " + e.Path);
         var options = new ViewOptions(e.Path, true, loadAsync: e.LoadAsync);
         await ScreenLauncher.ContainerManager.Find<ScreenContainer>().PushAsync(options);
+        Debug.Log("Launched Screen: " + e.Path);
     }
 }

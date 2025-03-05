@@ -12,8 +12,10 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.9.4",
     "com.zbase.collections.pooled": "2.8.4",
+    "com.zbase.csv-reader": "https://github.com/Zitga-Tech/ZBase.Csv-Reader.git?path=/Packages/ZBase.CsvReader",
     "com.zbase.foundation": "1.0.6",
     "com.zbase.foundation.pooling": "https://github.com/Zitga-Tech/ZBase.Foundation.Pooling.git?path=Packages/ZBase.Foundation.Pooling",
+    "com.zbase.foundation.pubsub": "1.5.1",
     "com.zbase.unityscreennavigator": "1.6.9",
     "org.nuget.system.runtime.compilerservices.unsafe": "6.1.0",
     "com.unity.modules.ai": "1.0.0",
@@ -46,8 +48,7 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0",
-    "com.zbase.foundation.pubsub": "1.5.1"
+    "com.unity.modules.xr": "1.0.0"
   },
   "scopedRegistries": [
     {

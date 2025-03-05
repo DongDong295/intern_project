@@ -194,6 +194,13 @@
       },
       "url": "https://package.openupm.com"
     },
+    "com.zbase.csv-reader": {
+      "version": "https://github.com/Zitga-Tech/ZBase.Csv-Reader.git?path=/Packages/ZBase.CsvReader",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "9f389613632978eee6cb56342b07fbcc15488270"
+    },
     "com.zbase.foundation": {
       "version": "1.0.6",
       "depth": 0,

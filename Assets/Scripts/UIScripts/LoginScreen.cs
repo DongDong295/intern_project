@@ -24,6 +24,12 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         return UniTask.CompletedTask;
     }
 
+    public override void DidPushEnter(Memory<object> args)
+    {
+        base.DidPushEnter(args);
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
+    }
+
     public async void OnFinishInitialize(OnFinishInitializeEvent e)
     {
         // Wait for player authentication if it's not already authenticated
