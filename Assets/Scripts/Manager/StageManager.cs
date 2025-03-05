@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -13,28 +14,25 @@ public class StageManager : MonoBehaviour
 
     public int BossVisualID;
 
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public async UniTask InitiateStage(int stageIndex){
+        StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
+        var thisStageData = data.stageDataItems[stageIndex];
 
-    public void InitiateStage(StageDataItems data)
-    {
-        RequireDefeatTime = data.RequireDefeatTime;
-        BossHP = data.BossHP;
-        BossAttackDamage = data.BossAttackDamage;
-        BossAttackSpeed = data.BossAttackSpeed;
-        BossVisualID = data.BossVisualID;
-        GenerateBossVisual(BossVisualID);
+        RequireDefeatTime = thisStageData.requireDefeatTime;
+        BossHP = thisStageData.bossHp;
+        BossAttackDamage = thisStageData.bossAttackDamage;
+        BossAttackSpeed = thisStageData.bossAttackSpeed;
+        BossVisualID = thisStageData.bossVisualId;
+        Debug.Log("Finish loading stage");
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_GAMEPLAY_SCREEN, false));
     }
 
     public void GenerateBossVisual(int visualID){
-        var boss = SingleBehaviour.Of<PoolingManager>().Rent($"boss-visual-{visualID}", true);        
+        //var boss = SingleBehaviour.Of<PoolingManager>().Rent($"boss-visual-{visualID}", true);        
+    }
+
+    public void DeInitStage(){
+
     }
 }

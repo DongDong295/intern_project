@@ -9,9 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f90c27c51c90fd408fe1d9d539c91be, type: 3}
-  m_Name: CsvDataController
+  m_Script: {fileID: 11500000, guid: e6d90c5fa676b8046a0b041a4c738432, type: 3}
+  m_Name: CloseModalAnim
   m_EditorClassIdentifier: 
-  csvDataName: StageData
-  readerData:
-  - {fileID: 11400000, guid: b9b97975ca8db6b4e94396d23964a0d2, type: 2}
+  _delay: 0
+  _duration: 0.3
+  _easeType: 8
+  _beforeAlignment: 4
+  _beforeScale: {x: 1, y: 1, z: 1}
+  _beforeAlpha: 1
+  _afterAlignment: 4
+  _afterScale: {x: 0, y: 0, z: 0}
+  _afterAlpha: 1

@@ -24,12 +24,6 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         return UniTask.CompletedTask;
     }
 
-    public override void DidPushEnter(Memory<object> args)
-    {
-        base.DidPushEnter(args);
-        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
-    }
-
     public async void OnFinishInitialize(OnFinishInitializeEvent e)
     {
         // Wait for player authentication if it's not already authenticated
@@ -51,7 +45,7 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     // Show the Main Menu Screen and transition away from Login Screen
     private void ShowMainMenuScreen()
     {
-        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(UI.MAIN_MENU_SCREEN, false));
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
     }
 
     public override UniTask Cleanup(Memory<object> args)

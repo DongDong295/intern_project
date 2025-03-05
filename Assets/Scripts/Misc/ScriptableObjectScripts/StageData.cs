@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class StageDataItems
 {
-    public int StageIndex;
+    public int stageIndex;
 
-    public int BossVisualID;
-    public float RequireDefeatTime;
-    public float BossHP;
-    public float BossAttackDamage;
-    public float BossAttackSpeed;
+    public int bossVisualId;
+    public float requireDefeatTime;
+    public float bossHp;
+    public float bossAttackDamage;
+    public float bossAttackSpeed;
 }
 
 public class StageData : SerializedScriptableObject
