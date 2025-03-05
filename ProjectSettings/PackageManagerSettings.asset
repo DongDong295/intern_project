@@ -33,6 +33,7 @@ MonoBehaviour:
     - com.cysharp.unitask
     - com.zbase.collections.pooled
     - com.zbase.foundation
+    - com.zbase.foundation.pubsub
     - com.zbase.unityscreennavigator
     - org.nuget.system.runtime.compilerservices.unsafe
     m_IsDefault: 0
