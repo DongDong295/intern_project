@@ -2,69 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
+using UnlimitedScrollUI;
 using ZBase.Foundation.Singletons;
 using ZBase.UnityScreenNavigator.Core.Modals;
 
 public class StageSelectionModal : BasicModal
 {
-    [SerializeField] private Transform _stageButtonHolder;
-    private List<Button> _stageButtons;
-    public override async UniTask Initialize(Memory<object> args)
+    private StageData _stageData;
+    [SerializeField] private GridUnlimitedScroller _scroller;
+    public override UniTask Initialize(Memory<object> args)
     {
-        _stageButtons = new List<Button>();
-        
-        await base.Initialize(args);
-        await LoadStageList();
+        base.Initialize(args);
+        _stageData = Singleton.Of<StageData>();
+        return UniTask.CompletedTask;
     }
 
-    public async UniTask LoadStageList()
-    {
-        StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
-        var stageDataItems = data.stageDataItems;
-        var index = 0;
-        for(int i = 0; i < stageDataItems.Count(); i++)
-        {
-            index = i;
-            GameObject buttonObject = await SingleBehaviour.Of<PoolingManager>().Rent("ui-stage-button", true);
-            buttonObject.transform.localScale = Vector3.one;
-            Button button = buttonObject.GetComponent<Button>();
-            if (button != null)
-            {
-                TextMeshProUGUI buttonText = buttonObject.GetComponentInChildren<TextMeshProUGUI>();
-                if (buttonText != null)
-                {
-                    buttonText.text = index.ToString();
-                }
-                 button.onClick.AddListener(() =>
-                {
-                    Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent(true));
+    public async UniTask GenerateButton(){
+        var stageList = _stageData.stageDataItems;
+        var buttonPrefab = await Addressables.LoadAssetAsync<GameObject>("ui-stage-button");
 
-                    Pubsub.Publisher.Scope<PlayerEvent>().
-                        Publish<OnEnterGamePlayScene>(new OnEnterGamePlayScene(index));               
-                });
-            }
-            buttonObject.transform.SetParent(_stageButtonHolder, false);
-            _stageButtons.Add(button);
-        }
+        // Generate the scroller with the button prefab and the total count of stage data items
+        _scroller.Generate(buttonPrefab, stageList.Count(), OnCellGenerate);
     }
 
-    public override async void DidPopExit(Memory<object> args)
+    private void OnCellGenerate(int index, ICell cell)
     {
-        base.DidPopExit(args);
-
-        var buttonsToRemove = new List<Button>(_stageButtons);
-
-        foreach (var button in buttonsToRemove)
-        {
-            SingleBehaviour.Of<PoolingManager>().Return(button.gameObject);
-            _stageButtons.Remove(button);
-        }
-
-        buttonsToRemove.Clear();
-        await UniTask.CompletedTask;
+        var stageData = _stageData.stageDataItems[index];
     }
 }

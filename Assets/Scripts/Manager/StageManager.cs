@@ -14,6 +14,9 @@ public class StageManager : MonoBehaviour
 
     public int BossVisualID;
 
+    
+    [SerializeField] private List<Transform> _heroPositions;
+    [SerializeField] private Transform _bossPosition;
 
     public async UniTask InitiateStage(int stageIndex){
         StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
@@ -26,13 +29,5 @@ public class StageManager : MonoBehaviour
         BossVisualID = thisStageData.bossVisualId;
         Debug.Log("Finish loading stage");
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_GAMEPLAY_SCREEN, false));
-    }
-
-    public void GenerateBossVisual(int visualID){
-        //var boss = SingleBehaviour.Of<PoolingManager>().Rent($"boss-visual-{visualID}", true);        
-    }
-
-    public void DeInitStage(){
-
     }
 }
