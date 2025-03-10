@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public async UniTask ChangeToGameplayScene(OnEnterGamePlayScene e)
     {
+        Debug.Log(e.StageIndex);
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOADING_SCREEN, false));
         await SingleBehaviour.Of<StageManager>().InitiateStage(e.StageIndex);
     }

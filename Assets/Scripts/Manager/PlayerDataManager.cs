@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using ZBase.Foundation.Singletons;
 
 public class PlayerDataManager : MonoBehaviour
 {
     //Local data
+    public List<Hero> OwnedHero;
     public bool IsAuthenticated;
     public string PlayerID;
 
@@ -13,6 +17,8 @@ public class PlayerDataManager : MonoBehaviour
         await LoadPlayerData();
         Debug.Log("Loaded " + IsAuthenticated);
         Debug.Log("Loaded " + PlayerID);
+        OwnedHero = new List<Hero>();
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
     }
 
     public async UniTask LoadPlayerData(){
@@ -37,5 +43,23 @@ public class PlayerDataManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
         PlayerPrefs.Save();
+    }
+
+    public async UniTask GenerateNewHero(OnGachaEvent e)
+    {
+        var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
+        var heroData = data.heroDataItems;
+        var heroID = GenerateUniqueHeroID();
+        var hero = new Hero(heroID, heroData[Random.Range(0, heroData.Length)]);
+        OwnedHero.Add(hero);
+        Debug.Log($"Generated new hero with ID: {heroID}");
+        await UniTask.CompletedTask;
+    }
+
+    private string GenerateUniqueHeroID()
+    {
+        var timestamp = System.DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+        var randomPart = Random.Range(1000, 9999);
+        return $"{timestamp}{randomPart}";
     }
 }

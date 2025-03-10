@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using ZBase.Foundation.PubSub;
 
@@ -14,6 +15,10 @@ public struct OnEnterGamePlayScene : IMessage{
     public OnEnterGamePlayScene(int stageIndex){
         StageIndex = stageIndex;
     }
+}
+
+public struct OnGachaEvent : IMessage{
+    
 }
 
 public struct UIEvent{}

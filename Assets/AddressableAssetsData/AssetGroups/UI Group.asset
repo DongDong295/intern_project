@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578588fdf8ddda94e895e0b16b69ab17
+    m_Address: ui-hero-information-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7113c3d76d13b4d498f0c24aef175457
     m_Address: ui-main-menu-screen
     m_ReadOnly: 0
@@ -34,6 +39,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99e9e0df8a88a1b40ac5a2b97f4717f1
     m_Address: ui-stage-selection-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ae7ead9590128c439fc15a7fb0cb9b0
+    m_Address: ui-characters-modal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

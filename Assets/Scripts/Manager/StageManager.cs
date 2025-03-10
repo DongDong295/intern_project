@@ -30,4 +30,8 @@ public class StageManager : MonoBehaviour
         Debug.Log("Finish loading stage");
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_GAMEPLAY_SCREEN, false));
     }
+
+    public Transform GetHeroPosition(int index){
+        return _heroPositions[index];
+    }   
 }
