@@ -12,6 +12,7 @@ public class Constants
 public class Data
 {
     public const string STAGE_DATA = "StageData";
+    public const string HERO_DATA = "HeroData";
 }
 
 public class ScreenUI{

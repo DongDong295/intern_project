@@ -21,7 +21,7 @@ public class StageSelectionModal : BasicModal
     }
 
     public async UniTask GenerateButton(){
-        var buttonPrefab = await Addressables.LoadAssetAsync<GameObject>("ui-stage-button");
+        var buttonPrefab = await SingleBehaviour.Of<PoolingManager>().Rent("ui-stage-button");
             _scroller.Generate(buttonPrefab, _stageData.stageDataItems.Length, (index, iCell) => {
                 var regularCell = iCell as RegularCell;
                 if (regularCell != null) regularCell.onGenerated?.Invoke(index);
