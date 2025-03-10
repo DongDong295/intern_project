@@ -1115,7 +1115,7 @@ MonoBehaviour:
   BossAttackSpeed: 0
   BossVisualID: 0
   _heroPositions: []
-  _bossPosition: {fileID: 0}
+  _bossPosition: {fileID: 1681310639}
 --- !u!1 &687686219
 GameObject:
   m_ObjectHideFlags: 0
@@ -2431,7 +2431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206914797272545218, guid: 267d7bfd2688df3449f36a34c5fca0f5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8061957581286167015, guid: 267d7bfd2688df3449f36a34c5fca0f5, type: 3}
       propertyPath: _bossIDText
