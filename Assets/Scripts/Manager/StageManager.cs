@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -13,28 +14,20 @@ public class StageManager : MonoBehaviour
 
     public int BossVisualID;
 
-    void Start()
-    {
-        
-    }
+    
+    [SerializeField] private List<Transform> _heroPositions;
+    [SerializeField] private Transform _bossPosition;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public async UniTask InitiateStage(int stageIndex){
+        StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
+        var thisStageData = data.stageDataItems[stageIndex];
 
-    public void InitiateStage(StageDataItems data)
-    {
-        RequireDefeatTime = data.RequireDefeatTime;
-        BossHP = data.BossHP;
-        BossAttackDamage = data.BossAttackDamage;
-        BossAttackSpeed = data.BossAttackSpeed;
-        BossVisualID = data.BossVisualID;
-        GenerateBossVisual(BossVisualID);
-    }
-
-    public void GenerateBossVisual(int visualID){
-        var boss = SingleBehaviour.Of<PoolingManager>().Rent($"boss-visual-{visualID}", true);        
+        RequireDefeatTime = thisStageData.requireDefeatTime;
+        BossHP = thisStageData.bossHp;
+        BossAttackDamage = thisStageData.bossAttackDamage;
+        BossAttackSpeed = thisStageData.bossAttackSpeed;
+        BossVisualID = thisStageData.bossVisualId;
+        Debug.Log("Finish loading stage");
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_GAMEPLAY_SCREEN, false));
     }
 }

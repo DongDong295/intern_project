@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f90c27c51c90fd408fe1d9d539c91be, type: 3}
   m_Name: CsvDataController
   m_EditorClassIdentifier: 
-  csvDataName: 
-  readerData: []
+  csvDataName: StageData
+  readerData:
+  - {fileID: 11400000, guid: b9b97975ca8db6b4e94396d23964a0d2, type: 2}

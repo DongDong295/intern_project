@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 3179920252391591054}
   - component: {fileID: 639802361865807813}
   m_Layer: 5
-  m_Name: Login_Button
+  m_Name: login_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 6439785637851833442}
   - component: {fileID: 6814579039782068132}
   m_Layer: 5
-  m_Name: Background
+  m_Name: background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

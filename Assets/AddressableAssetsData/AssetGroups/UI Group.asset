@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 42250067a36dcd54fbcca2fdba06c640
   m_SerializeEntries:
+  - m_GUID: 267d7bfd2688df3449f36a34c5fca0f5
+    m_Address: ui-main-gameplay-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4243b69f598c8454496b7a6a979c3023
     m_Address: ui-loading-screen
     m_ReadOnly: 0
@@ -24,6 +29,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7113c3d76d13b4d498f0c24aef175457
     m_Address: ui-main-menu-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99e9e0df8a88a1b40ac5a2b97f4717f1
+    m_Address: ui-stage-selection-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9ef0b2b8fc4078499cd386c8420ae20
+    m_Address: ui-stage-button
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
