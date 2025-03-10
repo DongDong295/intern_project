@@ -10,6 +10,7 @@ public class DataManager
     
     public void Initiate()
     {
+        Debug.Log("Initated");
         Data = new ();
     }
 

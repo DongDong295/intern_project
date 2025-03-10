@@ -11,7 +11,7 @@
     "com.unity.timeline": "1.7.6",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.9.4",
-    "com.xiaojiang.unlimitedscroller": "https://github.com/Brian-Jiang/UnlimitedScrollUI.git",
+    "com.xiaojiang.unlimitedscroller": "1.5.0",
     "com.zbase.collections.pooled": "2.8.4",
     "com.zbase.csv-reader": "https://github.com/Zitga-Tech/ZBase.Csv-Reader.git?path=/Packages/ZBase.CsvReader",
     "com.zbase.foundation": "1.0.6",
@@ -57,6 +57,7 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.cysharp.unitask",
+        "com.xiaojiang.unlimitedscroller",
         "com.zbase.collections.pooled",
         "com.zbase.foundation",
         "com.zbase.foundation.pubsub",

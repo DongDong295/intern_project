@@ -4,29 +4,23 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnlimitedScrollUI;
 
-public class StageButton : MonoBehaviour, ICell
+public class StageButton : RegularCell
 {
-    public void InitiateButton()
+    private GenerateEvent onGenerated { get; set; }
+    private int index;
+
+    public void OnGenerated(GenerateEvent onGenerated)
     {
-    
+        Debug.Log("Hi");
+        this.onGenerated = onGenerated;
+        var displayText = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        displayText.text = $"Stage {index}";
+    }
+    public new void OnBecomeInvisible(ScrollerPanelSide side)
+    {
     }
 
-    public void OnBecomeInvisible(ScrollerPanelSide side)
+    public new void OnBecomeVisible(ScrollerPanelSide side)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnBecomeVisible(ScrollerPanelSide side)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public class StageCellData : CellData
-    {
-        public int ButtonIndex;
-        public StageCellData(int index) : base(index)
-        {
-            ButtonIndex = index;
-        }
     }
 }

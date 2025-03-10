@@ -11,25 +11,30 @@ using ZBase.UnityScreenNavigator.Core.Modals;
 
 public class StageSelectionModal : BasicModal
 {
-    private StageData _stageData;
     [SerializeField] private GridUnlimitedScroller _scroller;
-    public override UniTask Initialize(Memory<object> args)
+    private StageData _stageData;
+    public override async UniTask Initialize(Memory<object> args)
     {
-        base.Initialize(args);
-        _stageData = Singleton.Of<StageData>();
-        return UniTask.CompletedTask;
+        await base.Initialize(args);
+        _stageData = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
+        GenerateButton().Forget();
     }
 
     public async UniTask GenerateButton(){
-        var stageList = _stageData.stageDataItems;
         var buttonPrefab = await Addressables.LoadAssetAsync<GameObject>("ui-stage-button");
-
-        // Generate the scroller with the button prefab and the total count of stage data items
-        _scroller.Generate(buttonPrefab, stageList.Count(), OnCellGenerate);
+            _scroller.Generate(buttonPrefab, _stageData.stageDataItems.Length, (index, iCell) => {
+                var regularCell = iCell as RegularCell;
+                if (regularCell != null) regularCell.onGenerated?.Invoke(index);
+                var button = regularCell.GetComponent<Button>();
+                button.onClick.AddListener(() =>
+                {
+                    Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnEnterGamePlayScene(index));
+                    Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());
+                });
+            });
     }
 
     private void OnCellGenerate(int index, ICell cell)
     {
-        var stageData = _stageData.stageDataItems[index];
     }
 }

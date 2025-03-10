@@ -146,6 +146,8 @@ GameObject:
   - component: {fileID: 4917067944049105714}
   - component: {fileID: 3745125687449351554}
   - component: {fileID: 78047128452439100}
+  - component: {fileID: 3213926756227693269}
+  - component: {fileID: -8651860967618155745}
   m_Layer: 5
   m_Name: ui-stage-button
   m_TagString: Untagged
@@ -255,3 +257,27 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &3213926756227693269
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156424623735080593}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &-8651860967618155745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156424623735080593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bacbb518d293e444aa63f269e5e485d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

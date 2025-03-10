@@ -28,11 +28,15 @@ public class GameManager : MonoBehaviour
         await SingleBehaviour.Of<FirebaseManager>().OnStartApplication();
         await SingleBehaviour.Of<PlayerDataManager>().OnStartApplication();
         await SingleBehaviour.Of<UIManager>().OnStartApplication();
-
+        Singleton.Of<DataManager>().Initiate();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnEnterGamePlayScene>(ChangeToGameplayScene);
 
-        Singleton.Of<DataManager>().Initiate();
+#if UNITY_EDITOR
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
+#else
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
+#endif
+
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
     }
 }
