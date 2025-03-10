@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f90c27c51c90fd408fe1d9d539c91be, type: 3}
-  m_Name: CsvDataController
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: Character Group_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  csvDataName: HeroData
-  readerData:
-  - {fileID: 11400000, guid: d140d70cd5869034984c6c112f7830eb, type: 2}
-  - {fileID: 11400000, guid: b9b97975ca8db6b4e94396d23964a0d2, type: 2}
+  m_Group: {fileID: 11400000, guid: 55ef0f76b9f37964aa34364dc9551525, type: 2}
+  m_StaticContent: 0
