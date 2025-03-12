@@ -370,6 +370,7 @@ MonoBehaviour:
   onBecomeInvisible:
     m_PersistentCalls:
       m_Calls: []
+  level: {fileID: 7082634075983523021}
 --- !u!225 &2269799223546196967
 CanvasGroup:
   m_ObjectHideFlags: 0

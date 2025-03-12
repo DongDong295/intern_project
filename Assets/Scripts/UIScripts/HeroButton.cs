@@ -4,10 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnlimitedScrollUI;
 
-public class HeroInformationButton : RegularCell
+public class HeroButton : RegularCell
 {
     [SerializeField] private TextMeshProUGUI level;
-    //public void InitiateButton(Hero heroRef){
-        //level.text = heroRef.level.ToString();
-    //}
+    public void InitiateButton(Hero heroRef){
+        level.text = heroRef.level.ToString();
+    }
 }

@@ -6,6 +6,8 @@ using ZBase.Foundation.Singletons;
 
 public class StageManager : MonoBehaviour
 {
+
+    public List<Hero> EquippedHero;
     public float RequireDefeatTime;
     public float BossHP;
 
@@ -34,4 +36,15 @@ public class StageManager : MonoBehaviour
     public Transform GetHeroPosition(int index){
         return _heroPositions[index];
     }   
+
+    public void EquipHero(Hero heroToAdd){
+        if(!EquippedHero.Contains(heroToAdd)){
+            EquippedHero.Add(heroToAdd);
+            heroToAdd.isEquipped = true;
+        }
+        else{
+            EquippedHero.Remove(heroToAdd);
+            heroToAdd.isEquipped = false;
+        }
+    }
 }

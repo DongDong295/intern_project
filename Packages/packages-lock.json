@@ -29,6 +29,13 @@
         "com.google.firebase.app": "12.5.0"
       }
     },
+    "com.sabresaurus.playerprefseditor": {
+      "version": "1.4.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity.addressables": {
       "version": "1.22.3",
       "depth": 0,
@@ -45,6 +52,13 @@
     },
     "com.unity.collab-proxy": {
       "version": "2.7.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.device-simulator.devices": {
+      "version": "1.0.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

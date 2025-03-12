@@ -30,8 +30,6 @@ public async UniTask GenerateButton()
 
     private void OnCellGenerate(int index, ICell cell)
     {
-        //var stageData = _stageData.stageDataItems[index];
-        
         var button = cell as RegularCell;
 
         var buttonObj = button.gameObject.GetComponent<Button>();

@@ -10,10 +10,18 @@ public struct OnPlayerLoginEvent : IMessage{}
 
 public struct OnPlayerFinishAuthentication : IMessage{}
 
+
 public struct OnEnterGamePlayScene : IMessage{
     public int StageIndex;
     public OnEnterGamePlayScene(int stageIndex){
         StageIndex = stageIndex;
+    }
+}
+
+public struct OnShowHeroInformationEvent : IMessage{
+    public Hero HeroRef;
+    public OnShowHeroInformationEvent(Hero hero){
+        HeroRef = hero;
     }
 }
 
@@ -22,6 +30,16 @@ public struct OnGachaEvent : IMessage{
 }
 
 public struct UIEvent{}
+public struct ShowModalEvent<T> : IMessage
+{
+    public T Parameter; 
+
+    public ShowModalEvent(T parameter)
+    {
+        Parameter = parameter;
+    }
+}
+
 public struct ShowScreenEvent : IMessage{
     public string Path;
     public bool LoadAsync;

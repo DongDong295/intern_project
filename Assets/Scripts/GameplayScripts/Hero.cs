@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Hero
 {
     public string heroID;
@@ -16,6 +17,8 @@ public class Hero
 
     public float expStep;
     public float expBasic;
+
+    public int level;
 
     public bool isEquipped;
     public Hero(){
@@ -34,5 +37,6 @@ public class Hero
         killDamage = data.killDamage;
         expStep = data.expStep;
         expBasic = data.expBasic;
+        level = 1;
     }
 }

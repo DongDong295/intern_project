@@ -27,4 +27,6 @@ public class ModalUI{
 
     public const string STAGE_SELECTION_MODAL = "ui-stage-selection-modal";
     public const string CHARACTERS_MODAL = "ui-characters-modal";
+
+    public const string HERO_INFORMATION_MODAL = "ui-hero-information-modal";
 }

@@ -20,7 +20,6 @@ public class UIManager : MonoBehaviour
     public async UniTask OnStartApplication()
     {
         _subscription = new List<ISubscription>();
-
         _subscription.Add(Pubsub.Subscriber.Scope<UIEvent>().Subscribe<ShowScreenEvent>(OnShowScreen));
         _subscription.Add(Pubsub.Subscriber.Scope<UIEvent>().Subscribe<ShowModalEvent>(OnShowModal));
         _subscription.Add(Pubsub.Subscriber.Scope<UIEvent>().Subscribe<CloseModalEvent>(
@@ -31,6 +30,7 @@ public class UIManager : MonoBehaviour
         await UniTask.WaitUntil(() => ScreenLauncher.ContainerManager != null);
         await UniTask.CompletedTask;
     }
+
 
     public void OnShowScreen(ShowScreenEvent e)
     {
@@ -72,5 +72,15 @@ public class UIManager : MonoBehaviour
     public async UniTask OnCloseModal(CloseModalEvent e, bool isPlayAnim)
     {
         await ScreenLauncher.ContainerManager.Find<ModalContainer>().PopAsync(isPlayAnim);
+    }
+
+    public Modal GetCurrentModal()
+    {
+        var modalContainer = ScreenLauncher.ContainerManager.Find<ModalContainer>();
+        if (modalContainer != null)
+        {
+            return modalContainer.Current.View;
+        }
+        return null; 
     }
 }

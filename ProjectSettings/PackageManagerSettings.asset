@@ -31,6 +31,7 @@ MonoBehaviour:
     m_Url: https://package.openupm.com
     m_Scopes:
     - com.cysharp.unitask
+    - com.sabresaurus.playerprefseditor
     - com.xiaojiang.unlimitedscroller
     - com.zbase.collections.pooled
     - com.zbase.foundation
