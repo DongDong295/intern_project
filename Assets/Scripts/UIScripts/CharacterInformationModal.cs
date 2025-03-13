@@ -37,12 +37,9 @@ public class CharacterInformationModal : BasicModal
     public async UniTask GenerateHeroButton()
     {
         // Rent the button prefab from the PoolingManager
+        Debug.Log("Generate buttons of modal");
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
-
-        // Get the count of heroes from the dictionary (key-value pairs)
         int heroCount = _ownedHeroDict.Count;
-
-        // Generate the buttons based on the count of owned heroes
         _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);
     }
 
@@ -51,9 +48,9 @@ public class CharacterInformationModal : BasicModal
         // Get the button cell and the hero ID at the current index
         var button = cell as RegularCell;
         var heroButton = button.gameObject;
-        //heroButton.GetComponent<HeroInformationButton>().InitiateButton(_referenceHero);
-
-        // Set up the button click listener
+        string heroID = new List<string>(_ownedHeroDict.Keys)[index];
+        _referenceHero = _ownedHeroDict[heroID];
+        heroButton.GetComponent<HeroInformationButton>().InitiateButton(_referenceHero);
         heroButton.GetComponent<Button>().onClick.AddListener(async () => {
             // Show the hero information modal and wait for the modal to be displayed
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.HERO_INFORMATION_MODAL, false));       
@@ -69,12 +66,14 @@ public class CharacterInformationModal : BasicModal
             var currentModal = SingleBehaviour.Of<UIManager>().GetCurrentModal();
             return currentModal is HeroInformationModal;
         });
-
-        // Publish the event to show hero information
         string heroID = new List<string>(_ownedHeroDict.Keys)[index];
-        _referenceHero = _ownedHeroDict[heroID];
-        Pubsub.Publisher.Scope<UIEvent>().Publish(new OnShowHeroInformationEvent(_referenceHero));
+        var referenceHero = _ownedHeroDict[heroID];
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new OnShowHeroInformationEvent(referenceHero));
+    }
 
-        // Debugging information
+    public override UniTask Cleanup(Memory<object> args)
+    {
+        _gachaButton.onClick.RemoveAllListeners();
+        return base.Cleanup(args);
     }
 }

@@ -22,7 +22,9 @@ public class HeroInformationModal : BasicModal
     public override async UniTask Initialize(Memory<object> arg)
     {
         await base.Initialize(arg);
-        EquipButton.onClick.AddListener(() => SingleBehaviour.Of<StageManager>().EquipHero(_currentHero));
+        EquipButton.onClick.AddListener(() => { 
+            SingleBehaviour.Of<PlayerDataManager>().EquipHero(_currentHero);});
+        ; 
         Pubsub.Subscriber.Scope<UIEvent>().Subscribe<OnShowHeroInformationEvent>(DisplayHeroInformation);
     }
 
@@ -31,6 +33,11 @@ public class HeroInformationModal : BasicModal
         _damage.text = "Damage step: " + e.HeroRef.attackDamageStep.ToString();
         _critChance.text = "Crit chance: " + e.HeroRef.critChance.ToString();
         _attackSpeed.text = "Attack speed: " + e.HeroRef.attackSpeed.ToString();
-        _cooldownGenerate.text = "Cooldown generate: " + e.HeroRef.cooldownGenerate.ToString();
+        _cooldownGenerate.text = "CD generate: " + e.HeroRef.cooldownGenerate.ToString();
+    }
+    public override UniTask Cleanup(Memory<object> args)
+    {
+        EquipButton.onClick.RemoveAllListeners();
+        return base.Cleanup(args);
     }
 }

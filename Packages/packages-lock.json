@@ -13,6 +13,14 @@
       "source": "local-tarball",
       "dependencies": {}
     },
+    "com.google.firebase.analytics": {
+      "version": "file:com.google.firebase.analytics-12.5.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "12.5.0"
+      }
+    },
     "com.google.firebase.app": {
       "version": "file:com.google.firebase.app-12.5.0.tgz",
       "depth": 0,
@@ -23,6 +31,14 @@
     },
     "com.google.firebase.auth": {
       "version": "file:com.google.firebase.auth-12.5.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "12.5.0"
+      }
+    },
+    "com.google.firebase.remote-config": {
+      "version": "file:C:/Users/ADMIN/Downloads/com.google.firebase.remote-config-12.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

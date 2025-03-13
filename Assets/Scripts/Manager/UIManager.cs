@@ -7,12 +7,14 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ZBase.Foundation.PubSub;
+using ZBase.Foundation.Singletons;
 using ZBase.UnityScreenNavigator.Core.Modals;
 using ZBase.UnityScreenNavigator.Core.Screens;
 using ZBase.UnityScreenNavigator.Core.Views;
 
 public class UIManager : MonoBehaviour
 {
+    public string Platform;
     private List<ISubscription> _subscription;
     private Queue<ShowScreenEvent> _screenQueue = new Queue<ShowScreenEvent>();
     private bool _isShowingScreen = false;
@@ -26,7 +28,7 @@ public class UIManager : MonoBehaviour
             async (e) => await OnCloseModal(e, false)));
         _subscription.Add(Pubsub.Subscriber.Scope<UIEvent>().Subscribe<CloseScreenEvent>(
             async (e) => await OnCloseScreen(e, false)));
-
+        Platform = SingleBehaviour.Of<FirebaseRemoteConfigModule>().GetBackgroundByPlatform();
         await UniTask.WaitUntil(() => ScreenLauncher.ContainerManager != null);
         await UniTask.CompletedTask;
     }
@@ -53,7 +55,6 @@ public class UIManager : MonoBehaviour
         var e = _screenQueue.Dequeue();
         var options = new ViewOptions(e.Path, true, loadAsync: e.LoadAsync);
         await ScreenLauncher.ContainerManager.Find<ScreenContainer>().PushAsync(options);
-        Debug.Log("Pushed screen " + e.Path);
         await UniTask.DelayFrame(1);
         ShowNextScreen().Forget();
     }

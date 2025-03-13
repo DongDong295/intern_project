@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Sabresaurus.PlayerPrefsEditor;
 using UnityEngine;
+using ZBase.Foundation.Singletons;
 
 public class Constants
 {
@@ -16,11 +18,16 @@ public class Data
 }
 
 public class ScreenUI{
+    private string platform;
     public const string LOGIN_SCREEN = "ui-login-screen";
-    public const string LOADING_SCREEN = "ui-loading-screen";
+    public const string LOADING_SCREEN = "ui-loading-screen-{0}";
 
     public const string MAIN_MENU_SCREEN = "ui-main-menu-screen";
     public const string MAIN_GAMEPLAY_SCREEN = "ui-main-gameplay-screen";
+
+    public static string GetLoadingScreen(string p){
+        return string.Format(LOADING_SCREEN, p);
+    }
 }
 
 public class ModalUI{

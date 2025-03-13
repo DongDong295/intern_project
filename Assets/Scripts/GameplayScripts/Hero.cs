@@ -7,6 +7,8 @@ using UnityEngine;
 public class Hero
 {
     public string heroID;
+
+    public int heroVisualID;
     public float hpStep;
     public float attackDamageStep;
     public float critChance;
@@ -28,6 +30,7 @@ public class Hero
     public Hero(String heroID, HeroDataItems data)
     {
         this.heroID = heroID;
+        heroVisualID = data.heroVisualId;
         hpStep = data.hpStep;
         attackDamageStep = data.attackDamageStep;
         critChance = data.critChance;

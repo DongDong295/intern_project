@@ -7,6 +7,7 @@ using UnityEngine;
 public class HeroDataItems
 {
     public float hpStep;
+    public int heroVisualId;
     public float attackDamageStep;
     public float critChance;
     public float cooldownGenerate;

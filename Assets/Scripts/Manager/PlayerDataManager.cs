@@ -11,6 +11,7 @@ public class PlayerDataManager : MonoBehaviour
     public Dictionary<string, Hero> OwnedHero;
     public bool IsAuthenticated;
     public string PlayerID;
+    public List<Hero> EquippedHero;
 
     [System.Serializable]
     public class HeroDataDict
@@ -28,6 +29,7 @@ public class PlayerDataManager : MonoBehaviour
     public async UniTask OnStartApplication()
     {
         OwnedHero = new Dictionary<string, Hero>();
+        EquippedHero = new List<Hero>();
         await LoadPlayerData();
         Debug.Log("Loaded " + IsAuthenticated);
         Debug.Log("Loaded " + PlayerID);
@@ -121,6 +123,9 @@ public class PlayerDataManager : MonoBehaviour
             foreach (var heroEntry in heroDataDict.heroes)
             {
                 OwnedHero[heroEntry.heroID] = heroEntry.hero;
+                if(heroEntry.hero.isEquipped){
+                    EquipHero(OwnedHero[heroEntry.heroID]);
+                }
             }
 
             Debug.Log("Loaded Heroes from JSON" + json);
@@ -129,5 +134,19 @@ public class PlayerDataManager : MonoBehaviour
         {
             Debug.Log("No heroes found in PlayerPrefs");
         }
+    }
+    
+    public void EquipHero(Hero heroToAdd)
+    {
+        if(!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5){
+            EquippedHero.Add(heroToAdd);
+            heroToAdd.isEquipped = true;
+    }
+        else{
+            if(EquippedHero.Contains(heroToAdd))
+                EquippedHero.Remove(heroToAdd);
+            heroToAdd.isEquipped = false;
+    }
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
     }
 }

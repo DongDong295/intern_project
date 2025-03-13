@@ -29,6 +29,15 @@ public struct OnGachaEvent : IMessage{
     
 }
 
+public struct OnPlayerEquipHero : IMessage{
+    public string HeroID;
+    public bool IsEquip;
+    public OnPlayerEquipHero(string id, bool isEquip){
+        HeroID = id;
+        this.IsEquip = isEquip;
+    }
+}
+
 public struct UIEvent{}
 public struct ShowModalEvent<T> : IMessage
 {

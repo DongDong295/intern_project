@@ -14,7 +14,6 @@ public class StageButton : RegularCell
     {
         _index = index;
         _displayText.text = $"Stage {_index}";
-        Debug.Log($"Generated: {index}");
     }
 
     public new void OnBecomeInvisible(ScrollerPanelSide side)
