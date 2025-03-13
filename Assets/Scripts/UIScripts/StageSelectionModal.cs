@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -20,21 +21,36 @@ public class StageSelectionModal : BasicModal
         GenerateButton().Forget();
     }
 
-    public async UniTask GenerateButton(){
-        var buttonPrefab = await Addressables.LoadAssetAsync<GameObject>("ui-stage-button");
-            _scroller.Generate(buttonPrefab, _stageData.stageDataItems.Length, (index, iCell) => {
-                var regularCell = iCell as RegularCell;
-                if (regularCell != null) regularCell.onGenerated?.Invoke(index);
-                var button = regularCell.GetComponent<Button>();
-                button.onClick.AddListener(() =>
-                {
-                    Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnEnterGamePlayScene(index));
-                    Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());
-                });
-            });
+public async UniTask GenerateButton()
+    {
+        var buttonPrefab = await SingleBehaviour.Of<PoolingManager>().Rent("ui-stage-button");
+        _scroller.Generate(buttonPrefab, _stageData.stageDataItems.Length, OnCellGenerate);
+        Debug.Log("Button Generated");
     }
 
     private void OnCellGenerate(int index, ICell cell)
     {
+        var button = cell as RegularCell;
+
+        var buttonObj = button.gameObject.GetComponent<Button>();
+        buttonObj.onClick.AddListener(() =>
+        {
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnEnterGamePlayScene(index));
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());
+        });
+
+        var regularCell = cell as RegularCell;
+        if (regularCell != null)
+        {
+            regularCell.onGenerated.AddListener((cellIndex) =>
+            {
+                var stageButton = cell as StageButton;
+                if (stageButton != null)
+                {
+                    stageButton.OnGenerated(cellIndex);
+                }
+            });
+            regularCell.onGenerated.Invoke(index);
+        }
     }
 }

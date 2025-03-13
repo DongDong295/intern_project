@@ -20,115 +20,36 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: heroDataItems
-      Entry: 7
-      Data: 0|HeroDataItem[], Assembly-CSharp
-    - Name: 
-      Entry: 12
-      Data: 3
-    - Name: 
-      Entry: 7
-      Data: 1|HeroDataItem, Assembly-CSharp
-    - Name: attackDamageStep
-      Entry: 4
-      Data: 3
-    - Name: critChance
-      Entry: 4
-      Data: 20
-    - Name: cooldownGenerate
-      Entry: 4
-      Data: 5
-    - Name: attackSpeed
-      Entry: 4
-      Data: 2
-    - Name: moveSpeed
-      Entry: 4
-      Data: 3
-    - Name: killDamage
-      Entry: 4
-      Data: 10
-    - Name: expBasic
-      Entry: 4
-      Data: 30
-    - Name: expStep
-      Entry: 4
-      Data: 0
-    - Name: level
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 2|HeroDataItem, Assembly-CSharp
-    - Name: attackDamageStep
-      Entry: 4
-      Data: 4
-    - Name: critChance
-      Entry: 4
-      Data: 25
-    - Name: cooldownGenerate
-      Entry: 4
-      Data: 4
-    - Name: attackSpeed
-      Entry: 4
-      Data: 3
-    - Name: moveSpeed
-      Entry: 4
-      Data: 4
-    - Name: killDamage
-      Entry: 4
-      Data: 15
-    - Name: expBasic
-      Entry: 4
-      Data: 40
-    - Name: expStep
-      Entry: 4
-      Data: 0
-    - Name: level
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 3|HeroDataItem, Assembly-CSharp
-    - Name: attackDamageStep
-      Entry: 4
-      Data: 7
-    - Name: critChance
-      Entry: 4
-      Data: 20
-    - Name: cooldownGenerate
-      Entry: 4
-      Data: 4.5
-    - Name: attackSpeed
-      Entry: 4
-      Data: 3
-    - Name: moveSpeed
-      Entry: 4
-      Data: 3
-    - Name: killDamage
-      Entry: 4
-      Data: 27
-    - Name: expBasic
-      Entry: 4
-      Data: 30
-    - Name: expStep
-      Entry: 4
-      Data: 0
-    - Name: level
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
+    SerializationNodes: []
+  heroDataItems:
+  - hpStep: 0
+    heroVisualId: 0
+    attackDamageStep: 3
+    critChance: 20
+    cooldownGenerate: 5
+    attackSpeed: 2
+    moveSpeed: 3
+    killDamage: 10
+    expStep: 0
+    expBasic: 30
+  - hpStep: 0
+    heroVisualId: 1
+    attackDamageStep: 4
+    critChance: 25
+    cooldownGenerate: 4
+    attackSpeed: 3
+    moveSpeed: 4
+    killDamage: 15
+    expStep: 0
+    expBasic: 40
+  - hpStep: 0
+    heroVisualId: 2
+    attackDamageStep: 7
+    critChance: 20
+    cooldownGenerate: 4.5
+    attackSpeed: 3
+    moveSpeed: 3
+    killDamage: 27
+    expStep: 0
+    expBasic: 30
+

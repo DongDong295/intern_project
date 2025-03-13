@@ -1,33 +1,58 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using ZBase.Foundation.Singletons;
 
 public class PlayerDataManager : MonoBehaviour
 {
-    //Local data
+    // Local data
+    public Dictionary<string, Hero> OwnedHero;
     public bool IsAuthenticated;
     public string PlayerID;
+    public List<Hero> EquippedHero;
 
-    public async UniTask OnStartApplication(){
+    [System.Serializable]
+    public class HeroDataDict
+    {
+        public List<HeroDataEntry> heroes;
+    }
+
+    [System.Serializable]
+    public class HeroDataEntry
+    {
+        public string heroID;
+        public Hero hero;
+    }
+
+    public async UniTask OnStartApplication()
+    {
+        OwnedHero = new Dictionary<string, Hero>();
+        EquippedHero = new List<Hero>();
         await LoadPlayerData();
         Debug.Log("Loaded " + IsAuthenticated);
         Debug.Log("Loaded " + PlayerID);
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
     }
 
-    public async UniTask LoadPlayerData(){
+    public async UniTask LoadPlayerData()
+    {
         IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
         PlayerID = PlayerPrefs.GetString("PlayerID");
+        LoadHeroesFromJSON();
         await UniTask.CompletedTask;
     }
 
-    public void SetAuthenticateStatus(string value){
+    public void SetAuthenticateStatus(string value)
+    {
         PlayerID = value;
         PlayerPrefs.SetString("PlayerID", PlayerID);
         PlayerPrefs.Save();
     }
 
-    public void SetAuthenticateStatus(bool status){
+    public void SetAuthenticateStatus(bool status)
+    {
         IsAuthenticated = status;
         PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
         PlayerPrefs.Save();
@@ -35,7 +60,93 @@ public class PlayerDataManager : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        Debug.Log("Save!");
         PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
+        SaveHeroesToJSON();
         PlayerPrefs.Save();
+    }
+
+    public async UniTask GenerateNewHero(OnGachaEvent e)
+    {
+        var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
+        var heroData = data.heroDataItems;
+        var heroID = GenerateUniqueHeroID();
+        var hero = new Hero(heroID, heroData[Random.Range(0, heroData.Length)]);
+        OwnedHero[heroID] = hero;
+        Debug.Log($"Generated new hero with ID: {heroID}");
+
+        // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
+        SaveHeroesToJSON();
+        await UniTask.CompletedTask;
+    }
+
+    private string GenerateUniqueHeroID()
+    {
+        var timestamp = System.DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+        var randomPart = Random.Range(1000, 9999);
+        return $"{timestamp}{randomPart}";
+    }
+
+    // Method to save the hero dictionary to JSON in PlayerPrefs
+    public void SaveHeroesToJSON()
+    {
+        HeroDataDict heroDataDict = new HeroDataDict { heroes = new List<HeroDataEntry>() };
+
+        foreach (var kvp in OwnedHero)
+        {
+            heroDataDict.heroes.Add(new HeroDataEntry
+            {
+                heroID = kvp.Key,
+                hero = kvp.Value
+            });
+        }
+
+        string json = JsonUtility.ToJson(heroDataDict);
+        Debug.Log(json);
+
+        PlayerPrefs.SetString("OwnedHeroes", json);
+        PlayerPrefs.Save();
+
+        Debug.Log("Saved Heroes to JSON: " + json);
+    }
+
+    // Method to load the hero dictionary from PlayerPrefs (deserialize JSON)
+    public void LoadHeroesFromJSON()
+    {
+        string json = PlayerPrefs.GetString("OwnedHeroes");
+
+        if (!string.IsNullOrEmpty(json))
+        {
+            HeroDataDict heroDataDict = JsonUtility.FromJson<HeroDataDict>(json);
+            OwnedHero = new Dictionary<string, Hero>();
+
+            foreach (var heroEntry in heroDataDict.heroes)
+            {
+                OwnedHero[heroEntry.heroID] = heroEntry.hero;
+                if(heroEntry.hero.isEquipped){
+                    EquipHero(OwnedHero[heroEntry.heroID]);
+                }
+            }
+
+            Debug.Log("Loaded Heroes from JSON" + json);
+        }
+        else
+        {
+            Debug.Log("No heroes found in PlayerPrefs");
+        }
+    }
+    
+    public void EquipHero(Hero heroToAdd)
+    {
+        if(!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5){
+            EquippedHero.Add(heroToAdd);
+            heroToAdd.isEquipped = true;
+    }
+        else{
+            if(EquippedHero.Contains(heroToAdd))
+                EquippedHero.Remove(heroToAdd);
+            heroToAdd.isEquipped = false;
+    }
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
     }
 }

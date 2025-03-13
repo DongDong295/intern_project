@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace UnlimitedScrollUI.Example {
     public class CellTest : MonoBehaviour {
+
         public Text text;
         public GameObject popup;
         

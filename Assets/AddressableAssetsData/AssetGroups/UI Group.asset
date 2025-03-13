@@ -22,8 +22,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36ee7b7fa2de9034f9af473d8870f350
+    m_Address: ui-hero-information-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4243b69f598c8454496b7a6a979c3023
-    m_Address: ui-loading-screen
+    m_Address: ui-loading-screen-android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578588fdf8ddda94e895e0b16b69ab17
+    m_Address: ui-hero-information-button
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -32,8 +42,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7353a2e285773144695524e8d04cc968
+    m_Address: ui-loading-screen-ios
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99e9e0df8a88a1b40ac5a2b97f4717f1
     m_Address: ui-stage-selection-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ae7ead9590128c439fc15a7fb0cb9b0
+    m_Address: ui-characters-modal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

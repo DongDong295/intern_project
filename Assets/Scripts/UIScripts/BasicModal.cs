@@ -17,6 +17,7 @@ public class BasicModal : Modal
     }
 
     public void CloseModal(){
+        _closeButton.onClick.RemoveAllListeners();
         Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent(true));
     }
 }

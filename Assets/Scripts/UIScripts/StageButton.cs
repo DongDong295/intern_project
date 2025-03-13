@@ -1,21 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnlimitedScrollUI;
 
 public class StageButton : RegularCell
 {
-    private GenerateEvent onGenerated { get; set; }
-    private int index;
+    [SerializeField] private TextMeshProUGUI _displayText;
+    private int _index = 0;
 
-    public void OnGenerated(GenerateEvent onGenerated)
+    public void OnGenerated(int index)
     {
-        Debug.Log("Hi");
-        this.onGenerated = onGenerated;
-        var displayText = GetComponentInChildren<TMPro.TextMeshProUGUI>();
-        displayText.text = $"Stage {index}";
+        _index = index;
+        _displayText.text = $"Stage {_index}";
     }
+
     public new void OnBecomeInvisible(ScrollerPanelSide side)
     {
     }

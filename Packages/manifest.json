@@ -2,10 +2,14 @@
   "dependencies": {
     "com.cysharp.unitask": "2.5.10",
     "com.google.external-dependency-manager": "file:com.google.external-dependency-manager-1.2.177.tgz",
+    "com.google.firebase.analytics": "file:com.google.firebase.analytics-12.5.0.tgz",
     "com.google.firebase.app": "file:com.google.firebase.app-12.5.0.tgz",
     "com.google.firebase.auth": "file:com.google.firebase.auth-12.5.0.tgz",
+    "com.google.firebase.remote-config": "file:C:/Users/ADMIN/Downloads/com.google.firebase.remote-config-12.5.0.tgz",
+    "com.sabresaurus.playerprefseditor": "1.4.1",
     "com.unity.addressables": "1.22.3",
     "com.unity.collab-proxy": "2.7.1",
+    "com.unity.device-simulator.devices": "1.0.0",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.7",
     "com.unity.timeline": "1.7.6",
@@ -57,6 +61,7 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.cysharp.unitask",
+        "com.sabresaurus.playerprefseditor",
         "com.xiaojiang.unlimitedscroller",
         "com.zbase.collections.pooled",
         "com.zbase.foundation",

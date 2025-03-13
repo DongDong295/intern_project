@@ -8,6 +8,7 @@ using ZBase.Foundation.Singletons;
 
 public class GameManager : MonoBehaviour
 {
+    public string DeviceType;
     public void Awake()
     {
 
@@ -15,12 +16,20 @@ public class GameManager : MonoBehaviour
 
     public async void Start()
     {
+        #if UNITY_ANDROID
+            DeviceType = "Android";
+        #elif UNITY_IOS
+            DeviceType = "IOS";
+        #endif
         await StartApplication();
     }
 
     public async UniTask ChangeToGameplayScene(OnEnterGamePlayScene e)
     {
-        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOADING_SCREEN, false));
+        Debug.Log(e.StageIndex);
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.GetLoadingScreen(
+        SingleBehaviour.Of<UIManager>().Platform)
+        , false));
         await SingleBehaviour.Of<StageManager>().InitiateStage(e.StageIndex);
     }
 
@@ -38,5 +47,6 @@ public class GameManager : MonoBehaviour
 #endif
 
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
+        SingleBehaviour.Of<FirebaseEventTracking>().PushEventTracking("Player login");
     }
 }

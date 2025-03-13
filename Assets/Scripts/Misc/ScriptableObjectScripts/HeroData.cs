@@ -1,22 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
-public class HeroDataItem
+[System.Serializable]
+public class HeroDataItems
 {
+    public float hpStep;
+    public int heroVisualId;
     public float attackDamageStep;
     public float critChance;
     public float cooldownGenerate;
     public float attackSpeed;
     public float moveSpeed;
     public float killDamage;
-    public float expBasic;
+
     public float expStep;
-    public int level;
+    public float expBasic;
 }
 
-public class HeroData : SerializedScriptableObject
-{
-    public HeroDataItem[] heroDataItems;
+public class HeroData : SerializedScriptableObject{
+    public HeroDataItems[] heroDataItems;
 }

@@ -649,6 +649,7 @@ MonoBehaviour:
     _popEnterAnimations: []
     _popExitAnimations: []
   _playButton: {fileID: 6180053499742814992}
+  _characterButton: {fileID: 1208136134768085496}
 --- !u!1 &5886399316763279970
 GameObject:
   m_ObjectHideFlags: 0

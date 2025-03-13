@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using ZBase.Foundation.PubSub;
 
@@ -9,6 +10,7 @@ public struct OnPlayerLoginEvent : IMessage{}
 
 public struct OnPlayerFinishAuthentication : IMessage{}
 
+
 public struct OnEnterGamePlayScene : IMessage{
     public int StageIndex;
     public OnEnterGamePlayScene(int stageIndex){
@@ -16,7 +18,37 @@ public struct OnEnterGamePlayScene : IMessage{
     }
 }
 
+public struct OnShowHeroInformationEvent : IMessage{
+    public Hero HeroRef;
+    public OnShowHeroInformationEvent(Hero hero){
+        HeroRef = hero;
+    }
+}
+
+public struct OnGachaEvent : IMessage{
+    
+}
+
+public struct OnPlayerEquipHero : IMessage{
+    public string HeroID;
+    public bool IsEquip;
+    public OnPlayerEquipHero(string id, bool isEquip){
+        HeroID = id;
+        this.IsEquip = isEquip;
+    }
+}
+
 public struct UIEvent{}
+public struct ShowModalEvent<T> : IMessage
+{
+    public T Parameter; 
+
+    public ShowModalEvent(T parameter)
+    {
+        Parameter = parameter;
+    }
+}
+
 public struct ShowScreenEvent : IMessage{
     public string Path;
     public bool LoadAsync;
