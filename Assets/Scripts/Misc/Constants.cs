@@ -15,6 +15,8 @@ public class Data
 {
     public const string STAGE_DATA = "StageData";
     public const string HERO_DATA = "HeroData";
+
+    public const string BUFF_DATA = "BuffData";
 }
 
 public class ScreenUI{
@@ -36,4 +38,5 @@ public class ModalUI{
     public const string CHARACTERS_MODAL = "ui-characters-modal";
 
     public const string HERO_INFORMATION_MODAL = "ui-hero-information-modal";
+    public const string STAGE_END_MODAL = "ui-stage-end-modal";
 }

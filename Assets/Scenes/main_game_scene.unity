@@ -825,7 +825,7 @@ Transform:
   m_GameObject: {fileID: 435286026}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -9}
+  m_LocalPosition: {x: 0, y: 0, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -921,11 +921,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cd45a5aa7eba1e4bacd41e0a49920cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Index: 0
   RequireDefeatTime: 0
   BossHP: 0
   BossAttackDamage: 0
   BossAttackSpeed: 0
   BossVisualID: 0
+  StageDeltaTime: 0
   _heroPositions:
   - {fileID: 1564232827}
   - {fileID: 1152829849}
@@ -933,6 +935,7 @@ MonoBehaviour:
   - {fileID: 1435342789}
   - {fileID: 1004822267}
   _bossPosition: {fileID: 1681310639}
+  IsWin: 0
 --- !u!1 &687686219
 GameObject:
   m_ObjectHideFlags: 0

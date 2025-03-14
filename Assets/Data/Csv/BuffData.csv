@@ -1,0 +1,3 @@
+buff_id,buff_name,buff_value,buff_time
+0,AttackSpeed,0.5,5
+1,MovementSpeed,0.5,5
