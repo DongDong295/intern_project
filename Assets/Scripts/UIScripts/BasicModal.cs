@@ -12,7 +12,8 @@ public class BasicModal : Modal
     public override UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
-        _closeButton.onClick.AddListener(CloseModal);   
+        if(_closeButton != null)
+            _closeButton.onClick.AddListener(CloseModal);   
         return UniTask.CompletedTask;
     }
 

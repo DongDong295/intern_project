@@ -60,7 +60,6 @@ public class CharacterInformationModal : BasicModal
 
     public async UniTask WaitForHeroModal(int index)
     {
-        // Wait until the current modal is of type HeroInformationModal
         await UniTask.WaitUntil(() =>
         {
             var currentModal = SingleBehaviour.Of<UIManager>().GetCurrentModal();

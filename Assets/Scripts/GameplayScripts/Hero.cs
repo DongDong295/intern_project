@@ -43,3 +43,20 @@ public class Hero
         level = 1;
     }
 }
+
+public class MiniHeroData{
+    public float MovementSpeed;
+    public float Damage;
+    public float CritChance;
+    public float KillDamage;
+
+    public float AttackSpeed;
+
+    public MiniHeroData(float speed, float damage, float attackSpeed, float critChance, float killDamage){
+        MovementSpeed = speed;
+        Damage = damage;
+        CritChance = critChance;
+        AttackSpeed = attackSpeed;
+        KillDamage = killDamage;
+    }
+}

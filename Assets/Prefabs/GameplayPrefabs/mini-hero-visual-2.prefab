@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3552951616324303212}
   - component: {fileID: 2839690869557166881}
   - component: {fileID: 3034972808037338118}
+  - component: {fileID: -4477257448885167057}
   m_Layer: 0
   m_Name: mini-hero-visual-2
   m_TagString: Untagged
@@ -107,3 +108,15 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4477257448885167057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3669112010249854315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269e1e75e5c73e3488b9f047dadc343b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -20,7 +20,6 @@ public class HeroInformationButton : RegularCell
 
     public void OnEquipHero(OnPlayerEquipHero e){
         if(_buttonHeroID == e.HeroID){
-            Debug.Log("Hi im " + _buttonHeroID + e.IsEquip);
             equipStatus.SetActive(e.IsEquip);
         }
     }

@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 42250067a36dcd54fbcca2fdba06c640
   m_SerializeEntries:
+  - m_GUID: 10de22399cca02a448fe1ec2b29ddd40
+    m_Address: ui-stage-end-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 267d7bfd2688df3449f36a34c5fca0f5
     m_Address: ui-main-gameplay-screen
     m_ReadOnly: 0
@@ -54,6 +59,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9ae7ead9590128c439fc15a7fb0cb9b0
     m_Address: ui-characters-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c89faca4d852d07448697cb98dfdf736
+    m_Address: damage-text
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

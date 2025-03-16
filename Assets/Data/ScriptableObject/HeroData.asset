@@ -28,7 +28,7 @@ MonoBehaviour:
     critChance: 20
     cooldownGenerate: 5
     attackSpeed: 2
-    moveSpeed: 3
+    moveSpeed: 0.8
     killDamage: 10
     expStep: 0
     expBasic: 30
@@ -38,7 +38,7 @@ MonoBehaviour:
     critChance: 25
     cooldownGenerate: 4
     attackSpeed: 3
-    moveSpeed: 4
+    moveSpeed: 0.75
     killDamage: 15
     expStep: 0
     expBasic: 40
@@ -48,8 +48,7 @@ MonoBehaviour:
     critChance: 20
     cooldownGenerate: 4.5
     attackSpeed: 3
-    moveSpeed: 3
+    moveSpeed: 0.82
     killDamage: 27
     expStep: 0
     expBasic: 30
-

@@ -41,7 +41,7 @@ MonoBehaviour:
       Data: 300
     - Name: bossHp
       Entry: 4
-      Data: 100
+      Data: 2000
     - Name: bossAttackDamage
       Entry: 4
       Data: 2
@@ -65,7 +65,7 @@ MonoBehaviour:
       Data: 300
     - Name: bossHp
       Entry: 4
-      Data: 125
+      Data: 2500
     - Name: bossAttackDamage
       Entry: 4
       Data: 2.5

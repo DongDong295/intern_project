@@ -17,8 +17,28 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 2ecc364a72f4f954598b66c2be7471ec
   m_SerializeEntries:
+  - m_GUID: 13c5fee06d2c4a04b91402f5111d2421
+    m_Address: mini-hero-visual-0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 183abb9bab29c674984f72821375f1c1
+    m_Address: mini-hero-visual-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39bec1e6327fa6e47a4ca877533cdb35
+    m_Address: mini-hero-visual-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3afc0efda9e7c3f40b1b14470555887d
     m_Address: hero-visual-0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 581a4dd7248eba54f8544b0926de9f0a
+    m_Address: buff-sphere
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -34,6 +54,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ce5ee7608e0c5234db02bead6811d0fb
     m_Address: hero-visual-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f4fbc21526a8c1f478faaa93b34488fb
+    m_Address: bullet
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
