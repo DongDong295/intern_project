@@ -62,6 +62,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bab6fcfe45e229a479e612634817df04
+    m_Address: ui-hero-material-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c89faca4d852d07448697cb98dfdf736
     m_Address: damage-text
     m_ReadOnly: 0

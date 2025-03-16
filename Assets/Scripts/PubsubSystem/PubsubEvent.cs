@@ -42,6 +42,15 @@ public struct OnPlayerEquipHero : IMessage{
     }
 }
 
+public struct OnSelectMaterialHeroForUpgrade : IMessage{
+    public Hero MaterialHero;
+    public bool IsSelected;
+    public OnSelectMaterialHeroForUpgrade(Hero hero, bool isSelected){
+        MaterialHero = hero;
+        IsSelected = isSelected;
+    }
+}
+
 public struct OnFinishStage : IMessage{
     public bool Result;
     public OnFinishStage(bool result){

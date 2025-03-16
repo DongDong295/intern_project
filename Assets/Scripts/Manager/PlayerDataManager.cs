@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.Mathematics;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -31,8 +32,6 @@ public class PlayerDataManager : MonoBehaviour
         OwnedHero = new Dictionary<string, Hero>();
         EquippedHero = new List<Hero>();
         await LoadPlayerData();
-        Debug.Log("Loaded " + IsAuthenticated);
-        Debug.Log("Loaded " + PlayerID);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
     }
 
@@ -71,7 +70,7 @@ public class PlayerDataManager : MonoBehaviour
         var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
         var heroData = data.heroDataItems;
         var heroID = GenerateUniqueHeroID();
-        var hero = new Hero(heroID, heroData[Random.Range(0, heroData.Length)]);
+        var hero = new Hero(heroID, heroData[UnityEngine.Random.Range(0, heroData.Length)]);
         OwnedHero[heroID] = hero;
         Debug.Log($"Generated new hero with ID: {heroID}");
 
@@ -83,7 +82,7 @@ public class PlayerDataManager : MonoBehaviour
     private string GenerateUniqueHeroID()
     {
         var timestamp = System.DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
-        var randomPart = Random.Range(1000, 9999);
+        var randomPart = UnityEngine.Random.Range(1000, 9999);
         return $"{timestamp}{randomPart}";
     }
 
@@ -148,5 +147,43 @@ public class PlayerDataManager : MonoBehaviour
             heroToAdd.isEquipped = false;
     }
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
+    }
+
+    public List<Hero> GetUnequippedHeroList()
+    {
+        List<Hero> unequippedHeroes = new List<Hero>();
+
+        foreach (var kvp in OwnedHero)
+        {
+            Hero hero = kvp.Value;
+            if (!hero.isEquipped)
+            {
+                unequippedHeroes.Add(hero);
+            }
+        }
+        return unequippedHeroes;
+    }
+
+    public Dictionary<string, Hero> GetUnequippedHeroDict()
+    {
+        Dictionary<string, Hero> unequippedHeroes = new Dictionary<string, Hero>();
+
+        foreach (var kvp in OwnedHero)
+        {
+            Hero hero = kvp.Value;
+            if (!hero.isEquipped)
+            {
+                unequippedHeroes.Add(kvp.Key, hero); // Using heroID (kvp.Key) as the dictionary key
+            }
+        }
+
+        return unequippedHeroes;
+    }
+
+    public void RemoveHero(Hero heroRef){
+        if(OwnedHero.ContainsKey(heroRef.heroID)){
+             OwnedHero.Remove(heroRef.heroID);
+        }
+        SaveHeroesToJSON();
     }
 }
