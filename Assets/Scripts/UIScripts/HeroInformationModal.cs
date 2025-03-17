@@ -28,13 +28,16 @@ public class HeroInformationModal : BasicModal
     private Dictionary<string, Hero> _heroOption;
     private List<Hero> _materials;
 
+    private GameObject _buttonPref;
+
     private PlayerDataManager _dataManager;
     public override async UniTask Initialize(Memory<object> arg)
     {
         _dataManager = SingleBehaviour.Of<PlayerDataManager>();
-        _heroOption = _dataManager.GetUnequippedHeroDict();
+        _buttonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-material-button");
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnSelectMaterialHeroForUpgrade>(SelectMaterial);
         Pubsub.Subscriber.Scope<UIEvent>().Subscribe<OnShowHeroInformationEvent>(DisplayHeroInformation);
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnRemoveHero>(UpdateExpBar);
         await base.Initialize(arg);
         _materials = new List<Hero>();
         _equipButton.onClick.AddListener(() => { 
@@ -44,10 +47,15 @@ public class HeroInformationModal : BasicModal
     }
 
     public async UniTask GenerateMaterialButton(){
-        var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-material-button");
-        _scroller.Generate(heroButtonPref, _heroOption.Count, OnGenerateButton);
+        _heroOption = _dataManager.GetUnequippedHeroDict(_currentHero);
+        _scroller.Clear();
+        _scroller.Generate(_buttonPref, _heroOption.Count, OnGenerateButton);
     }
 
+    public void UpdateExpBar(OnRemoveHero e){
+        _expDisplay.text = $"{_currentHero.exp}/{_currentHero.GetHeroRequireExp()}";
+        _expFillBar.fillAmount = _currentHero.exp / _currentHero.GetHeroRequireExp();
+    }
     public void OnGenerateButton(int index, ICell cell)
     {
         var button = cell as RegularCell;
@@ -59,7 +67,7 @@ public class HeroInformationModal : BasicModal
 
     public async UniTask DisplayHeroInformation(OnShowHeroInformationEvent e){
         _currentHero = e.HeroRef;
-         _heroOption.Remove(_currentHero.heroID);
+
         _damage.text = "Damage step: " + e.HeroRef.attackDamageStep.ToString();
         _critChance.text = "Crit chance: " + e.HeroRef.critChance.ToString();
         _attackSpeed.text = "Attack speed: " + e.HeroRef.attackSpeed.ToString();
@@ -78,6 +86,8 @@ public class HeroInformationModal : BasicModal
             _dataManager.RemoveHero(h);
         }
         _currentHero.LevelUpHero(totalExp);
+        _materials.Clear();
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnRemoveHero());
         await GenerateMaterialButton();
     }
 
@@ -91,6 +101,7 @@ public class HeroInformationModal : BasicModal
     public override UniTask Cleanup(Memory<object> args)
     {
         _scroller.Clear();
+        _levelUpButton.onClick.RemoveAllListeners();
         _equipButton.onClick.RemoveAllListeners();
         _materials.Clear();
         return base.Cleanup(args);

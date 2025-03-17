@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnlimitedScrollUI;
+using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;
 
 public class CharacterInformationModal : BasicModal
@@ -14,6 +15,7 @@ public class CharacterInformationModal : BasicModal
 
     private Dictionary<string, Hero> _ownedHeroDict;
     private Hero _referenceHero;
+    private GameObject _buttonPref;
 
     public override async UniTask Initialize(Memory<object> arg)
     {
@@ -30,16 +32,26 @@ public class CharacterInformationModal : BasicModal
             await GenerateHeroButton();
         });
 
-        // Generate the hero buttons
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnRemoveHero>(UpdateHeroScollerUI);
+        _buttonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
         await GenerateHeroButton();
     }
 
     public async UniTask GenerateHeroButton()
     {
-        Debug.Log("Generate buttons of modal");
-        var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
+        _scroller.Clear();
         int heroCount = _ownedHeroDict.Count;
-        _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);
+        _scroller.Generate(_buttonPref, heroCount, OnGenerateButton);
+        await UniTask.CompletedTask;
+        //Destroy(heroButtonPref);
+    }
+    public async UniTask UpdateHeroScollerUI(OnRemoveHero e)
+    {
+        _scroller.Clear();
+        int heroCount = _ownedHeroDict.Count;
+        _scroller.Generate(_buttonPref, heroCount, OnGenerateButton);
+        await UniTask.CompletedTask;
+        //Destroy(heroButtonPref);
     }
 
     public void OnGenerateButton(int index, ICell cell)

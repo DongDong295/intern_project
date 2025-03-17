@@ -180,6 +180,23 @@ public class PlayerDataManager : MonoBehaviour
         return unequippedHeroes;
     }
 
+    public Dictionary<string, Hero> GetUnequippedHeroDict(Hero currentHero)
+    {
+        Dictionary<string, Hero> unequippedHeroes = new Dictionary<string, Hero>();
+
+        foreach (var kvp in OwnedHero)
+        {
+            Hero hero = kvp.Value;
+            if (!hero.isEquipped)
+            {
+                unequippedHeroes.Add(kvp.Key, hero); // Using heroID (kvp.Key) as the dictionary key
+            }
+        }
+        Debug.Log(currentHero.heroID);
+        unequippedHeroes.Remove(currentHero.heroID);
+        return unequippedHeroes;
+    }
+
     public void RemoveHero(Hero heroRef){
         if(OwnedHero.ContainsKey(heroRef.heroID)){
              OwnedHero.Remove(heroRef.heroID);
