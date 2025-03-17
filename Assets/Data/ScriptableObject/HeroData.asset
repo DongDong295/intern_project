@@ -30,7 +30,7 @@ MonoBehaviour:
     attackSpeed: 2
     moveSpeed: 0.8
     killDamage: 10
-    expStep: 0
+    expStep: 40
     expBasic: 30
   - hpStep: 0
     heroVisualId: 1
@@ -40,7 +40,7 @@ MonoBehaviour:
     attackSpeed: 3
     moveSpeed: 0.75
     killDamage: 15
-    expStep: 0
+    expStep: 40
     expBasic: 40
   - hpStep: 0
     heroVisualId: 2
@@ -50,5 +50,5 @@ MonoBehaviour:
     attackSpeed: 3
     moveSpeed: 0.82
     killDamage: 27
-    expStep: 0
+    expStep: 40
     expBasic: 30

@@ -19,7 +19,7 @@ public class Hero
 
     public float expStep;
     public float expBasic;
-
+    public float exp;
     public int level;
 
     public bool isEquipped;
@@ -41,6 +41,24 @@ public class Hero
         expStep = data.expStep;
         expBasic = data.expBasic;
         level = 1;
+    }
+
+    public void LevelUpHero(float expValue){
+        exp += expValue;
+        if(exp >= (expStep * level)){
+            level++;
+            var exceedExp = (exp -= (expStep * level));
+            exp = 0;
+            exp += exceedExp;
+        }
+    }
+
+    public float GetHeroExpValue(){
+        return (expStep * level + exp) / 2 + expBasic;
+    }
+
+    public float GetHeroRequireExp(){
+        return expStep * level;
     }
 }
 

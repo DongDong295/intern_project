@@ -123,6 +123,7 @@ public class StageManager : MonoBehaviour
         DisposeList.Clear();
         SingleBehaviour.Of<PoolingManager>().Return(_bossVisualRef);
         _bossVisualRef = null;
+        _cts?.Cancel();
     }
 
     private async UniTask RandomBuff(){

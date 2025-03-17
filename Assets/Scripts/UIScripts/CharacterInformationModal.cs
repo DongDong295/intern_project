@@ -36,7 +36,6 @@ public class CharacterInformationModal : BasicModal
 
     public async UniTask GenerateHeroButton()
     {
-        // Rent the button prefab from the PoolingManager
         Debug.Log("Generate buttons of modal");
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
         int heroCount = _ownedHeroDict.Count;
@@ -72,6 +71,7 @@ public class CharacterInformationModal : BasicModal
 
     public override UniTask Cleanup(Memory<object> args)
     {
+        _scroller.Clear();
         _gachaButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
     }

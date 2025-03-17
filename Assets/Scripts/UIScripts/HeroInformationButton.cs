@@ -10,7 +10,7 @@ public class HeroInformationButton : RegularCell
     [SerializeField] private TextMeshProUGUI level;
     [SerializeField] private GameObject equipStatus; 
     public void InitiateButton(Hero heroRef){
-        level.text = heroRef.level.ToString();
+        level.text = "Lv " + heroRef.level.ToString();
         _buttonHeroID = heroRef.heroID;
         if(heroRef.isEquipped){
             equipStatus.SetActive(true);
