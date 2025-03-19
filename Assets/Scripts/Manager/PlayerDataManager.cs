@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Firebase.Firestore;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using ZBase.Foundation.Singletons;
 
 public class PlayerDataManager : MonoBehaviour
@@ -47,38 +48,45 @@ public class PlayerDataManager : MonoBehaviour
         public PlayerData playerData;
     }
 
-    public async UniTask OnStartApplication()
-    {
-        OwnedHero = new Dictionary<string, Hero>();
-        EquippedHero = new List<Hero>();
-        await LoadPlayerData();
-        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
+    private void LoadLanguageData(){
+        var index = PlayerPrefs.GetInt("LanguageOption");
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
     }
 
-    public async UniTask LoadPlayerData()
+    public async UniTask OnStartApplication()
+    {
+        #if UNITY_EDITOR
+        PlayerID = GenerateGuestPlayerID();
+        IsAuthenticated = true;
+        #endif
+        
+        LoadLanguageData();
+        OwnedHero = new Dictionary<string, Hero>();
+        EquippedHero = new List<Hero>();
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(LoadPlayerData);
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
+        await UniTask.CompletedTask;
+    }
+
+    public async UniTask LoadPlayerData(OnFinishInitializeEvent e)
     {
         IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
-
-        // Check if PlayerID is null or empty, if so generate a new guest PlayerID
-        PlayerID = PlayerPrefs.GetString("PlayerID", "");
-        if (string.IsNullOrEmpty(PlayerID))
-        {
-            // Generate a new PlayerID as guestPlayerXXXX
-            #if UNITY_EDITOR
-            PlayerID = GenerateGuestPlayerID();
-            #endif
-            PlayerPrefs.SetString("PlayerID", PlayerID); // Save PlayerID immediately
-            PlayerPrefs.Save(); // Ensure it persists
+        PlayerID = PlayerPrefs.GetString("PlayerID");
+        if(PlayerID != ""){
+            await SyncHeroesWithDatabase();
+            await LoadHeroesFromJSON();
+            Debug.Log(PlayerID);
         }
-
-        await SyncHeroesWithDatabase();
-        LoadHeroesFromJSON();
+        else{
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
+        }
         await UniTask.CompletedTask;
     }
 
     public void SetPlayerID(string value)
     {
         PlayerID = value;
+        OwnedHero.Clear(); 
         PlayerPrefs.SetString("PlayerID", PlayerID);
         PlayerPrefs.Save();
     }
@@ -87,6 +95,7 @@ public class PlayerDataManager : MonoBehaviour
     {
         IsAuthenticated = status;
         PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
+        Debug.Log("Im " + IsAuthenticated);
         PlayerPrefs.Save();
     }
 
@@ -170,9 +179,8 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     // Method to load the global data from PlayerPrefs and extract the player's data
-    public void LoadHeroesFromJSON()
+    public async Task LoadHeroesFromJSON()
     {
-        // Load global data from PlayerPrefs
         string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
 
         Debug.Log("Loading Global Data: " + globalJson);
@@ -197,7 +205,7 @@ public class PlayerDataManager : MonoBehaviour
                         OwnedHero[heroEntry.heroID] = heroEntry.hero;
                         if (heroEntry.hero.isEquipped)
                         {
-                            EquipHero(OwnedHero[heroEntry.heroID]);
+                            await EquipHero(OwnedHero[heroEntry.heroID]);
                         }
                     }
                 }
@@ -214,7 +222,7 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
 
-    public void EquipHero(Hero heroToAdd)
+    public async UniTask EquipHero(Hero heroToAdd)
     {
         if (!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5)
         {
@@ -228,6 +236,7 @@ public class PlayerDataManager : MonoBehaviour
             heroToAdd.isEquipped = false;
         }
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
+        await SaveHeroesToFirebase();
     }
 
     public List<Hero> GetUnequippedHeroList()

@@ -9,6 +9,7 @@ using ZBase.Foundation.Singletons;
 
 public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 {
+    [SerializeField] private Button _mainMenuButton;
     [SerializeField] private TextMeshProUGUI _time;
     [SerializeField] private TextMeshProUGUI _bossHPText;  
     [SerializeField] private TextMeshProUGUI _bossIDText;
@@ -25,6 +26,9 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         base.Initialize(args);
         Pubsub.Subscriber.Scope<UIEvent>().Subscribe<OnBossTakeDamageEvent>(UpdateHealthBar);
         DisplayTime().Forget();
+        _mainMenuButton.onClick.AddListener(() => {
+            _stageManager.OnStageEnd();
+        });
         return UniTask.CompletedTask;
     }
 

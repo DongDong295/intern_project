@@ -55,7 +55,6 @@ public class UIManager : MonoBehaviour
         var e = _screenQueue.Dequeue();
         var options = new ViewOptions(e.Path, true, loadAsync: e.LoadAsync);
         await ScreenLauncher.ContainerManager.Find<ScreenContainer>().PushAsync(options);
-        await ScreenLauncher.ContainerManager.Find<ModalContainer>().PopAsync(false);
         await UniTask.DelayFrame(1);
         ShowNextScreen().Forget();
     }

@@ -36,8 +36,8 @@ public class HeroInformationModal : BasicModal
         Pubsub.Subscriber.Scope<UIEvent>().Subscribe<OnShowHeroInformationEvent>(DisplayHeroInformation);
         await base.Initialize(arg);
         _materials = new List<Hero>();
-        _equipButton.onClick.AddListener(() => { 
-            SingleBehaviour.Of<PlayerDataManager>().EquipHero(_currentHero);});
+        _equipButton.onClick.AddListener(async () => { 
+            await SingleBehaviour.Of<PlayerDataManager>().EquipHero(_currentHero);});
         ; 
         _levelUpButton.onClick.AddListener(() => {LevelUpHero().Forget();});
     }
@@ -62,10 +62,10 @@ public class HeroInformationModal : BasicModal
     public async UniTask DisplayHeroInformation(OnShowHeroInformationEvent e){
         _currentHero = e.HeroRef;
          _heroOption.Remove(_currentHero.heroID);
-        _damage.text = "Damage step: " + e.HeroRef.attackDamageStep.ToString();
-        _critChance.text = "Crit chance: " + e.HeroRef.critChance.ToString();
-        _attackSpeed.text = "Attack speed: " + e.HeroRef.attackSpeed.ToString();
-        _cooldownGenerate.text = "CD generate: " + e.HeroRef.cooldownGenerate.ToString();
+        _damage.text = _damage.text + ": " + e.HeroRef.attackDamageStep.ToString();
+        _critChance.text = _critChance.text + ": " + e.HeroRef.critChance.ToString();
+        _attackSpeed.text = _attackSpeed.text + ": " + e.HeroRef.attackSpeed.ToString();
+        _cooldownGenerate.text = _cooldownGenerate.text + ": " + e.HeroRef.cooldownGenerate.ToString();
         _expDisplay.text = $"{_currentHero.exp}/{_currentHero.GetHeroRequireExp()}";
         _expFillBar.fillAmount = _currentHero.exp / _currentHero.GetHeroRequireExp();
         await GenerateMaterialButton();

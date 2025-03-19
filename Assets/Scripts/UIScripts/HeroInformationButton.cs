@@ -27,9 +27,11 @@ public class HeroInformationButton : RegularCell
         }
     }
 
-    public void Oestroy()
+    public void OnDestroy()
     {
-        _sub.Unsubscribe();
-        _sub.Dispose();        
+        if(_sub != null){
+            _sub.Unsubscribe();
+            _sub.Dispose();   
+        }
     }
 }

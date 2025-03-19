@@ -34,7 +34,7 @@ public class StageManager : MonoBehaviour
 
     private BuffData _buffData;
 
-    private GameObject _currentBuff;
+    public GameObject CurrentBuff;
     public async UniTask InitiateStage(int stageIndex){
         IsWin = false;
         _buffData = await Singleton.Of<DataManager>().Load<BuffData>(Data.BUFF_DATA);
@@ -131,8 +131,11 @@ public class StageManager : MonoBehaviour
     private async UniTask RandomBuff(){
         while(!_isStageEnd){
             await UniTask.Delay(TimeSpan.FromSeconds(UnityEngine.Random.Range(10, 15)), cancellationToken: _cts.Token);
+            if(CurrentBuff != null)
+                return;
             var selectedBuff = _buffData.items[UnityEngine.Random.Range(0, _buffData.items.Length)];
             var buff = await SingleBehaviour.Of<PoolingManager>().Rent("buff-sphere");
+            CurrentBuff = buff;
             buff.transform.position = new Vector3(0, 3, -9);
             await buff.GetComponent<BuffSphere>().InitiateBuff(selectedBuff);
         }

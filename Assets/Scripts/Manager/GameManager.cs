@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
 
     public async UniTask ChangeToGameplayScene(OnEnterGamePlayScene e)
     {
-        Debug.Log(e.StageIndex);
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.GetLoadingScreen(
         SingleBehaviour.Of<UIManager>().Platform)
         , false));
@@ -42,11 +41,11 @@ public class GameManager : MonoBehaviour
 
 #if UNITY_EDITOR
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
+        
 #else
+        Debug.Log("This line is running");
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
 #endif
-
-        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
         SingleBehaviour.Of<FirebaseEventTracking>().PushEventTracking("Player login");
     }
 }

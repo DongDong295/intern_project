@@ -24,7 +24,7 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         _stageManager.DisposeList.Add(this);
         _cts = new CancellationTokenSource(); // Initialize the cancellation token
         _isReachedTarget = false;
-        damage = data.KillDamage;
+        damage = data.Damage;
         moveSpeed = data.MovementSpeed;
         critChance = data.CritChance;
         killDamage = data.KillDamage;
@@ -55,8 +55,8 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         {
             await UniTask.Delay(TimeSpan.FromSeconds(attackSpeed), cancellationToken: _cts.Token); // Wait for attack interval
             var bullet = await SingleBehaviour.Of<PoolingManager>().Rent("bullet");
-            bullet.GetComponent<Bullet>().InitiateBullet(moveSpeed * 2, _killDistance, damage, critChance);
             bullet.transform.position = transform.position;
+            await bullet.GetComponent<Bullet>().InitiateBullet(moveSpeed * 2, _killDistance, damage, critChance);
         }
     }
 

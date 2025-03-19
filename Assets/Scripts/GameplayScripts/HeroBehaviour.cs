@@ -5,6 +5,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using ZBase.Foundation.Pooling;
@@ -44,7 +45,7 @@ public class HeroBehaviour : MonoBehaviour, IDispose
             {
                 elapsedTime += Time.deltaTime;
                 _filler.fillAmount = Mathf.Clamp01(elapsedTime / cooldownTime); // Update fillAmount
-                await UniTask.Yield(); // Yield to allow other tasks to run
+                await UniTask.Yield(cancellationToken: _source.Token); // Yield to allow other tasks to run
             }
             _filler.fillAmount = 1f;
             var miniHero = await SingleBehaviour.Of<PoolingManager>().Rent($"mini-hero-visual-{_hero.heroVisualID}");

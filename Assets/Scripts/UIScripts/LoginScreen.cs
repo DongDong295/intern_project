@@ -15,12 +15,16 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     private ISubscription _subscription;    
     public override UniTask Initialize(Memory<object> args)
     {
+        Debug.Log("Trigger login screen");
         base.Initialize(args);
         _loginButton.onClick.AddListener(() =>
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerLoginEvent());
         }); 
-        _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
+        if(SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
+            ShowMainMenuScreen();
+        else
+            _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
         return UniTask.CompletedTask;
     }
 
@@ -39,19 +43,22 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     // Wait for player authentication if it's not done yet
     private async UniTask WaitForAuthentication()
     {
-        await UniTask.WaitUntil(() => SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
+        await UniTask.WaitUntil(() => 
+        SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
     }
 
     // Show the Main Menu Screen and transition away from Login Screen
     private void ShowMainMenuScreen()
     {
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
+        _loginButton.onClick.RemoveAllListeners();
+        _subscription?.Dispose();
     }
 
     public override UniTask Cleanup(Memory<object> args)
     {
+        Debug.Log("Disposed");
         base.Cleanup(args);
-        _subscription?.Dispose();
         return UniTask.CompletedTask;
     }
 }

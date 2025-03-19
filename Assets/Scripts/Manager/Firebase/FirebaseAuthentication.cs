@@ -13,7 +13,7 @@ public class FirebaseAuthentication : FirebaseModule
 {
     private GoogleSignInConfiguration configuration;
 
-    private Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
+    //private Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
     private Firebase.Auth.FirebaseAuth auth;
     private Firebase.Auth.FirebaseUser user;
 
@@ -64,12 +64,14 @@ public class FirebaseAuthentication : FirebaseModule
                 user = auth.CurrentUser;
                 SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(true);
                 SingleBehaviour.Of<PlayerDataManager>().SetPlayerID(user.UserId);
+                Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
             });
         }
     }
 
     public void SignOut(){
         auth.SignOut();
+        GoogleSignIn.DefaultInstance.SignOut();
         user = null;
         SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(false);
         SingleBehaviour.Of<PlayerDataManager>().SetPlayerID("");
