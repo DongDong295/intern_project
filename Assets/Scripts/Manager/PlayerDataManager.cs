@@ -228,6 +228,7 @@ public class PlayerDataManager : MonoBehaviour
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public List<Hero> GetUnequippedHeroList()
     {
         List<Hero> unequippedHeroes = new List<Hero>();
@@ -282,6 +283,8 @@ public class PlayerDataManager : MonoBehaviour
         }
         SaveHeroesToJSON();
 =======
+=======
+>>>>>>> Stashed changes
     // Method to load global data from PlayerPrefs
     public GlobalData LoadGlobalData()
     {
@@ -296,6 +299,9 @@ public class PlayerDataManager : MonoBehaviour
         // If no global data exists, return a new instance
         Debug.Log("No global data found in PlayerPrefs. Returning new GlobalData.");
         return new GlobalData();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }
