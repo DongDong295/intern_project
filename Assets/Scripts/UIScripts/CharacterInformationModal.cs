@@ -31,6 +31,7 @@ public class CharacterInformationModal : BasicModal
         });
 
         // Generate the hero buttons
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUpgradeHero>(RefreshHeroList);
         await GenerateHeroButton();
     }
 
@@ -41,6 +42,11 @@ public class CharacterInformationModal : BasicModal
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
         int heroCount = _ownedHeroDict.Count;
         _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);
+    }
+
+    public async UniTask RefreshHeroList(OnUpgradeHero e)
+    {
+        await GenerateHeroButton();
     }
 
     public void OnGenerateButton(int index, ICell cell)

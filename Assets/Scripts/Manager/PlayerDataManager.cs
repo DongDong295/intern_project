@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Firebase.Firestore;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -69,7 +71,7 @@ public class PlayerDataManager : MonoBehaviour
             PlayerPrefs.Save(); // Ensure it persists
         }
 
-        // Load the global player data
+        await SyncHeroesWithDatabase();
         LoadHeroesFromJSON();
         await UniTask.CompletedTask;
     }
@@ -106,7 +108,7 @@ public class PlayerDataManager : MonoBehaviour
         Debug.Log($"Generated new hero with ID: {heroID}");
 
         // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
-        SaveHeroesToJSON();
+        await SaveHeroesToFirebase();
         await UniTask.CompletedTask;
     }
 
@@ -120,7 +122,7 @@ public class PlayerDataManager : MonoBehaviour
     // Generate a new guest PlayerID
     private string GenerateGuestPlayerID()
     {
-        int randomNumber = Random.Range(1000, 9999); // Random number for guest player ID
+        int randomNumber = UnityEngine.Random.Range(1000, 9999); // Random number for guest player ID
         return $"guestPlayer{randomNumber}";
     }
 
@@ -276,11 +278,11 @@ public class PlayerDataManager : MonoBehaviour
         return unequippedHeroes;
     }
 
-    public void RemoveHero(Hero heroRef){
+    public async UniTask RemoveHero(Hero heroRef){
         if(OwnedHero.ContainsKey(heroRef.heroID)){
              OwnedHero.Remove(heroRef.heroID);
         }
-        SaveHeroesToJSON();
+        await SaveHeroesToFirebase();
     }
 
     public GlobalData LoadGlobalData()
@@ -292,9 +294,130 @@ public class PlayerDataManager : MonoBehaviour
         {
             return JsonUtility.FromJson<GlobalData>(globalJson);
         }
-
-        // If no global data exists, return a new instance
         Debug.Log("No global data found in PlayerPrefs. Returning new GlobalData.");
         return new GlobalData();
+    }
+
+    public async UniTask SaveHeroesToFirebase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+
+        // Convert OwnedHero dictionary to a dictionary that Firestore can accept
+        Dictionary<string, object> heroData = new Dictionary<string, object>();
+
+        foreach (var kvp in OwnedHero)
+        {
+            Hero hero = kvp.Value;
+            
+            // Create a dictionary for each hero's data
+            Dictionary<string, object> heroFields = new Dictionary<string, object>
+            {
+                { "heroID", hero.heroID },
+                { "heroVisualID", hero.heroVisualID },
+                { "hpStep", hero.hpStep },
+                { "attackDamageStep", hero.attackDamageStep },
+                { "critChance", hero.critChance },
+                { "cooldownGenerate", hero.cooldownGenerate },
+                { "attackSpeed", hero.attackSpeed },
+                { "moveSpeed", hero.moveSpeed },
+                { "killDamage", hero.killDamage },
+                { "expStep", hero.expStep },
+                { "expBasic", hero.expBasic },
+                { "exp", hero.exp },
+                { "level", hero.level },
+                { "isEquipped", hero.isEquipped }
+            };
+
+            // Use the heroID as the key to represent each hero
+            heroData[hero.heroID] = heroFields;
+        }
+
+        // Reference to the PlayerID collection
+        CollectionReference playerCollectionRef = db.Collection(PlayerID); // PlayerID is the collection name
+
+        // Reference to the OwnedHero document inside the PlayerID collection
+        DocumentReference ownedHeroDocRef = playerCollectionRef.Document("OwnedHero");
+
+        // Set the hero data under the OwnedHero document
+        await ownedHeroDocRef.SetAsync(heroData, SetOptions.Overwrite);
+
+        Debug.Log("Saved hero data to Firestore successfully");
+
+        // Optionally save locally to maintain sync
+        SaveHeroesToJSON();
+    }
+
+    public async UniTask SyncHeroesWithDatabase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+
+        // Reference to the player's collection (PlayerID is the collection name)
+        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+
+        // Reference to the OwnedHero document inside the PlayerID collection
+        DocumentReference ownedHeroDocRef = playerCollectionRef.Document("OwnedHero");
+
+        // Fetch the document from Firestore
+        DocumentSnapshot docSnapshot = await ownedHeroDocRef.GetSnapshotAsync();
+
+        if (docSnapshot.Exists)
+        {
+            // Document exists, so let's compare and sync data
+            Dictionary<string, object> heroDataFromFirestore = docSnapshot.ToDictionary();
+            SyncLocalDataWithFirestore(heroDataFromFirestore);
+        }
+        else
+        {
+            // If the document doesn't exist, you might want to initialize it with the local data
+            Debug.Log("No hero data found in Firestore for PlayerID: " + PlayerID);
+        }
+    }
+
+    private void SyncLocalDataWithFirestore(Dictionary<string, object> heroDataFromFirestore)
+    {
+        // Assuming OwnedHero is a Dictionary<string, Hero> in your local data
+        Dictionary<string, Hero> newOwnedHeroes = new Dictionary<string, Hero>();
+
+        foreach (var kvp in heroDataFromFirestore)
+        {
+            string heroID = kvp.Key;
+            var heroFields = kvp.Value as Dictionary<string, object>;
+
+            if (heroFields != null)
+            {
+                // Create a hero from the Firestore data
+                Hero hero = new Hero
+                {
+                    heroID = heroFields["heroID"] as string,
+                    heroVisualID = Convert.ToInt32(heroFields["heroVisualID"]),
+                    hpStep = Convert.ToSingle(heroFields["hpStep"]),
+                    attackDamageStep = Convert.ToSingle(heroFields["attackDamageStep"]),
+                    critChance = Convert.ToSingle(heroFields["critChance"]),
+                    cooldownGenerate = Convert.ToSingle(heroFields["cooldownGenerate"]),
+                    attackSpeed = Convert.ToSingle(heroFields["attackSpeed"]),
+                    moveSpeed = Convert.ToSingle(heroFields["moveSpeed"]),
+                    killDamage = Convert.ToSingle(heroFields["killDamage"]),
+                    expStep = Convert.ToSingle(heroFields["expStep"]),
+                    expBasic = Convert.ToSingle(heroFields["expBasic"]),
+                    exp = Convert.ToSingle(heroFields["exp"]),
+                    level = Convert.ToInt32(heroFields["level"]),
+                    isEquipped = Convert.ToBoolean(heroFields["isEquipped"])
+                };
+
+                // If the hero is not already in local data, add it
+                if (!OwnedHero.ContainsKey(hero.heroID))
+                {
+                    OwnedHero.Add(hero.heroID, hero);
+                    Debug.Log("Added new hero from Firestore: " + hero.heroID);
+                }
+                else
+                {
+                    // If the hero exists, update its data
+                    OwnedHero[hero.heroID] = hero;
+                    Debug.Log("Updated hero from Firestore: " + hero.heroID);
+                }
+            }
+        }
+        SaveHeroesToJSON();
     }
 }

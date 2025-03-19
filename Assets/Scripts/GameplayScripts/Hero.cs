@@ -45,11 +45,10 @@ public class Hero
 
     public void LevelUpHero(float expValue){
         exp += expValue;
-        if(exp >= (expStep * level)){
+        while(exp >= (level * expStep)){
+            Debug.Log(exp + " "+ level * expStep);
+            exp -= level * expStep;
             level++;
-            var exceedExp = (exp -= (expStep * level));
-            exp = 0;
-            exp += exceedExp;
         }
     }
 

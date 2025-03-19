@@ -20,7 +20,6 @@ public class HeroInformationModal : BasicModal
     [SerializeField] private TextMeshProUGUI _critChance;
     [SerializeField] private TextMeshProUGUI _attackSpeed;
     [SerializeField] private TextMeshProUGUI _cooldownGenerate;
-
     [SerializeField] private Image _expFillBar;
     [SerializeField] private TextMeshProUGUI _expDisplay;
 
@@ -72,16 +71,32 @@ public class HeroInformationModal : BasicModal
         await GenerateMaterialButton();
     }
 
-    public async UniTask LevelUpHero(){
+    public async UniTask LevelUpHero()
+    {
         float totalExp = 0;
-        if(_materials.IsNullOrEmpty())
+        if (_materials.IsNullOrEmpty())
             return;
-        foreach(var h in _materials){
+
+        // Create a temporary list to store the heroes to be removed
+        var heroesToRemove = new List<Hero>(_materials);
+
+        // Iterate through the temporary list
+        foreach (var h in heroesToRemove)
+        {
             totalExp += h.GetHeroExpValue();
-            _dataManager.RemoveHero(h);
+            await _dataManager.RemoveHero(h);  // Remove hero from the original collection
         }
+
         _currentHero.LevelUpHero(totalExp);
+        _materials.Clear();  // Clear the original materials list
+        UpdateHeroExpUI();
         await GenerateMaterialButton();
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish<OnUpgradeHero>(new OnUpgradeHero());
+    }
+
+    private void UpdateHeroExpUI(){
+        _expDisplay.text = $"{_currentHero.exp}/{_currentHero.GetHeroRequireExp()}";
+        _expFillBar.fillAmount = _currentHero.exp / _currentHero.GetHeroRequireExp();
     }
 
     public void SelectMaterial(OnSelectMaterialHeroForUpgrade e){
@@ -94,8 +109,9 @@ public class HeroInformationModal : BasicModal
     public override UniTask Cleanup(Memory<object> args)
     {
         _scroller.Clear();
-        _equipButton.onClick.RemoveAllListeners();
         _materials.Clear();
+        _levelUpButton.onClick.RemoveAllListeners();
+        _equipButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
     }
 }

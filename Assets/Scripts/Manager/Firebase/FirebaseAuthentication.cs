@@ -67,4 +67,11 @@ public class FirebaseAuthentication : FirebaseModule
             });
         }
     }
+
+    public void SignOut(){
+        auth.SignOut();
+        user = null;
+        SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(false);
+        SingleBehaviour.Of<PlayerDataManager>().SetPlayerID("");
+    }
 }

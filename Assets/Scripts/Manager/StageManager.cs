@@ -33,6 +33,8 @@ public class StageManager : MonoBehaviour
     private CancellationTokenSource _cts;
 
     private BuffData _buffData;
+
+    private GameObject _currentBuff;
     public async UniTask InitiateStage(int stageIndex){
         IsWin = false;
         _buffData = await Singleton.Of<DataManager>().Load<BuffData>(Data.BUFF_DATA);
