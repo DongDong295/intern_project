@@ -36,7 +36,8 @@ public class CharacterInformationModal : BasicModal
 
     public async UniTask GenerateHeroButton()
     {
-        Debug.Log("Generate buttons of modal");
+        // Rent the button prefab from the PoolingManager
+        _scroller.Clear();
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
         int heroCount = _ownedHeroDict.Count;
         _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);

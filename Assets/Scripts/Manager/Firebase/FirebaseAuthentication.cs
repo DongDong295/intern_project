@@ -63,6 +63,7 @@ public class FirebaseAuthentication : FirebaseModule
 
                 user = auth.CurrentUser;
                 SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(true);
+                SingleBehaviour.Of<PlayerDataManager>().SetPlayerID(user.UserId);
             });
         }
     }

@@ -45,7 +45,10 @@ public class HeroInformationModal : BasicModal
 
     public async UniTask GenerateMaterialButton(){
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-material-button");
+        _heroOption = _dataManager.GetUnequippedHeroDict(_currentHero);
+        _scroller.Clear();
         _scroller.Generate(heroButtonPref, _heroOption.Count, OnGenerateButton);
+        await UniTask.CompletedTask;
     }
 
     public void OnGenerateButton(int index, ICell cell)
