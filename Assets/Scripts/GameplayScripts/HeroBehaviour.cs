@@ -1,42 +1,58 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;
 
 public class HeroBehaviour : MonoBehaviour, IDispose
 {   
+    [SerializeField] private Image _filler;
     private Hero _hero;
     private bool _canSpawn;
     
     private MiniHeroData _miniData;
     private CancellationTokenSource _source;
-    public void InitiateHero(Hero hero){
+    public async UniTask InitiateHero(Hero hero){
         SingleBehaviour.Of<StageManager>().DisposeList.Add(this);
+        //FillErrorEventArgs = 
         _hero = hero;
         _canSpawn = true;
         _miniData = new MiniHeroData(
                 _hero.moveSpeed, _hero.attackDamageStep * _hero.level, _hero.attackSpeed, _hero.critChance, _hero.killDamage);
         _source = new CancellationTokenSource();
         StartSpawningMiniHero();
+        await UniTask.CompletedTask;
     }
 
     public void StartSpawningMiniHero(){
         SpawnMiniHero().Forget();
     }
 
-    private async UniTask SpawnMiniHero(){
-        while(_canSpawn){
-            await UniTask.Delay(TimeSpan.FromSeconds(_hero.cooldownGenerate), cancellationToken: _source.Token);
+    private async UniTask SpawnMiniHero()
+    {
+        while (_canSpawn)
+        {
+            float cooldownTime = _hero.cooldownGenerate;
+            float elapsedTime = 0f;
+            while (elapsedTime < cooldownTime)
+            {
+                elapsedTime += Time.deltaTime;
+                _filler.fillAmount = Mathf.Clamp01(elapsedTime / cooldownTime); // Update fillAmount
+                await UniTask.Yield(); // Yield to allow other tasks to run
+            }
+            _filler.fillAmount = 1f;
             var miniHero = await SingleBehaviour.Of<PoolingManager>().Rent($"mini-hero-visual-{_hero.heroVisualID}");
             miniHero.transform.position = transform.position;
-            await miniHero.GetComponent<MiniHeroBehaviour>().InitiateMiniHero(_miniData);
+            miniHero.GetComponent<MiniHeroBehaviour>().InitiateMiniHero(_miniData);
         }
     }
+
 
     public void StopSpawningMiniHero(){
         _canSpawn = false;

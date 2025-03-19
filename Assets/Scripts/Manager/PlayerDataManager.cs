@@ -27,6 +27,25 @@ public class PlayerDataManager : MonoBehaviour
         public Hero hero;
     }
 
+    [System.Serializable]
+    public class PlayerData
+    {
+        public HeroDataDict ownedHeroData;
+    }
+
+    [System.Serializable]
+    public class GlobalData
+    {
+        public List<PlayerDataEntry> playersData = new List<PlayerDataEntry>();
+    }
+
+    [System.Serializable]
+    public class PlayerDataEntry
+    {
+        public string playerID;
+        public PlayerData playerData;
+    }
+
     public async UniTask OnStartApplication()
     {
         OwnedHero = new Dictionary<string, Hero>();
@@ -38,7 +57,18 @@ public class PlayerDataManager : MonoBehaviour
     public async UniTask LoadPlayerData()
     {
         IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
-        PlayerID = PlayerPrefs.GetString("PlayerID");
+
+        // Check if PlayerID is null or empty, if so generate a new guest PlayerID
+        PlayerID = PlayerPrefs.GetString("PlayerID", "");
+        if (string.IsNullOrEmpty(PlayerID))
+        {
+            // Generate a new PlayerID as guestPlayerXXXX
+            PlayerID = GenerateGuestPlayerID();
+            PlayerPrefs.SetString("PlayerID", PlayerID); // Save PlayerID immediately
+            PlayerPrefs.Save(); // Ensure it persists
+        }
+
+        // Load the global player data
         LoadHeroesFromJSON();
         await UniTask.CompletedTask;
     }
@@ -86,7 +116,14 @@ public class PlayerDataManager : MonoBehaviour
         return $"{timestamp}{randomPart}";
     }
 
-    // Method to save the hero dictionary to JSON in PlayerPrefs
+    // Generate a new guest PlayerID
+    private string GenerateGuestPlayerID()
+    {
+        int randomNumber = Random.Range(1000, 9999); // Random number for guest player ID
+        return $"guestPlayer{randomNumber}";
+    }
+
+    // Method to save the hero dictionary to JSON in PlayerPrefs under PlayerID
     public void SaveHeroesToJSON()
     {
         HeroDataDict heroDataDict = new HeroDataDict { heroes = new List<HeroDataEntry>() };
@@ -100,55 +137,97 @@ public class PlayerDataManager : MonoBehaviour
             });
         }
 
-        string json = JsonUtility.ToJson(heroDataDict);
-        Debug.Log(json);
+        string jsonHeroData = JsonUtility.ToJson(heroDataDict);
+        Debug.Log("Hero Data to Save: " + jsonHeroData);
 
-        PlayerPrefs.SetString("OwnedHeroes", json);
+        // Load global data
+        GlobalData globalData = LoadGlobalData();
+
+        // If PlayerID doesn't exist in global data, create a new entry
+        var existingPlayer = globalData.playersData.Find(player => player.playerID == PlayerID);
+
+        if (existingPlayer == null)
+        {
+            globalData.playersData.Add(new PlayerDataEntry { playerID = PlayerID, playerData = new PlayerData() });
+            existingPlayer = globalData.playersData.Find(player => player.playerID == PlayerID);
+        }
+
+        // Update the player's data (e.g., ownedHeroData)
+        existingPlayer.playerData.ownedHeroData = heroDataDict;
+
+        // Save back to PlayerPrefs
+        string globalJson = JsonUtility.ToJson(globalData);
+        Debug.Log("Global Data to Save: " + globalJson);
+
+        // Ensure data is saved correctly
+        PlayerPrefs.SetString("GlobalPlayerData", globalJson);
         PlayerPrefs.Save();
 
-        Debug.Log("Saved Heroes to JSON: " + json);
+        Debug.Log("Saved Heroes for PlayerID: " + PlayerID);
     }
 
-    // Method to load the hero dictionary from PlayerPrefs (deserialize JSON)
+    // Method to load the global data from PlayerPrefs and extract the player's data
     public void LoadHeroesFromJSON()
     {
-        string json = PlayerPrefs.GetString("OwnedHeroes");
+        // Load global data from PlayerPrefs
+        string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
 
-        if (!string.IsNullOrEmpty(json))
+        Debug.Log("Loading Global Data: " + globalJson);
+
+        if (!string.IsNullOrEmpty(globalJson))
         {
-            HeroDataDict heroDataDict = JsonUtility.FromJson<HeroDataDict>(json);
-            OwnedHero = new Dictionary<string, Hero>();
+            GlobalData globalData = JsonUtility.FromJson<GlobalData>(globalJson);
 
-            foreach (var heroEntry in heroDataDict.heroes)
+            // Check if the player data exists
+            var playerEntry = globalData.playersData.Find(player => player.playerID == PlayerID);
+
+            if (playerEntry != null)
             {
-                OwnedHero[heroEntry.heroID] = heroEntry.hero;
-                if(heroEntry.hero.isEquipped){
-                    EquipHero(OwnedHero[heroEntry.heroID]);
-                }
-            }
+                PlayerData playerData = playerEntry.playerData;
+                OwnedHero = new Dictionary<string, Hero>();
 
-            Debug.Log("Loaded Heroes from JSON" + json);
+                // Load the owned heroes
+                if (playerData.ownedHeroData != null)
+                {
+                    foreach (var heroEntry in playerData.ownedHeroData.heroes)
+                    {
+                        OwnedHero[heroEntry.heroID] = heroEntry.hero;
+                        if (heroEntry.hero.isEquipped)
+                        {
+                            EquipHero(OwnedHero[heroEntry.heroID]);
+                        }
+                    }
+                }
+                Debug.Log("Loaded Heroes for PlayerID: " + PlayerID);
+            }
+            else
+            {
+                Debug.Log("No data found for PlayerID: " + PlayerID);
+            }
         }
         else
         {
-            Debug.Log("No heroes found in PlayerPrefs");
+            Debug.Log("No global data found in PlayerPrefs.");
         }
     }
-    
+
     public void EquipHero(Hero heroToAdd)
     {
-        if(!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5){
+        if (!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5)
+        {
             EquippedHero.Add(heroToAdd);
             heroToAdd.isEquipped = true;
-    }
-        else{
-            if(EquippedHero.Contains(heroToAdd))
+        }
+        else
+        {
+            if (EquippedHero.Contains(heroToAdd))
                 EquippedHero.Remove(heroToAdd);
             heroToAdd.isEquipped = false;
-    }
+        }
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
     }
 
+<<<<<<< Updated upstream
     public List<Hero> GetUnequippedHeroList()
     {
         List<Hero> unequippedHeroes = new List<Hero>();
@@ -202,5 +281,21 @@ public class PlayerDataManager : MonoBehaviour
              OwnedHero.Remove(heroRef.heroID);
         }
         SaveHeroesToJSON();
+=======
+    // Method to load global data from PlayerPrefs
+    public GlobalData LoadGlobalData()
+    {
+        string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
+        Debug.Log("Loading Global Data from PlayerPrefs: " + globalJson);
+
+        if (!string.IsNullOrEmpty(globalJson))
+        {
+            return JsonUtility.FromJson<GlobalData>(globalJson);
+        }
+
+        // If no global data exists, return a new instance
+        Debug.Log("No global data found in PlayerPrefs. Returning new GlobalData.");
+        return new GlobalData();
+>>>>>>> Stashed changes
     }
 }

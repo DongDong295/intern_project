@@ -28,7 +28,6 @@ public class CharacterInformationModal : BasicModal
         _gachaButton.onClick.AddListener(async () => 
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGachaEvent());
-            Debug.Log(SingleBehaviour.Of<PlayerDataManager>().OwnedHero.Count);
             await GenerateHeroButton();
         });
 
@@ -37,9 +36,18 @@ public class CharacterInformationModal : BasicModal
         await GenerateHeroButton();
     }
 
+    public void AddNewHero(){
+        
+    }
     public async UniTask GenerateHeroButton()
     {
+<<<<<<< Updated upstream
         _scroller.Clear();
+=======
+        // Rent the button prefab from the PoolingManager
+        _scroller.Clear();
+        var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
+>>>>>>> Stashed changes
         int heroCount = _ownedHeroDict.Count;
         _scroller.Generate(_buttonPref, heroCount, OnGenerateButton);
         await UniTask.CompletedTask;
