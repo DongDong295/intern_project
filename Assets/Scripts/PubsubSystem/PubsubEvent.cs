@@ -55,6 +55,10 @@ public struct OnSelectMaterialHeroForUpgrade : IMessage{
     }
 }
 
+public struct OnUpgradeHero : IMessage{
+    
+}
+
 public struct OnFinishStage : IMessage{
     public bool Result;
     public OnFinishStage(bool result){

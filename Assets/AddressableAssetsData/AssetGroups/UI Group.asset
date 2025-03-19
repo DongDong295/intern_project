@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76dc7ce9139f957499c01a0c8af2a21f
+    m_Address: ui-settings-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99e9e0df8a88a1b40ac5a2b97f4717f1
     m_Address: ui-stage-selection-modal
     m_ReadOnly: 0

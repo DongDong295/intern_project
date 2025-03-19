@@ -39,4 +39,6 @@ public class ModalUI{
 
     public const string HERO_INFORMATION_MODAL = "ui-hero-information-modal";
     public const string STAGE_END_MODAL = "ui-stage-end-modal";
+
+    public const string SETTINGS = "ui-settings-modal";
 }

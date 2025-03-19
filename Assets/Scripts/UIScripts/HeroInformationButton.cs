@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnlimitedScrollUI;
+using ZBase.Foundation.PubSub;
 
 public class HeroInformationButton : RegularCell
 {
@@ -11,36 +11,25 @@ public class HeroInformationButton : RegularCell
     [SerializeField] private TextMeshProUGUI level;
     [SerializeField] private GameObject equipStatus; 
 
-    private IDisposable _equipHeroSubscription;  // Store the subscription to unsubscribe later
-
-    public void InitiateButton(Hero heroRef)
-    {
+    private ISubscription _sub;
+    public void InitiateButton(Hero heroRef){
         level.text = "Lv " + heroRef.level.ToString();
         _buttonHeroID = heroRef.heroID;
-        if (heroRef.isEquipped)
-        {
+        if(heroRef.isEquipped){
             equipStatus.SetActive(true);
         }
-
-        // Subscribe to the event and store the subscription to unsubscribe later
-        _equipHeroSubscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnPlayerEquipHero>(OnEquipHero);
+        _sub = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnPlayerEquipHero>(OnEquipHero);
     }
 
-    public void OnEquipHero(OnPlayerEquipHero e)
-    {
-        if (_buttonHeroID == e.HeroID)
-        {
+    public void OnEquipHero(OnPlayerEquipHero e){
+        if(_buttonHeroID == e.HeroID){
             equipStatus.SetActive(e.IsEquip);
         }
     }
 
-    // Unsubscribe when the object is destroyed
-    public void OnDestroy()
+    public void Oestroy()
     {
-        if (_equipHeroSubscription != null)
-        {
-            // Assuming that the subscription token (or IDisposable) has a method to unsubscribe
-            _equipHeroSubscription.Dispose(); // This should remove the subscription if it's IDisposable
-        }
+        _sub.Unsubscribe();
+        _sub.Dispose();        
     }
 }

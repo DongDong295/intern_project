@@ -26,7 +26,7 @@ MonoBehaviour:
       Data: 0|StageDataItems[], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 11
     - Name: 
       Entry: 7
       Data: 1|StageDataItems, Assembly-CSharp
@@ -38,7 +38,7 @@ MonoBehaviour:
       Data: 0
     - Name: requireDefeatTime
       Entry: 4
-      Data: 300
+      Data: 150
     - Name: bossHp
       Entry: 4
       Data: 2000
@@ -62,7 +62,7 @@ MonoBehaviour:
       Data: 0
     - Name: requireDefeatTime
       Entry: 4
-      Data: 300
+      Data: 170
     - Name: bossHp
       Entry: 4
       Data: 2500
@@ -72,6 +72,222 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1.9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 2
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 210
+    - Name: bossHp
+      Entry: 4
+      Data: 3000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2.5
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 3
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 220
+    - Name: bossHp
+      Entry: 4
+      Data: 4500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 4
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 250
+    - Name: bossHp
+      Entry: 4
+      Data: 5000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 5
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 260
+    - Name: bossHp
+      Entry: 4
+      Data: 5500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 6
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 265
+    - Name: bossHp
+      Entry: 4
+      Data: 6500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 5
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 8|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 7
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 270
+    - Name: bossHp
+      Entry: 4
+      Data: 7000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 9|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 8
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 280
+    - Name: bossHp
+      Entry: 4
+      Data: 7500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 10|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 9
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 295
+    - Name: bossHp
+      Entry: 4
+      Data: 8000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 1
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 10
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 300
+    - Name: bossHp
+      Entry: 4
+      Data: 10000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 1
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
     - Name: 
       Entry: 8
       Data: 

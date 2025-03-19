@@ -43,23 +43,14 @@ public class Hero
         level = 1;
     }
 
-    public void LevelUpHero(float expValue)
-    {
-        // Add the new experience to the existing experience
+    public void LevelUpHero(float expValue){
         exp += expValue;
-        Debug.Log(expValue);
-
-        // Continue leveling up while the hero has enough experience for the next level
-        while (exp >= (expStep * level))
-        {
-            float requiredExpForNextLevel = expStep * level;
-
-            // Subtract the experience required to level up, and increase level
-            exp -= requiredExpForNextLevel;
+        while(exp >= (level * expStep)){
+            Debug.Log(exp + " "+ level * expStep);
+            exp -= level * expStep;
             level++;
         }
     }
-
 
     public float GetHeroExpValue(){
         return (expStep * level + exp) / 2 + expBasic;

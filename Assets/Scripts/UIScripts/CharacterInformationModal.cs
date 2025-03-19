@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnlimitedScrollUI;
-using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;
 
 public class CharacterInformationModal : BasicModal
@@ -15,7 +14,6 @@ public class CharacterInformationModal : BasicModal
 
     private Dictionary<string, Hero> _ownedHeroDict;
     private Hero _referenceHero;
-    private GameObject _buttonPref;
 
     public override async UniTask Initialize(Memory<object> arg)
     {
@@ -28,38 +26,27 @@ public class CharacterInformationModal : BasicModal
         _gachaButton.onClick.AddListener(async () => 
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGachaEvent());
+            Debug.Log(SingleBehaviour.Of<PlayerDataManager>().OwnedHero.Count);
             await GenerateHeroButton();
         });
 
-        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnRemoveHero>(UpdateHeroScollerUI);
-        _buttonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
+        // Generate the hero buttons
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUpgradeHero>(RefreshHeroList);
         await GenerateHeroButton();
     }
 
-    public void AddNewHero(){
-        
-    }
     public async UniTask GenerateHeroButton()
     {
-<<<<<<< Updated upstream
-        _scroller.Clear();
-=======
         // Rent the button prefab from the PoolingManager
         _scroller.Clear();
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
->>>>>>> Stashed changes
         int heroCount = _ownedHeroDict.Count;
-        _scroller.Generate(_buttonPref, heroCount, OnGenerateButton);
-        await UniTask.CompletedTask;
-        //Destroy(heroButtonPref);
+        _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);
     }
-    public async UniTask UpdateHeroScollerUI(OnRemoveHero e)
+
+    public async UniTask RefreshHeroList(OnUpgradeHero e)
     {
-        _scroller.Clear();
-        int heroCount = _ownedHeroDict.Count;
-        _scroller.Generate(_buttonPref, heroCount, OnGenerateButton);
-        await UniTask.CompletedTask;
-        //Destroy(heroButtonPref);
+        await GenerateHeroButton();
     }
 
     public void OnGenerateButton(int index, ICell cell)

@@ -11,6 +11,7 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 {
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _characterButton;
+    [SerializeField] private Button _settingButton;
 
 
     public override UniTask Initialize(Memory<object> args)
@@ -24,11 +25,15 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         {
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.CHARACTERS_MODAL, false));
         });
+        _settingButton.onClick.AddListener(()=>{
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.SETTINGS, false));
+        });
         return UniTask.CompletedTask;
     }
 
     public override UniTask Cleanup(Memory<object> args)
     {
+        _settingButton.onClick.RemoveAllListeners();
         _playButton.onClick.RemoveAllListeners();
         _characterButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
