@@ -87,7 +87,7 @@ public class StageManager : MonoBehaviour
     public void DealDamage(float damage, bool isCrit){
         if(BossHP > 0){
             BossHP -= damage;
-            Pubsub.Publisher.Scope<UIEvent>().Publish<OnBossTakeDamageEvent>(new OnBossTakeDamageEvent());
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new OnBossTakeDamageEvent());
             DisplayDamageText(damage, isCrit).Forget();
         }
         if(BossHP <= 0 && !_isStageEnd){
@@ -113,7 +113,7 @@ public class StageManager : MonoBehaviour
             Debug.Log("hero-visual-" + _heroes[index].heroVisualID);
             var heroVisual = await SingleBehaviour.Of<PoolingManager>().Rent("hero-visual-" + _heroes[index].heroVisualID);
             heroVisual.transform.position = _heroPositions[index].transform.position;
-            heroVisual.GetComponent<HeroBehaviour>().InitiateHero(_heroes[index]);
+            await heroVisual.GetComponent<HeroBehaviour>().InitiateHero(_heroes[index]);
         }
     }
 

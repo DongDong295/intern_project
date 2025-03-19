@@ -427,7 +427,7 @@ MonoBehaviour:
   cellPerRow: 3
   cacheSize: 0
   scrollRect: {fileID: 7506394012968932654}
-  horizontalAlignment: 1
+  horizontalAlignment: 0
 --- !u!114 &6671488895708121818
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -33,6 +33,10 @@ public struct OnBossTakeDamageEvent : IMessage{
 
 }
 
+public struct OnRemoveHero : IMessage{
+    
+}
+
 public struct OnPlayerEquipHero : IMessage{
     public string HeroID;
     public bool IsEquip;

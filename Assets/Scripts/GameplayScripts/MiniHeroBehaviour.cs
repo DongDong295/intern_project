@@ -19,7 +19,7 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
 
     private CancellationTokenSource _cts; // Token to cancel tasks
 
-    public async UniTask InitiateMiniHero(MiniHeroData data){
+    public void InitiateMiniHero(MiniHeroData data){
         _stageManager = SingleBehaviour.Of<StageManager>();
         _stageManager.DisposeList.Add(this);
         _cts = new CancellationTokenSource(); // Initialize the cancellation token
@@ -35,8 +35,6 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         
         MoveToBoss().Forget();
         AttackBoss().Forget();
-
-        await UniTask.CompletedTask;
     }
 
     public async UniTask MoveToBoss()
@@ -65,7 +63,6 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
     public void TriggerKillDamage(){
         _isReachedTarget = true;
         _stageManager.DealDamage(killDamage, false); // Deal kill damage
-        StopAllActions(); // Stop all actions (Move, Attack)
         OnDestroyMiniHero(); // Destroy or return the MiniHero
     }
 
@@ -74,6 +71,7 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
     }
 
     public void OnDestroyMiniHero(){
+        StopAllActions(); // Stop all actions (Move, Attack)
         SingleBehaviour.Of<PoolingManager>().Return(gameObject);
     }
 

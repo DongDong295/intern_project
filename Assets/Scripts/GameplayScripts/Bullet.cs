@@ -41,10 +41,8 @@ public class Bullet : MonoBehaviour, IDispose
         while (Vector3.Distance(transform.position, _stageManager.GetBossPosition()) > _killDistance && _stageManager.GetBossReference() != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, _stageManager.GetBossPosition(), _speed * _speedMultiplier * _stageManager.StageDeltaTime);
-            await UniTask.Yield();
+            await UniTask.Yield(cancellationToken: cancellationToken);
         }
-
-        // If movement stopped due to distance, deal damage
         DealDamage(_damage);
     }
 
@@ -56,6 +54,7 @@ public class Bullet : MonoBehaviour, IDispose
             inputDamage *= 2;
         
         _stageManager.DealDamage(inputDamage, critValue <= _critChance / 100);
+        _cancellationTokenSource?.Cancel();
         SingleBehaviour.Of<PoolingManager>().Return(this.gameObject);
     }
 
