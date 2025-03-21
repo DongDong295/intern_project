@@ -72,6 +72,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d16221e794fe16e4e8994a7f8c770561
+    m_Address: bullet-hit-vfx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f4fbc21526a8c1f478faaa93b34488fb
     m_Address: bullet
     m_ReadOnly: 0

@@ -44,11 +44,24 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         _bossPosition.y = 0;
         _killDistance = _stageManager.GetBossScale().z;
         
+        // Start scale-up effect when the mini hero is initialized
+        StartScaleUpEffect();
+        
         MoveToBoss().Forget();
         AttackBoss().Forget();
         
         // Start the bobbing animation for the hero
         StartBobbingEffect();
+    }
+
+    private void StartScaleUpEffect()
+    {
+        // Start with scale 0 (invisible)
+        transform.localScale = Vector3.zero; 
+
+        // Animate scale from 0 to the original scale
+        transform.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.5f) // Scale to full size
+            .SetEase(Ease.OutBack);  // Add easing to make it feel more natural
     }
 
     // Start the bobbing animation for the Tiny Hero's visual
@@ -135,7 +148,6 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         _heroVisual.transform.DOComplete();
         _heroVisual.transform.DOKill();  // Kill any tweens on the hero visual
         _bobbingTween.Kill();            // Kill the specific bobbing tween if it exists
-
         // Return the MiniHero to the pooling manager
         SingleBehaviour.Of<PoolingManager>().Return(gameObject);
     }

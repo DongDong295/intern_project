@@ -39,7 +39,6 @@ public class Bullet : MonoBehaviour, IDispose
 
     private async UniTask MoveTowardBoss(CancellationToken cancellationToken)
     {
-        // Continuously move the bullet until it reaches the kill distance or it is cancelled
         while (Vector3.Distance(transform.position, _stageManager.GetBossPosition()) > _killDistance && _stageManager.GetBossReference() != null)
         {
             transform.position = Vector3.MoveTowards(transform.position, _stageManager.GetBossPosition(), _speed * _speedMultiplier * _stageManager.StageDeltaTime);
@@ -58,10 +57,16 @@ public class Bullet : MonoBehaviour, IDispose
             inputDamage *= 2;
         
         _stageManager.DealDamage(inputDamage, critValue <= _critChance / 100);
+        BulletHitVfx().Forget();
         _cancellationTokenSource?.Cancel();
         SingleBehaviour.Of<PoolingManager>().Return(this.gameObject);
     }
 
+    public async UniTask BulletHitVfx(){
+        var vfx = await SingleBehaviour.Of<PoolingManager>().Rent("bullet-hit-vfx");
+        vfx.transform.position = transform.position;
+
+    }
     public void Dispose()
     {
         _cancellationTokenSource?.Cancel();

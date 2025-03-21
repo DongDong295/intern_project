@@ -1,15 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;
+using DG.Tweening;  // DOTween namespace for animations
 
 public class HeroBehaviour : MonoBehaviour, IDispose
 {   
@@ -19,15 +18,17 @@ public class HeroBehaviour : MonoBehaviour, IDispose
     
     private MiniHeroData _miniData;
     private CancellationTokenSource _source;
-    public async UniTask InitiateHero(Hero hero){
+
+    public async UniTask InitiateHero(Hero hero)
+    {
         SingleBehaviour.Of<StageManager>().DisposeList.Add(this);
-        //FillErrorEventArgs = 
         _hero = hero;
         _canSpawn = true;
         _miniData = new MiniHeroData(
                 _hero.moveSpeed, _hero.attackDamageStep * _hero.level, _hero.attackSpeed, _hero.critChance, _hero.killDamage);
         _source = new CancellationTokenSource();
-        StartSpawningMiniHero();
+
+        StartSpawningMiniHero();  // Start spawning mini heroes
         await UniTask.CompletedTask;
     }
 
@@ -48,12 +49,12 @@ public class HeroBehaviour : MonoBehaviour, IDispose
                 await UniTask.Yield(cancellationToken: _source.Token); // Yield to allow other tasks to run
             }
             _filler.fillAmount = 1f;
+
             var miniHero = await SingleBehaviour.Of<PoolingManager>().Rent($"mini-hero-visual-{_hero.heroVisualID}");
             miniHero.transform.position = transform.position;
             miniHero.GetComponent<MiniHeroBehaviour>().InitiateMiniHero(_miniData);
         }
     }
-
 
     public void StopSpawningMiniHero(){
         _canSpawn = false;

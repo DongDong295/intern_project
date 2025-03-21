@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8285908}
   - component: {fileID: 114730798815361218}
   m_Layer: 0
-  m_Name: ExplosionFireballFire
+  m_Name: bullet-hit-vfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

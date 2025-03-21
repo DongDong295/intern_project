@@ -21,7 +21,13 @@ public class GameManager : MonoBehaviour
         #elif UNITY_IOS
             DeviceType = "IOS";
         #endif
+        QualitySettings.vSyncCount = 0; // Set vSyncCount to 0 so that using .targetFrameRate is enabled.
+        Application.targetFrameRate = 60;
         await StartApplication();
+    }
+
+    public void Update()
+    {
     }
 
     public async UniTask ChangeToGameplayScene(OnEnterGamePlayScene e)
@@ -34,7 +40,6 @@ public class GameManager : MonoBehaviour
 
     public async UniTask StartApplication(){
         await SingleBehaviour.Of<PlayerDataManager>().OnStartApplication();
-        Debug.Log("Is authenticated: " + SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
         await SingleBehaviour.Of<FirebaseManager>().OnStartApplication();
         await SingleBehaviour.Of<UIManager>().OnStartApplication();
         Singleton.Of<DataManager>().Initiate();
