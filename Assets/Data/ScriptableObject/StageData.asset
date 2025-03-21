@@ -1,0 +1,299 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be97351070dff6489e38498d841b970, type: 3}
+  m_Name: StageData
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: stageDataItems
+      Entry: 7
+      Data: 0|StageDataItems[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 11
+    - Name: 
+      Entry: 7
+      Data: 1|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 0
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 150
+    - Name: bossHp
+      Entry: 4
+      Data: 2000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 1
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 170
+    - Name: bossHp
+      Entry: 4
+      Data: 2500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2.5
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1.9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 3|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 2
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 210
+    - Name: bossHp
+      Entry: 4
+      Data: 3000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2.5
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 4|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 3
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 220
+    - Name: bossHp
+      Entry: 4
+      Data: 4500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 5|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 4
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 250
+    - Name: bossHp
+      Entry: 4
+      Data: 5000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 5
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 260
+    - Name: bossHp
+      Entry: 4
+      Data: 5500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 6
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 265
+    - Name: bossHp
+      Entry: 4
+      Data: 6500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 5
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 8|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 7
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 270
+    - Name: bossHp
+      Entry: 4
+      Data: 7000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 9|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 8
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 280
+    - Name: bossHp
+      Entry: 4
+      Data: 7500
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 2
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 10|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 9
+    - Name: bossVisualId
+      Entry: 3
+      Data: 0
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 295
+    - Name: bossHp
+      Entry: 4
+      Data: 8000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 1
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 11|StageDataItems, Assembly-CSharp
+    - Name: stageIndex
+      Entry: 3
+      Data: 10
+    - Name: bossVisualId
+      Entry: 3
+      Data: 1
+    - Name: requireDefeatTime
+      Entry: 4
+      Data: 300
+    - Name: bossHp
+      Entry: 4
+      Data: 10000
+    - Name: bossAttackDamage
+      Entry: 4
+      Data: 1
+    - Name: bossAttackSpeed
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

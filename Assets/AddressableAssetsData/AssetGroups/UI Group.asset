@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI Group
+  m_EditorClassIdentifier: 
+  m_GroupName: UI Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 42250067a36dcd54fbcca2fdba06c640
+  m_SerializeEntries:
+  - m_GUID: 10de22399cca02a448fe1ec2b29ddd40
+    m_Address: ui-stage-end-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 267d7bfd2688df3449f36a34c5fca0f5
+    m_Address: ui-main-gameplay-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36ee7b7fa2de9034f9af473d8870f350
+    m_Address: ui-hero-information-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4243b69f598c8454496b7a6a979c3023
+    m_Address: ui-loading-screen-android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 578588fdf8ddda94e895e0b16b69ab17
+    m_Address: ui-hero-information-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7113c3d76d13b4d498f0c24aef175457
+    m_Address: ui-main-menu-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7353a2e285773144695524e8d04cc968
+    m_Address: ui-loading-screen-ios
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76dc7ce9139f957499c01a0c8af2a21f
+    m_Address: ui-settings-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99e9e0df8a88a1b40ac5a2b97f4717f1
+    m_Address: ui-stage-selection-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ae7ead9590128c439fc15a7fb0cb9b0
+    m_Address: ui-characters-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bab6fcfe45e229a479e612634817df04
+    m_Address: ui-hero-material-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c89faca4d852d07448697cb98dfdf736
+    m_Address: damage-text
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9ef0b2b8fc4078499cd386c8420ae20
+    m_Address: ui-stage-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f72e5c23ff5a4c944855e84ef546237a
+    m_Address: ui-login-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 4ff07be1d96a6ce43bc4cc2ee9b47802, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c94f71eb9bafa7b45a590e4db081e83a, type: 2}
+    - {fileID: 11400000, guid: de5b8d4d04311e84696d7c6df44f110b, type: 2}

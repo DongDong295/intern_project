@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: New Table_vi-VN
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: vi-VN
+  m_SharedData: {fileID: 11400000, guid: efcd82c642d75d84983186615aa11cac, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 4946477969408
+    m_Localized: "\u0110\u0102NG NH\u1EACP"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946477969409
+    m_Localized: "CH\u01A0I"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946477969410
+    m_Localized: "L\xCAN C\u1EA4P"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946482163712
+    m_Localized: "NH\xC2N V\u1EACT"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946490552320
+    m_Localized: "TRANG B\u1ECA/B\u1ECE TRANG B\u1ECA "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10883062296576
+    m_Localized: Vietnamese (Vietnam)(vi-VN)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15261093588992
+    m_Localized: "\u0110\u0102NG NH\u1EACP"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15261093588993
+    m_Localized: "B\u01B0\u1EDBc s\xE1t th\u01B0\u01A1ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15261093588994
+    m_Localized: "C\u01A1 h\u1ED9i ch\xED m\u1EA1ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15261093588995
+    m_Localized: "T\u1ED1c \u0111\u1ED9 t\u1EA5n c\xF4ng"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15261093588996
+    m_Localized: CD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20093619662848
+    m_Localized: "TH\u1EAENG!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20093619662849
+    m_Localized: THUA!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20093619662850
+    m_Localized: "M\xC0N H\xCCNH CH\xCDNH"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20093619662851
+    m_Localized: "CH\u01A0I L\u1EA0I"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20093619662852
+    m_Localized: "TI\u1EBEP T\u1EE4C"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
