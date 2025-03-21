@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30a1ca85182ce3e439e8d6cb843ab9ad
+    m_Address: kill-damage-vfx
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39bec1e6327fa6e47a4ca877533cdb35
     m_Address: mini-hero-visual-2
     m_ReadOnly: 0
@@ -34,6 +39,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3afc0efda9e7c3f40b1b14470555887d
     m_Address: hero-visual-0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3ee8f8f857df80c43af21ff940cb0433
+    m_Address: damage-text-object
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40e243d9fbe103a43a06f943538b5d64
+    m_Address: boss-visual-1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

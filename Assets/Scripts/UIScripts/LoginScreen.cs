@@ -15,16 +15,17 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     private ISubscription _subscription;    
     public override UniTask Initialize(Memory<object> args)
     {
-        Debug.Log("Trigger login screen");
         base.Initialize(args);
         _loginButton.onClick.AddListener(() =>
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerLoginEvent());
         }); 
-        if(SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
-            ShowMainMenuScreen();
-        else
+        if(!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
             _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
+        else{
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
+            ShowMainMenuScreen();
+        }
         return UniTask.CompletedTask;
     }
 
@@ -35,8 +36,6 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         {
             await WaitForAuthentication();
         }
-
-        // After authentication (or already authenticated), show Main Menu Screen
         ShowMainMenuScreen();
     }
 
@@ -57,7 +56,6 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     public override UniTask Cleanup(Memory<object> args)
     {
-        Debug.Log("Disposed");
         base.Cleanup(args);
         return UniTask.CompletedTask;
     }

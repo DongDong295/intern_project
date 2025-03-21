@@ -33,8 +33,9 @@ public class GameManager : MonoBehaviour
     }
 
     public async UniTask StartApplication(){
-        await SingleBehaviour.Of<FirebaseManager>().OnStartApplication();
         await SingleBehaviour.Of<PlayerDataManager>().OnStartApplication();
+        Debug.Log("Is authenticated: " + SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
+        await SingleBehaviour.Of<FirebaseManager>().OnStartApplication();
         await SingleBehaviour.Of<UIManager>().OnStartApplication();
         Singleton.Of<DataManager>().Initiate();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnEnterGamePlayScene>(ChangeToGameplayScene);

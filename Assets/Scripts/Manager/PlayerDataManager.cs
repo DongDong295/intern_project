@@ -59,8 +59,9 @@ public class PlayerDataManager : MonoBehaviour
         PlayerID = GenerateGuestPlayerID();
         IsAuthenticated = true;
         #endif
-        
         LoadLanguageData();
+        IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
+        PlayerID = PlayerPrefs.GetString("PlayerID");
         OwnedHero = new Dictionary<string, Hero>();
         EquippedHero = new List<Hero>();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(LoadPlayerData);
@@ -70,8 +71,6 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask LoadPlayerData(OnFinishInitializeEvent e)
     {
-        IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
-        PlayerID = PlayerPrefs.GetString("PlayerID");
         if(PlayerID != ""){
             await SyncHeroesWithDatabase();
             await LoadHeroesFromJSON();

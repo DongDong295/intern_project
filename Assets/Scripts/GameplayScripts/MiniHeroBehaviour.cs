@@ -3,6 +3,9 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
+using DG.Tweening;
+using Cysharp.Threading.Tasks.Triggers;
+using TMPro; // Include DOTween namespace for animations
 
 public class MiniHeroBehaviour : MonoBehaviour, IDispose
 {
@@ -19,9 +22,17 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
 
     private CancellationTokenSource _cts; // Token to cancel tasks
 
-    public void InitiateMiniHero(MiniHeroData data){
+    [SerializeField] private GameObject _heroVisual; // Visual capsule (the hero)
+
+    private Tween _bobbingTween; // Tween for the bobbing effect
+    private Quaternion _baseRotation;
+
+    public void InitiateMiniHero(MiniHeroData data)
+    {
+        _baseRotation = transform.rotation;
         _stageManager = SingleBehaviour.Of<StageManager>();
-        _stageManager.DisposeList.Add(this);
+        if(!_stageManager.DisposeList.Contains(this))
+            _stageManager.DisposeList.Add(this);
         _cts = new CancellationTokenSource(); // Initialize the cancellation token
         _isReachedTarget = false;
         damage = data.Damage;
@@ -35,13 +46,32 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         
         MoveToBoss().Forget();
         AttackBoss().Forget();
+        
+        // Start the bobbing animation for the hero
+        StartBobbingEffect();
+    }
+
+    // Start the bobbing animation for the Tiny Hero's visual
+    private void StartBobbingEffect()
+    {
+        // Create a sequence to chain the rotations
+        _bobbingTween = DOTween.Sequence()
+            // Rotate from 0 to 10 degrees
+            .Append(_heroVisual.transform.DOLocalRotate(new Vector3(0, 0, 10), 0.5f).SetEase(Ease.InOutSine))
+            // Rotate from 10 to 0 degrees
+            .Append(_heroVisual.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InOutSine))
+            // Rotate from 0 to -10 degrees
+            .Append(_heroVisual.transform.DOLocalRotate(new Vector3(0, 0, -10), 0.5f).SetEase(Ease.InOutSine))
+            // Rotate from -10 to 0 degrees
+            .Append(_heroVisual.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InOutSine))
+            // Loop the sequence infinitely
+            .SetLoops(-1, LoopType.Restart);
     }
 
     public async UniTask MoveToBoss()
     {
         while (Vector3.Distance(transform.position, _bossPosition) > _killDistance)
         {
-            // If the boss hasn't been reached, keep moving towards the boss
             _isReachedTarget = false;
         
             transform.position = Vector3.MoveTowards(transform.position, _bossPosition, moveSpeed * _stageManager.StageDeltaTime);
@@ -50,7 +80,8 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         TriggerKillDamage();
     }
 
-    public async UniTask AttackBoss(){
+    public async UniTask AttackBoss()
+    {
         while (!_isReachedTarget)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(attackSpeed), cancellationToken: _cts.Token); // Wait for attack interval
@@ -60,34 +91,72 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         }
     }
 
-    public void TriggerKillDamage(){
+    public void TriggerKillDamage()
+    {
         _isReachedTarget = true;
-        _stageManager.DealDamage(killDamage, false); // Deal kill damage
+        _stageManager.DealDamage(killDamage, false);// Deal kill damage
+        TriggerKillDamageVFX().Forget();
         OnDestroyMiniHero(); // Destroy or return the MiniHero
     }
 
-    public void StopAllActions(){
+    public async UniTask TriggerKillDamageVFX()
+    {
+        // Rent the VFX from the pooling manager
+        var vfx = await SingleBehaviour.Of<PoolingManager>().Rent("kill-damage-vfx");
+        vfx.transform.position = transform.position + new Vector3(0.5f, 1.5f, -0.75f);
+
+        // Get the ParticleSystem component from the VFX
+        var particleSystem = vfx.GetComponent<ParticleSystem>();
+
+        // Play the particle system
+        particleSystem.Play();
+
+        // Wait until the particle system finishes playing
+        await UniTask.WaitUntil(() => !particleSystem.isPlaying);
+
+        // Return the VFX to the pool after it finishes
+        SingleBehaviour.Of<PoolingManager>().Return(vfx);
+    }
+
+    public void StopAllActions()
+    {
         if (_cts != null) _cts.Cancel();
     }
 
-    public void OnDestroyMiniHero(){
-        StopAllActions(); // Stop all actions (Move, Attack)
-        SingleBehaviour.Of<PoolingManager>().Return(gameObject);
+    public void TinyHeroAnim()
+    {
+        // You can add additional animations here if needed
     }
 
-    public void Dispose(){
+    public void OnDestroyMiniHero()
+    {
+        StopAllActions(); // Stop all actions (Move, Attack)
+        _heroVisual.transform.rotation = _baseRotation;
+        _heroVisual.transform.DOComplete();
+        _heroVisual.transform.DOKill();  // Kill any tweens on the hero visual
+        _bobbingTween.Kill();            // Kill the specific bobbing tween if it exists
+
+        // Return the MiniHero to the pooling manager
+        SingleBehaviour.Of<PoolingManager>().Return(gameObject);
+    }
+    
+    public void Dispose()
+    {
         StopAllActions();
         OnDestroyMiniHero();
     }
 
-    public async UniTask IncreaseStats(BuffType type, float value, float duration){
-        if(type == BuffType.AttackSpeed){
+    public async UniTask IncreaseStats(BuffType type, float value, float duration)
+    {
+        if(type == BuffType.AttackSpeed)
+        {
             var baseAttackSpeed = attackSpeed;
             attackSpeed += attackSpeed * value;
             await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: _cts.Token);
             attackSpeed = baseAttackSpeed;
         }
-        else if(type == BuffType.MovementSpeed){
+        else if(type == BuffType.MovementSpeed)
+        {
             var baseMoveSpeed = moveSpeed;
             moveSpeed += moveSpeed * value;
             await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: _cts.Token);

@@ -9553,7 +9553,7 @@ GameObject:
   - component: {fileID: 19894030}
   - component: {fileID: 19930206}
   m_Layer: 0
-  m_Name: KaPow
+  m_Name: kill-damage-vfx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

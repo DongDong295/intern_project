@@ -99,7 +99,7 @@ public class StageManager : MonoBehaviour
     }
 
     public async UniTask DisplayDamageText(float damage, bool isCrit){
-        var damageText = await SingleBehaviour.Of<PoolingManager>().Rent("damage-text");
+        var damageText = await SingleBehaviour.Of<PoolingManager>().Rent("damage-text-object");
         damageText.transform.position = _bossPosition.position + new Vector3(UnityEngine.Random.Range(-2, 2), 0, -3);
         damageText.GetComponent<DamageText>().InitializeText(damage, isCrit);
     }
