@@ -46,7 +46,7 @@
       }
     },
     "com.google.firebase.remote-config": {
-      "version": "file:C:/Users/ADMIN/Downloads/com.google.firebase.remote-config-12.5.0.tgz",
+      "version": "file:com.google.firebase.remote-config-12.5.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
