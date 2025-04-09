@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
+using Unity.VisualScripting;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -53,5 +54,8 @@ public class GameManager : MonoBehaviour
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
 #endif
         SingleBehaviour.Of<FirebaseEventTracking>().PushEventTracking("Player login");
+
+        SingleBehaviour.Of<GetServerTime>().GetTime();
+
     }
 }
