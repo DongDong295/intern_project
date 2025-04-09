@@ -45,6 +45,14 @@
         "com.google.firebase.app": "12.5.0"
       }
     },
+    "com.google.firebase.functions": {
+      "version": "file:com.google.firebase.functions-12.5.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "12.5.0"
+      }
+    },
     "com.google.firebase.remote-config": {
       "version": "file:com.google.firebase.remote-config-12.5.0.tgz",
       "depth": 0,

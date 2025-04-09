@@ -20,6 +20,5 @@ public class FirebaseDatabase : FirebaseModule
     private void InitializeFirestore()
     {
         Database = FirebaseFirestore.DefaultInstance;
-        Debug.Log(Database + "DD");
     }
 }
