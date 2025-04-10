@@ -45,17 +45,15 @@ public class GameManager : MonoBehaviour
         await SingleBehaviour.Of<UIManager>().OnStartApplication();
         Singleton.Of<DataManager>().Initiate();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnEnterGamePlayScene>(ChangeToGameplayScene);
+        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
 
 #if UNITY_EDITOR
-        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
-        
+        //Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
 #else
         Debug.Log("This line is running");
-        Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
 #endif
         SingleBehaviour.Of<FirebaseEventTracking>().PushEventTracking("Player login");
 
-        SingleBehaviour.Of<GetServerTime>().GetTime();
-
+        //SingleBehaviour.Of<GetServerTime>().GetTime();
     }
 }
