@@ -16,6 +16,7 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     public override UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
+        Debug.Log("Login called");
         _loginButton.onClick.AddListener(() =>
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerLoginEvent());
@@ -23,6 +24,7 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         if(!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
             _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
         else{
+            
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
             ShowMainMenuScreen();
         }

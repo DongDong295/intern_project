@@ -55,15 +55,22 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask OnStartApplication()
     {
-        #if UNITY_EDITOR
-        PlayerID = GenerateGuestPlayerID();
-        IsAuthenticated = true;
-        #endif
+#if UNITY_EDITOR
+        OwnedHero = new Dictionary<string, Hero>();
+        EquippedHero = new List<Hero>();
+        if (!PlayerPrefs.HasKey("PlayerID"))
+        {
+            PlayerID = GenerateGuestPlayerID();
+            PlayerPrefs.SetString("PlayerID", PlayerID);
+            PlayerPrefs.SetInt("IsAuthenticated", 1);
+            PlayerPrefs.Save();
+        }
+#endif
+
         LoadLanguageData();
         IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
         PlayerID = PlayerPrefs.GetString("PlayerID");
-        OwnedHero = new Dictionary<string, Hero>();
-        EquippedHero = new List<Hero>();
+        Debug.Log("Loaded PlayerID: " + PlayerID);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(LoadPlayerData);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
         await UniTask.CompletedTask;
@@ -72,6 +79,7 @@ public class PlayerDataManager : MonoBehaviour
     public async UniTask LoadPlayerData(OnFinishInitializeEvent e)
     {
         if(PlayerID != ""){
+            Debug.Log("Null ID");
             await SyncHeroesWithDatabase();
             await LoadHeroesFromJSON();
             Debug.Log(PlayerID);
@@ -341,6 +349,7 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         // Reference to the PlayerID collection
+        Debug.Log("ID is PlayerID" + PlayerID);
         CollectionReference playerCollectionRef = db.Collection(PlayerID); // PlayerID is the collection name
 
         // Reference to the OwnedHero document inside the PlayerID collection

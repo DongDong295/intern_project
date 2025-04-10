@@ -40,6 +40,7 @@ public class Hero
         killDamage = data.killDamage;
         expStep = data.expStep;
         expBasic = data.expBasic;
+        exp = 0;
         level = 1;
     }
 
