@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using ZBase.Foundation.Singletons;
 using ZBase.UnityScreenNavigator.Core.Modals;
 
 public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
@@ -12,14 +13,12 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     [SerializeField] private Button _playButton;
     [SerializeField] private Button _characterButton;
     [SerializeField] private Button _settingButton;
-
-
     public override UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
         _playButton.onClick.AddListener(() =>
         {
-            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_SELECTION_MODAL, false));
+            CheckForPlayCondition();
         });
         _characterButton.onClick.AddListener(() =>
         {
@@ -37,5 +36,15 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _playButton.onClick.RemoveAllListeners();
         _characterButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
+    }
+    
+    private void CheckForPlayCondition(){
+        if(SingleBehaviour.Of<PlayerDataManager>().EquippedHero.Count > 0)
+        {
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_SELECTION_MODAL, false));
+        }
+        else{
+            SingleBehaviour.Of<UIManager>().ShowWarningNoHero();
+        }
     }
 }

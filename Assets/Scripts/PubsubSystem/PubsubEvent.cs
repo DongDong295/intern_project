@@ -28,6 +28,10 @@ public struct OnGachaEvent : IMessage{
     
 }
 
+public struct OnGenerateHero : IMessage{
+    
+}
+
 public struct OnBossTakeDamageEvent : IMessage{
 
 }
@@ -39,11 +43,25 @@ public struct OnRemoveHero : IMessage{
 public struct OnPlayerEquipHero : IMessage{
     public string HeroID;
     public bool IsEquip;
-    public OnPlayerEquipHero(string id, bool isEquip){
+
+    public Hero Hero;
+    public OnPlayerEquipHero(string id, bool isEquip, Hero data){
         HeroID = id;
         this.IsEquip = isEquip;
+        Hero = data;
     }
 }
+
+public struct OnUnequipHero : IMessage{
+    public string HeroID;
+    public Hero Hero;
+    public OnUnequipHero(string id, Hero data){
+        Hero = data;
+        HeroID = id;
+    }
+}
+
+
 
 public struct OnSelectMaterialHeroForUpgrade : IMessage{
     public Hero MaterialHero;

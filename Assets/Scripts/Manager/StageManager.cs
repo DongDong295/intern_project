@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using ZBase.Foundation.Pooling;
@@ -34,7 +37,15 @@ public class StageManager : MonoBehaviour
 
     private BuffData _buffData;
 
+    private int index = 0;
+
+    Dictionary<string, GameObject> _ownedHeroVisual = new Dictionary<string, GameObject>();
     public GameObject CurrentBuff;
+
+    public async UniTask OnStartApplication(){
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnPlayerEquipHero>(OnEquipHero);
+        //Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUnequipHero>(OnUnequipHero);
+    }
     public async UniTask InitiateStage(int stageIndex){
         IsWin = false;
         _buffData = await Singleton.Of<DataManager>().Load<BuffData>(Data.BUFF_DATA);
@@ -62,6 +73,36 @@ public class StageManager : MonoBehaviour
         return _bossVisualRef;
     }
 
+    public async UniTask OnEquipHero(OnPlayerEquipHero e){    
+        if(e.IsEquip){
+            if(!_ownedHeroVisual.ContainsKey(e.HeroID)){
+                var visual = await SingleBehaviour.Of<PoolingManager>().Rent($"hero-visual-{e.Hero.heroVisualID}");
+                visual.transform.position = _heroPositions[index].transform.position;
+                _ownedHeroVisual.Add(e.HeroID, visual);
+                index++;
+            }
+        }
+        else{
+            OnUnequipHero(e.HeroID);
+        }
+    }
+
+    public void OnUnequipHero(string HeroID){
+        if(_ownedHeroVisual.ContainsKey(HeroID)){
+            var visual = _ownedHeroVisual[HeroID];
+            visual.GetComponent<HeroBehaviour>().UnloadHero();
+            _ownedHeroVisual.Remove(HeroID);
+        }
+        index--;
+        RePositionHero();
+    }
+
+    public void RePositionHero(){
+        for(int i = 0; i < _ownedHeroVisual.Count; i++){
+            var heroVisual = _ownedHeroVisual.ElementAt(i).Value;
+            heroVisual.transform.position = _heroPositions[i].transform.position;
+        }
+    }
     public Transform GetHeroPosition(int index){
         return _heroPositions[index];
     }   
@@ -107,15 +148,19 @@ public class StageManager : MonoBehaviour
     public async UniTask LoadStageVisual(){
         _bossVisualRef = await SingleBehaviour.Of<PoolingManager>().Rent("boss-visual-" + BossVisualID);
         _bossVisualRef.transform.position = _bossPosition.transform.position;
+        var ownedHeroVisualList = _ownedHeroVisual.Values.ToList();
+        Debug.Log("Owned Hero Visual Count: " + ownedHeroVisualList.Count);
         Debug.Log(_heroes.Count);
         for(int i = 0; i < _heroes.Count; i++){
-            var index = i;
-            Debug.Log("hero-visual-" + _heroes[index].heroVisualID);
-            var heroVisual = await SingleBehaviour.Of<PoolingManager>().Rent("hero-visual-" + _heroes[index].heroVisualID);
-            heroVisual.transform.position = _heroPositions[index].transform.position;
-            await heroVisual.GetComponent<HeroBehaviour>().InitiateHero(_heroes[index]);
+            var heroIndex = i;
+            var heroVisual = ownedHeroVisualList[heroIndex];
+            //Debug.Log("hero-visual-" + _heroes[index].heroVisualID);
+            //var heroVisual = await SingleBehaviour.Of<PoolingManager>().Rent("hero-visual-" + _heroes[index].heroVisualID);
+            //heroVisual.transform.position = _heroPositions[index].transform.position;
+            await heroVisual.GetComponent<HeroBehaviour>().InitiateHero(_heroes[heroIndex]);
         }
     }
+
 
     public void OnStageEnd(){
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_END_MODAL, false));

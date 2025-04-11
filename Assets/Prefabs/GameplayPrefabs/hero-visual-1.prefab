@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7476dbae75deb0246adfae3e610b1c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _progressBar: {fileID: 8915914275930036046}
   _filler: {fileID: 5996075228634839744}
 --- !u!1001 &6956384271618907666
 PrefabInstance:
@@ -233,3 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8915914275930036046 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1959552272317892956, guid: c8560d86e2c7b3548939e51625da5c9d, type: 3}
+  m_PrefabInstance: {fileID: 6956384271618907666}
+  m_PrefabAsset: {fileID: 0}
