@@ -39,7 +39,7 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     }
     
     private void CheckForPlayCondition(){
-        if(SingleBehaviour.Of<PlayerDataManager>().EquippedHero.Count > 0)
+        if(SingleBehaviour.Of<PlayerDataManager>().OwnedHeroDict.Count > 0)
         {
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_SELECTION_MODAL, false));
         }

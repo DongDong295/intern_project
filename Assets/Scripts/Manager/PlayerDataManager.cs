@@ -16,6 +16,9 @@ public class PlayerDataManager : MonoBehaviour
     public string PlayerID;
     public List<Hero> EquippedHero;
 
+    public Dictionary<string, Hero> OwnedHeroDict = new Dictionary<string, Hero>();
+
+
     [System.Serializable]
     public class HeroDataDict
     {
@@ -232,15 +235,18 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask EquipHero(Hero heroToAdd)
     {
-        if (!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5)
+        if (!OwnedHeroDict.ContainsKey(heroToAdd.heroID) && OwnedHeroDict.Count < 5)
         {
-            EquippedHero.Add(heroToAdd);
+
             heroToAdd.isEquipped = true;
+            OwnedHeroDict.Add(heroToAdd.heroID, heroToAdd);
         }
         else
         {
-            if (EquippedHero.Contains(heroToAdd))
-                EquippedHero.Remove(heroToAdd);
+            if (OwnedHero.ContainsKey(heroToAdd.heroID)){
+                //EquippedHero.Remove(heroToAdd);
+                OwnedHeroDict.Remove(heroToAdd.heroID);
+            }
             heroToAdd.isEquipped = false;
         }
         Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped, heroToAdd));
