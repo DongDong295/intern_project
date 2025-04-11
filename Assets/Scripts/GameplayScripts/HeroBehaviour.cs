@@ -12,6 +12,7 @@ using DG.Tweening;  // DOTween namespace for animations
 
 public class HeroBehaviour : MonoBehaviour, IDispose
 {   
+    [SerializeField] private GameObject _progressBar;
     [SerializeField] private Image _filler;
     private Hero _hero;
     private bool _canSpawn;
@@ -27,7 +28,7 @@ public class HeroBehaviour : MonoBehaviour, IDispose
         _miniData = new MiniHeroData(
                 _hero.moveSpeed, _hero.attackDamageStep * _hero.level, _hero.attackSpeed, _hero.critChance, _hero.killDamage);
         _source = new CancellationTokenSource();
-
+        _progressBar.SetActive(true);  // Show the progress bar
         StartSpawningMiniHero();  // Start spawning mini heroes
         await UniTask.CompletedTask;
     }
@@ -57,13 +58,19 @@ public class HeroBehaviour : MonoBehaviour, IDispose
     }
 
     public void StopSpawningMiniHero(){
+        _progressBar.SetActive(false);  // Hide the progress bar
         _canSpawn = false;
         _miniData = null;
         _source?.Cancel();
     }
 
     public void Dispose(){
-        SingleBehaviour.Of<PoolingManager>().Return(gameObject);
+        //SingleBehaviour.Of<PoolingManager>().Return(gameObject);
         StopSpawningMiniHero();
+    }
+
+    public void UnloadHero(){
+        StopSpawningMiniHero();
+        SingleBehaviour.Of<PoolingManager>().Return(gameObject);
     }
 }

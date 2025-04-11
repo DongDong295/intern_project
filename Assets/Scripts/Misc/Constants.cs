@@ -41,3 +41,8 @@ public class ModalUI{
 
     public const string SETTINGS = "ui-settings-modal";
 }
+
+public class PlayerPref{
+    public const string PLAYER_ID = "PlayerID";
+    public const string IS_AUTHENTICATED = "IsAuthenticated";
+}

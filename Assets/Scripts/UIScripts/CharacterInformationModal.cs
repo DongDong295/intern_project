@@ -27,10 +27,11 @@ public class CharacterInformationModal : BasicModal
         {
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGachaEvent());
             Debug.Log(SingleBehaviour.Of<PlayerDataManager>().OwnedHero.Count);
-            await GenerateHeroButton();
+            //await GenerateHeroButton();
         });
 
         // Generate the hero buttons
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGenerateHero>(RefreshHeroListWhenGenerate);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUpgradeHero>(RefreshHeroList);
         await GenerateHeroButton();
     }
@@ -38,13 +39,19 @@ public class CharacterInformationModal : BasicModal
     public async UniTask GenerateHeroButton()
     {
         // Rent the button prefab from the PoolingManager
-        _scroller.Clear();
+        if(_scroller.Generated)
+            _scroller.Clear();
         var heroButtonPref = await SingleBehaviour.Of<PoolingManager>().Rent("ui-hero-information-button");
         int heroCount = _ownedHeroDict.Count;
         _scroller.Generate(heroButtonPref, heroCount, OnGenerateButton);
     }
 
     public async UniTask RefreshHeroList(OnUpgradeHero e)
+    {
+        await GenerateHeroButton();
+    }
+
+    public async UniTask RefreshHeroListWhenGenerate(OnGenerateHero e)
     {
         await GenerateHeroButton();
     }

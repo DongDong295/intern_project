@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Cysharp.Threading.Tasks.Triggers;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
         await SingleBehaviour.Of<PlayerDataManager>().OnStartApplication();
         await SingleBehaviour.Of<FirebaseManager>().OnStartApplication();
         await SingleBehaviour.Of<UIManager>().OnStartApplication();
+        await SingleBehaviour.Of<StageManager>().OnStartApplication();
         Singleton.Of<DataManager>().Initiate();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnEnterGamePlayScene>(ChangeToGameplayScene);
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));

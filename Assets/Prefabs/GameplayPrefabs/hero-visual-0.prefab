@@ -119,6 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7476dbae75deb0246adfae3e610b1c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _progressBar: {fileID: 491326798290583118}
   _filler: {fileID: 3340665368339665856}
 --- !u!1001 &2152775006485755666
 PrefabInstance:
@@ -217,6 +218,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8560d86e2c7b3548939e51625da5c9d, type: 3}
+--- !u!1 &491326798290583118 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1959552272317892956, guid: c8560d86e2c7b3548939e51625da5c9d, type: 3}
+  m_PrefabInstance: {fileID: 2152775006485755666}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3340665368339665856 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3727955770646062290, guid: c8560d86e2c7b3548939e51625da5c9d, type: 3}

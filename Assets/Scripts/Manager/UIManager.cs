@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     private Queue<ShowScreenEvent> _screenQueue = new Queue<ShowScreenEvent>();
     private bool _isShowingScreen = false;
 
+    [SerializeField] GameObject _warnNoHero;
     public async UniTask OnStartApplication()
     {
         _subscription = new List<ISubscription>();
@@ -40,6 +41,14 @@ public class UIManager : MonoBehaviour
         if (!_isShowingScreen)
         {
             ShowNextScreen().Forget();
+        }
+    }
+
+    public void ShowWarningNoHero()
+    {
+        if (_warnNoHero != null)
+        {
+            _warnNoHero.GetComponent<PopUpWarnNoEquippedHero>().ShowPopUp();
         }
     }
 

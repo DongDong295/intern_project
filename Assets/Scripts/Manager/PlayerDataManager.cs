@@ -16,6 +16,9 @@ public class PlayerDataManager : MonoBehaviour
     public string PlayerID;
     public List<Hero> EquippedHero;
 
+    public Dictionary<string, Hero> OwnedHeroDict = new Dictionary<string, Hero>();
+
+
     [System.Serializable]
     public class HeroDataDict
     {
@@ -58,18 +61,18 @@ public class PlayerDataManager : MonoBehaviour
 #if UNITY_EDITOR
         OwnedHero = new Dictionary<string, Hero>();
         EquippedHero = new List<Hero>();
-        if (!PlayerPrefs.HasKey("PlayerID"))
+        if (!PlayerPrefs.HasKey(PlayerPref.PLAYER_ID))
         {
             PlayerID = GenerateGuestPlayerID();
-            PlayerPrefs.SetString("PlayerID", PlayerID);
-            PlayerPrefs.SetInt("IsAuthenticated", 1);
+            PlayerPrefs.SetString(PlayerPref.PLAYER_ID, PlayerID);
+            PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, 1);
             PlayerPrefs.Save();
         }
 #endif
 
         LoadLanguageData();
-        IsAuthenticated = PlayerPrefs.GetInt("IsAuthenticated") == 1;
-        PlayerID = PlayerPrefs.GetString("PlayerID");
+        IsAuthenticated = PlayerPrefs.GetInt(PlayerPref.IS_AUTHENTICATED) == 1;
+        PlayerID = PlayerPrefs.GetString(PlayerPref.PLAYER_ID, PlayerID);
         Debug.Log("Loaded PlayerID: " + PlayerID);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(LoadPlayerData);
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnGachaEvent>(GenerateNewHero);
@@ -94,14 +97,14 @@ public class PlayerDataManager : MonoBehaviour
     {
         PlayerID = value;
         OwnedHero.Clear(); 
-        PlayerPrefs.SetString("PlayerID", PlayerID);
+        PlayerPrefs.SetString(PlayerPref.PLAYER_ID, PlayerID);
         PlayerPrefs.Save();
     }
 
     public void SetAuthenticateStatus(bool status)
     {
         IsAuthenticated = status;
-        PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
+        PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
         Debug.Log("Im " + IsAuthenticated);
         PlayerPrefs.Save();
     }
@@ -109,7 +112,7 @@ public class PlayerDataManager : MonoBehaviour
     void OnApplicationQuit()
     {
         Debug.Log("Save!");
-        PlayerPrefs.SetInt("IsAuthenticated", IsAuthenticated ? 1 : 0);
+        PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
         SaveHeroesToJSON();
         PlayerPrefs.Save();
     }
@@ -125,6 +128,7 @@ public class PlayerDataManager : MonoBehaviour
 
         // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
         await SaveHeroesToFirebase();
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGenerateHero());
         await UniTask.CompletedTask;
     }
 
@@ -157,7 +161,7 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         string jsonHeroData = JsonUtility.ToJson(heroDataDict);
-        Debug.Log("Hero Data to Save: " + jsonHeroData);
+        //Debug.Log("Hero Data to Save: " + jsonHeroData);
 
         // Load global data
         GlobalData globalData = LoadGlobalData();
@@ -231,18 +235,21 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask EquipHero(Hero heroToAdd)
     {
-        if (!EquippedHero.Contains(heroToAdd) && EquippedHero.Count < 5)
+        if (!OwnedHeroDict.ContainsKey(heroToAdd.heroID) && OwnedHeroDict.Count < 5)
         {
-            EquippedHero.Add(heroToAdd);
+
             heroToAdd.isEquipped = true;
+            OwnedHeroDict.Add(heroToAdd.heroID, heroToAdd);
         }
         else
         {
-            if (EquippedHero.Contains(heroToAdd))
-                EquippedHero.Remove(heroToAdd);
+            if (OwnedHero.ContainsKey(heroToAdd.heroID)){
+                //EquippedHero.Remove(heroToAdd);
+                OwnedHeroDict.Remove(heroToAdd.heroID);
+            }
             heroToAdd.isEquipped = false;
         }
-        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped));
+        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerEquipHero(heroToAdd.heroID, heroToAdd.isEquipped, heroToAdd));
         await SaveHeroesToFirebase();
     }
 
@@ -304,7 +311,7 @@ public class PlayerDataManager : MonoBehaviour
     public GlobalData LoadGlobalData()
     {
         string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
-        Debug.Log("Loading Global Data from PlayerPrefs: " + globalJson);
+        //Debug.Log("Loading Global Data from PlayerPrefs: " + globalJson);
 
         if (!string.IsNullOrEmpty(globalJson))
         {
@@ -349,7 +356,7 @@ public class PlayerDataManager : MonoBehaviour
         }
 
         // Reference to the PlayerID collection
-        Debug.Log("ID is PlayerID" + PlayerID);
+        //Debug.Log("ID is PlayerID" + PlayerID);
         CollectionReference playerCollectionRef = db.Collection(PlayerID); // PlayerID is the collection name
 
         // Reference to the OwnedHero document inside the PlayerID collection
@@ -358,7 +365,7 @@ public class PlayerDataManager : MonoBehaviour
         // Set the hero data under the OwnedHero document
         await ownedHeroDocRef.SetAsync(heroData, SetOptions.Overwrite);
 
-        Debug.Log("Saved hero data to Firestore successfully");
+        //Debug.Log("Saved hero data to Firestore successfully");
 
         // Optionally save locally to maintain sync
         SaveHeroesToJSON();
@@ -386,7 +393,7 @@ public class PlayerDataManager : MonoBehaviour
         else
         {
             // If the document doesn't exist, you might want to initialize it with the local data
-            Debug.Log("No hero data found in Firestore for PlayerID: " + PlayerID);
+            //Debug.Log("No hero data found in Firestore for PlayerID: " + PlayerID);
         }
     }
 
@@ -425,13 +432,13 @@ public class PlayerDataManager : MonoBehaviour
                 if (!OwnedHero.ContainsKey(hero.heroID))
                 {
                     OwnedHero.Add(hero.heroID, hero);
-                    Debug.Log("Added new hero from Firestore: " + hero.heroID);
+                    //Debug.Log("Added new hero from Firestore: " + hero.heroID);
                 }
                 else
                 {
                     // If the hero exists, update its data
                     OwnedHero[hero.heroID] = hero;
-                    Debug.Log("Updated hero from Firestore: " + hero.heroID);
+                    //Debug.Log("Updated hero from Firestore: " + hero.heroID);
                 }
             }
         }
