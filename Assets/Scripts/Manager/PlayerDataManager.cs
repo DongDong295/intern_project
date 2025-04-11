@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Firebase.Firestore;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using ZBase.Foundation.Singletons;
@@ -113,10 +114,14 @@ public class PlayerDataManager : MonoBehaviour
     {
         Debug.Log("Save!");
         PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
-        SaveHeroesToJSON();
+        //SaveHeroesToJSON();
+        SaveHeroes().Forget();
         PlayerPrefs.Save();
     }
 
+    private async UniTask SaveHeroes(){
+        await SaveHeroesToFirebase();
+    }
     public async UniTask GenerateNewHero(OnGachaEvent e)
     {
         var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
