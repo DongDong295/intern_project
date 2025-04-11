@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public async UniTask ChangeToGameplayScene(OnEnterGamePlayScene e)
     {
+        Debug.Log("Stage is " + e.StageIndex);
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.GetLoadingScreen(
         SingleBehaviour.Of<UIManager>().Platform)
         , false));

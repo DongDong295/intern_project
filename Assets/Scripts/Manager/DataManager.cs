@@ -17,10 +17,9 @@ public class DataManager
     {
         if (Data.TryGetValue(assetName, out ScriptableObject data))
         {
-            Debug.Log("Value exist");
+            
             return data as T;
         }
-        Debug.Log("Value not exist");   
         return await Preload<T>(assetName);
     }
 

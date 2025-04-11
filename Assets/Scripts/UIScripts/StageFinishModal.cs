@@ -55,6 +55,7 @@ public class StageFinishModal : BasicModal
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnEnterGamePlayScene(_stageManager.Index));
         }
         if(result && _stageManager.Index < stages.stageDataItems.Length){
+            Debug.Log(" Index of " + _stageManager.Index + " Next stage " + _stageManager.Index++);
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnEnterGamePlayScene(_stageManager.Index++));
         }
         Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());

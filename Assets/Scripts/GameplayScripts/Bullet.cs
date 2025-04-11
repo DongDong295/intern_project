@@ -44,7 +44,6 @@ public class Bullet : MonoBehaviour, IDispose
             transform.position = Vector3.MoveTowards(transform.position, _stageManager.GetBossPosition(), _speed * _speedMultiplier * _stageManager.StageDeltaTime);
             await UniTask.Yield(cancellationToken: cancellationToken);
         }
-        Debug.Log("Dealt damage cuz bullet");
         if(!_isDealtDamage)
             DealDamage(_damage);
     }
