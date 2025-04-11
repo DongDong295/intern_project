@@ -558,7 +558,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 20
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 100, y: 100}
@@ -569,7 +569,7 @@ MonoBehaviour:
   cellPerRow: 3
   cacheSize: 35
   scrollRect: {fileID: 8446190562718115687}
-  horizontalAlignment: 0
+  horizontalAlignment: 1
 --- !u!114 &3537061720839238249
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -301,7 +301,6 @@ public class PlayerDataManager : MonoBehaviour
                 unequippedHeroes.Add(kvp.Key, hero); // Using heroID (kvp.Key) as the dictionary key
             }
         }
-        Debug.Log(currentHero.heroID);
         unequippedHeroes.Remove(currentHero.heroID);
         return unequippedHeroes;
     }

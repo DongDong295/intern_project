@@ -43,16 +43,29 @@ public class SettingsModal : BasicModal
 
     void PopulateDropdown()
     {
-        _languageDropdown.ClearOptions(); 
+        _languageDropdown.ClearOptions();
 
         List<string> languageOptions = new List<string>();
+        int currentIndex = 0;
 
-        foreach (var locale in LocalizationSettings.AvailableLocales.Locales)
+        var currentLocale = LocalizationSettings.SelectedLocale;
+
+        for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; i++)
         {
+            var locale = LocalizationSettings.AvailableLocales.Locales[i];
             languageOptions.Add(locale.LocaleName);
+
+            if (locale == currentLocale)
+            {
+                currentIndex = i;
+            }
         }
 
         _languageDropdown.AddOptions(languageOptions);
+
+        // Set to current language
+        _languageDropdown.value = currentIndex;
+        _languageDropdown.RefreshShownValue(); // Make sure the label updates
     }
 
     public void OnLanguageChanged(int index)
