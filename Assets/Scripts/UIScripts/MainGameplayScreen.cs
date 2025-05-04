@@ -12,7 +12,7 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private TextMeshProUGUI _time;
     [SerializeField] private TextMeshProUGUI _bossHPText;  
-    [SerializeField] private TextMeshProUGUI _bossIDText;
+    [SerializeField] private TextMeshProUGUI _bossNameText;
     [SerializeField] private Image _healthDisplayer;
     private float _bossMaxHP;
 
@@ -39,7 +39,7 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     private void DisplayBossData(){
         _bossHPText.text = $"{_stageManager.BossHP.ToString()} / {_bossMaxHP.ToString()}";
-        _bossIDText.text = _stageManager.BossVisualID.ToString();
+        _bossNameText.text = _stageManager.BossName.ToString();
     }
 
     public async UniTask DisplayTime(){

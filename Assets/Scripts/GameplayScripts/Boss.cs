@@ -17,7 +17,7 @@ public class Boss : MonoBehaviour
         _originalScale = transform.localScale;
 
         // Start the breathing effect using DOTween
-        StartBreathingEffect();
+        //StartBreathingEffect();
     }
 
     private void StartBreathingEffect()

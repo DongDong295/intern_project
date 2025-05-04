@@ -12,6 +12,12 @@ public class StageDataItems
     public float bossHp;
     public float bossAttackDamage;
     public float bossAttackSpeed;
+
+    public string bossName;
+
+    public int mapPrefabId;
+
+    public float prizeValue;
 }
 
 public class StageData : SerializedScriptableObject

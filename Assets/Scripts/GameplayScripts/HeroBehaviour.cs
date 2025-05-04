@@ -73,4 +73,8 @@ public class HeroBehaviour : MonoBehaviour, IDispose
         StopSpawningMiniHero();
         SingleBehaviour.Of<PoolingManager>().Return(gameObject);
     }
+
+    public void DisableProgressbar(){
+        _progressBar.SetActive(false);
+    }
 }
