@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
         await UniTask.CompletedTask;
     }
 
+    
 
     public void OnShowScreen(ShowScreenEvent e)
     {

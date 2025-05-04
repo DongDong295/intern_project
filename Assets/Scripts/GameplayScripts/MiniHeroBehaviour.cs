@@ -46,7 +46,7 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
         
         // Start scale-up effect when the mini hero is initialized
         StartScaleUpEffect();
-        
+        SpawnVFX().Forget();
         MoveToBoss().Forget();
         AttackBoss().Forget();
         
@@ -174,5 +174,21 @@ public class MiniHeroBehaviour : MonoBehaviour, IDispose
             await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: _cts.Token);
             moveSpeed = baseMoveSpeed;
         }
+    }
+
+    public async UniTask SpawnVFX()
+    {
+        var vfx = await SingleBehaviour.Of<PoolingManager>().Rent("minihero-spawn-vfx");
+        vfx.transform.position = transform.position;
+
+        var ps = vfx.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            // Wait until the particle system finishes
+            await UniTask.WaitUntil(() => !ps.IsAlive(true));
+        }
+
+        SingleBehaviour.Of<PoolingManager>().Return(vfx);
     }
 }

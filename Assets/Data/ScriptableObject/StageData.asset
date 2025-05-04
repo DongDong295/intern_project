@@ -48,6 +48,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 2
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 100
     - Name: 
       Entry: 8
       Data: 
@@ -72,6 +81,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1.9
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 0
+    - Name: prizeValue
+      Entry: 4
+      Data: 150
     - Name: 
       Entry: 8
       Data: 
@@ -96,6 +114,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 2
+    - Name: bossName
+      Entry: 1
+      Data: Undead Sealed Tomb
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 200
     - Name: 
       Entry: 8
       Data: 
@@ -120,6 +147,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Sealed Tomb
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 0
+    - Name: prizeValue
+      Entry: 4
+      Data: 250
     - Name: 
       Entry: 8
       Data: 
@@ -144,6 +180,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 300
     - Name: 
       Entry: 8
       Data: 
@@ -168,6 +213,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 350
     - Name: 
       Entry: 8
       Data: 
@@ -192,6 +246,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 2
+    - Name: bossName
+      Entry: 1
+      Data: Undead Sealed Tomb
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 0
+    - Name: prizeValue
+      Entry: 4
+      Data: 400
     - Name: 
       Entry: 8
       Data: 
@@ -216,6 +279,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Sealed Tomb
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 450
     - Name: 
       Entry: 8
       Data: 
@@ -240,6 +312,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 0
+    - Name: prizeValue
+      Entry: 4
+      Data: 500
     - Name: 
       Entry: 8
       Data: 
@@ -264,6 +345,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Gate
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 550
     - Name: 
       Entry: 8
       Data: 
@@ -288,6 +378,15 @@ MonoBehaviour:
     - Name: bossAttackSpeed
       Entry: 4
       Data: 1
+    - Name: bossName
+      Entry: 1
+      Data: Undead Sealed Tomb
+    - Name: mapPrefabId
+      Entry: 3
+      Data: 1
+    - Name: prizeValue
+      Entry: 4
+      Data: 600
     - Name: 
       Entry: 8
       Data: 

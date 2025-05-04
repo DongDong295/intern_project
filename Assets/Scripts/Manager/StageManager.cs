@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;
@@ -23,20 +24,23 @@ public class StageManager : MonoBehaviour
 
     public int BossVisualID;
 
+    public string BossName;
     public float StageDeltaTime;
     [SerializeField] private List<Transform> _heroPositions;
     [SerializeField] private Transform _bossPosition;
+
+    [SerializeField] private List<Transform> _displayPosition;
 
     public List<IDispose> DisposeList;
     private List<string> _heroesIDs;
     private bool _isStageEnd;
     public bool IsWin;
     private GameObject _bossVisualRef;
-
+    private GameObject _mapObject;
     private CancellationTokenSource _cts;
 
     private BuffData _buffData;
-
+    private StageDataItems _stageData;
     private int index = 0;
     Dictionary<string, Hero> _ownedHeroDict = new Dictionary<string, Hero>();
     Dictionary<string, GameObject> _ownedHeroVisual = new Dictionary<string, GameObject>();
@@ -57,15 +61,19 @@ public class StageManager : MonoBehaviour
         _isStageEnd = false;
         StageDeltaTime = Time.deltaTime;
         StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
-        var thisStageData = data.stageDataItems[stageIndex];
-        RequireDefeatTime = thisStageData.requireDefeatTime;
-        BossHP = thisStageData.bossHp;
-        BossAttackDamage = thisStageData.bossAttackDamage;
-        BossAttackSpeed = thisStageData.bossAttackSpeed;
-        BossVisualID = thisStageData.bossVisualId;
+        _stageData = data.stageDataItems[stageIndex];
+        RequireDefeatTime = _stageData.requireDefeatTime;
+        BossHP = _stageData.bossHp;
+        BossAttackDamage = _stageData.bossAttackDamage;
+        BossAttackSpeed = _stageData.bossAttackSpeed;
+        BossVisualID = _stageData.bossVisualId;
+        BossName = _stageData.bossName;
         await LoadStageVisual();
         CountdownStage().Forget();
         RandomBuff().Forget();
+        
+        _mapObject = await SingleBehaviour.Of<PoolingManager>().Rent($"map-prefab-{data.stageDataItems[stageIndex].mapPrefabId}");
+        _mapObject.transform.position = new Vector3(0, 0, 1);
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_GAMEPLAY_SCREEN, false));
     }
 
@@ -77,9 +85,10 @@ public class StageManager : MonoBehaviour
         if(e.IsEquip){
             if(!_ownedHeroVisual.ContainsKey(e.HeroID)){
                 var visual = await SingleBehaviour.Of<PoolingManager>().Rent($"hero-visual-{e.Hero.heroVisualID}");
-                visual.transform.position = _heroPositions[index].transform.position;
+                visual.transform.position = _displayPosition[index].transform.position;
                 _ownedHeroVisual.Add(e.HeroID, visual);
                 _heroesIDs.Add(e.HeroID);
+                visual.GetComponent<HeroBehaviour>().DisableProgressbar();
                 index++;
             }
         }
@@ -102,7 +111,7 @@ public class StageManager : MonoBehaviour
     public void RePositionHero(){
         for(int i = 0; i < _ownedHeroVisual.Count; i++){
             var heroVisual = _ownedHeroVisual.ElementAt(i).Value;
-            heroVisual.transform.position = _heroPositions[i].transform.position;
+            heroVisual.transform.position = _displayPosition[i].transform.position;
         }
     }
     public Transform GetHeroPosition(int index){
@@ -134,6 +143,7 @@ public class StageManager : MonoBehaviour
             DisplayDamageText(damage, isCrit).Forget();
         }
         if(BossHP <= 0 && !_isStageEnd){
+            BossHP = 0;
             _isStageEnd = true;
             IsWin = true;
             OnStageEnd();
@@ -154,25 +164,41 @@ public class StageManager : MonoBehaviour
         //Debug.Log("Owned Hero Visual Count: " + ownedHeroVisualList.Count);
         for(int i = 0; i < _heroesIDs.Count; i++){
             var heroIndex = i;
-            var heroVisual = _ownedHeroVisual[_heroesIDs[i]];
-            var heroData = _ownedHeroDict[_heroesIDs[i]];
+            var heroVisual = _ownedHeroVisual[_heroesIDs[heroIndex]];
+            var heroData = _ownedHeroDict[_heroesIDs[heroIndex]];
             //Debug.Log("hero-visual-" + _heroes[index].heroVisualID);
             //var heroVisual = await SingleBehaviour.Of<PoolingManager>().Rent("hero-visual-" + _heroes[index].heroVisualID);
-            //heroVisual.transform.position = _heroPositions[index].transform.position;
+            heroVisual.transform.position = _heroPositions[heroIndex].transform.position;
             await heroVisual.GetComponent<HeroBehaviour>().InitiateHero(heroData);
         }
     }
 
 
     public void OnStageEnd(){
+        if(IsWin){
+            SingleBehaviour.Of<PlayerDataManager>().PlayerGem += (int)_stageData.prizeValue;
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(_stageData.prizeValue));
+        }
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_END_MODAL, false));
         foreach(var i in DisposeList){
             i.Dispose();
         }
         DisposeList.Clear();
         SingleBehaviour.Of<PoolingManager>().Return(_bossVisualRef);
-        _bossVisualRef = null;
+        SingleBehaviour.Of<PoolingManager>().Return(_mapObject);
+        MoveHeroesBackToDisplayPositions();
         _cts?.Cancel();
+    }
+
+    private void MoveHeroesBackToDisplayPositions()
+    {
+        for (int i = 0; i < _heroesIDs.Count; i++)
+        {
+            if (_ownedHeroVisual.TryGetValue(_heroesIDs[i], out var heroVisual))
+            {
+                heroVisual.transform.position = _displayPosition[i].position;
+            }
+        }
     }
 
     private async UniTask RandomBuff(){

@@ -60,7 +60,7 @@ public class FirebaseAuthentication : FirebaseModule
                     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
                     return;
                 }
-
+                Debug.Log("Causing problem");
                 user = auth.CurrentUser;
                 SingleBehaviour.Of<PlayerDataManager>().SetAuthenticateStatus(true);
                 SingleBehaviour.Of<PlayerDataManager>().SetPlayerID(user.UserId);

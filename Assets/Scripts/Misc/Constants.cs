@@ -20,6 +20,8 @@ public class Data
 
 public class ScreenUI{
     private string platform;
+
+    public const string SHOP_SCREEN = "ui-shop-screen";
     public const string LOGIN_SCREEN = "ui-login-screen";
     public const string LOADING_SCREEN = "ui-loading-screen-{0}";
 

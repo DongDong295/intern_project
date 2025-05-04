@@ -10,12 +10,13 @@ using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 using ZBase.Foundation.Singletons;
-
+using DG.Tweening;
 public class StageFinishModal : BasicModal
 {
     [SerializeField] private TextMeshProUGUI _resultText;
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private Button _continueButton;
+    [SerializeField] private TextMeshProUGUI _displayPrize;
     private StageManager _stageManager;
     [SerializeField] private LocalizeStringEvent[] _continueText;
     [SerializeField] private LocalizeStringEvent[] _resultTextLocalize;
@@ -38,6 +39,15 @@ public class StageFinishModal : BasicModal
     private async UniTask StageResult()
     {
         result = _stageManager.IsWin;
+        if (result)
+        {
+            StageData data = await Singleton.Of<DataManager>().Load<StageData>(Data.STAGE_DATA);
+            int prizeValue = (int)data.stageDataItems[_stageManager.Index].prizeValue;
+            AnimatePrizeValue(prizeValue, 1.2f); // animate over 1.2 seconds
+        }
+        else{
+            _displayPrize.text = "";
+        }
 
         var resultLocalizedString = _resultTextLocalize[result ? 0 : 1].StringReference;
         var resultText = await resultLocalizedString.GetLocalizedStringAsync();
@@ -47,6 +57,7 @@ public class StageFinishModal : BasicModal
         var continueText = await continueLocalizedString.GetLocalizedStringAsync();
         _continueButton.GetComponentInChildren<TextMeshProUGUI>().text = continueText;
     }
+
 
 
     private async UniTask ContinueAction(){
@@ -66,5 +77,14 @@ public class StageFinishModal : BasicModal
         _mainMenuButton.onClick.RemoveAllListeners();
         _continueButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
+    }
+    private void AnimatePrizeValue(int targetValue, float duration = 1.0f)
+    {
+        int displayedValue = 0;
+        DOTween.To(() => displayedValue, x =>
+        {
+            displayedValue = x;
+            _displayPrize.text = displayedValue.ToString();
+        }, targetValue, duration).SetEase(Ease.OutCubic);
     }
 }

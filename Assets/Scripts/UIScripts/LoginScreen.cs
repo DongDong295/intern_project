@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 using ZBase.Foundation.PubSub;
 using ZBase.Foundation.Singletons;
 using ZBase.UnityScreenNavigator.Core.Screens;
@@ -12,53 +13,86 @@ using ZBase.UnityScreenNavigator.Core.Screens;
 public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 {
     [SerializeField] private Button _loginButton;
-    private ISubscription _subscription;    
+    [SerializeField] private TextMeshProUGUI _tapToContinueText;
+
+    private ISubscription _subscription;
+
     public override UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
-        Debug.Log("Login called");
-        _loginButton.onClick.AddListener(() =>
+        Debug.Log("LoginScreen: Initialize");
+        _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
+
+        if (!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
         {
-            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerLoginEvent());
-        }); 
-        if(!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
-            _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
-        else{
-            
+            // Player is not logged in yet
+            _tapToContinueText.gameObject.SetActive(false);
+            _loginButton.gameObject.SetActive(true);
+
+            _loginButton.onClick.AddListener(() =>
+            {
+                Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnPlayerLoginEvent());
+            });
+
+        }
+        else
+        {
+            // Already authenticated
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
-            ShowMainMenuScreen();
         }
         return UniTask.CompletedTask;
     }
 
     public async void OnFinishInitialize(OnFinishInitializeEvent e)
     {
-        // Wait for player authentication if it's not already authenticated
         if (!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
         {
             await WaitForAuthentication();
         }
-        ShowMainMenuScreen();
+        _loginButton.gameObject.SetActive(false);
+        _tapToContinueText.gameObject.SetActive(true);
+        StartBlinkingText();
+        ShowMainMenuScreen(); // Waits for tap
     }
 
-    // Wait for player authentication if it's not done yet
     private async UniTask WaitForAuthentication()
     {
-        await UniTask.WaitUntil(() => 
-        SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
+        await UniTask.WaitUntil(() => SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated);
     }
 
-    // Show the Main Menu Screen and transition away from Login Screen
-    private void ShowMainMenuScreen()
+    private async void ShowMainMenuScreen()
     {
+        Debug.Log("Waiting for player tap to continue...");
+        await WaitForPlayerClick();
+
+        _tapToContinueText.DOKill();
+        _tapToContinueText.gameObject.SetActive(false);
+        var bg = await SingleBehaviour.Of<PoolingManager>().Rent("main-menu-background");
+        bg.gameObject.GetComponentInChildren<Canvas>().worldCamera = Camera.main;
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.MAIN_MENU_SCREEN, false));
         _loginButton.onClick.RemoveAllListeners();
         _subscription?.Dispose();
     }
 
+    private async UniTask WaitForPlayerClick()
+    {
+        await UniTask.WaitUntil(() =>
+            Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began
+            || Input.GetMouseButtonDown(0));
+    }
+
+    private void StartBlinkingText()
+    {
+        _tapToContinueText.alpha = 1f;
+        _tapToContinueText.DOFade(0f, 0.8f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutQuad);
+    }
+
     public override UniTask Cleanup(Memory<object> args)
     {
         base.Cleanup(args);
+        _tapToContinueText.DOKill();
         return UniTask.CompletedTask;
     }
 }

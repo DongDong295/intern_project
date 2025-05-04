@@ -19,6 +19,8 @@ public class PlayerDataManager : MonoBehaviour
 
     public Dictionary<string, Hero> OwnedHeroDict = new Dictionary<string, Hero>();
 
+    public int PlayerGem;
+
 
     [System.Serializable]
     public class HeroDataDict
@@ -86,6 +88,7 @@ public class PlayerDataManager : MonoBehaviour
             Debug.Log("Null ID");
             await SyncHeroesWithDatabase();
             await LoadHeroesFromJSON();
+            await LoadPlayerGemFromFirebase();
             Debug.Log(PlayerID);
         }
         else{
@@ -115,6 +118,7 @@ public class PlayerDataManager : MonoBehaviour
         Debug.Log("Save!");
         PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
         //SaveHeroesToJSON();
+        SavePlayerGemToFirebase().Forget();
         SaveHeroes().Forget();
         PlayerPrefs.Save();
     }
@@ -324,6 +328,39 @@ public class PlayerDataManager : MonoBehaviour
         Debug.Log("No global data found in PlayerPrefs. Returning new GlobalData.");
         return new GlobalData();
     }
+
+    public async UniTask SavePlayerGemToFirebase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        DocumentReference gemDocRef = playerCollectionRef.Document("PlayerData");
+
+        Dictionary<string, object> playerData = new Dictionary<string, object>
+        {
+            { "PlayerGem", PlayerGem }
+        };
+
+        await gemDocRef.SetAsync(playerData, SetOptions.MergeAll);
+    }
+
+    public async UniTask LoadPlayerGemFromFirebase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        DocumentReference gemDocRef = playerCollectionRef.Document("PlayerData");
+
+        DocumentSnapshot docSnapshot = await gemDocRef.GetSnapshotAsync();
+
+        if (docSnapshot.Exists && docSnapshot.TryGetValue("PlayerGem", out int gemValue))
+        {
+            PlayerGem = gemValue;
+        }
+        else
+        {
+            Debug.Log("No PlayerGem data found in Firebase.");
+        }
+    }
+
 
     public async UniTask SaveHeroesToFirebase()
     {
