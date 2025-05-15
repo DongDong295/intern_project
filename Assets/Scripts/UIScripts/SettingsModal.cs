@@ -12,8 +12,11 @@ public class SettingsModal : BasicModal
 {
     [SerializeField] private Button _logoutButton;
     [SerializeField] private TMP_Dropdown _languageDropdown;
+    [SerializeField] private Toggle _audio;
     public override UniTask Initialize(Memory<object> args)
     {
+        bool isAudioEnabled = SingleBehaviour.Of<AudioManager>().IsEnableAudio;
+        _audio.isOn = isAudioEnabled;
         base.Initialize(args);
         if (_languageDropdown != null)
         {
@@ -21,6 +24,7 @@ public class SettingsModal : BasicModal
 
             _languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
         }
+        _audio.onValueChanged.AddListener(OnAudioToggleChanged);
 
         _logoutButton.onClick.AddListener(() => {Logout();});
         return UniTask.CompletedTask;
@@ -31,6 +35,11 @@ public class SettingsModal : BasicModal
         Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());
         SingleBehaviour.Of<FirebaseAuthentication>().SignOut();
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
+    }
+
+    private void OnAudioToggleChanged(bool isOn)
+    {
+        SingleBehaviour.Of<AudioManager>().ToggleAudio(isOn);
     }
 
     public override UniTask Cleanup(Memory<object> args)

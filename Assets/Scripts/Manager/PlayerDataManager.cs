@@ -21,6 +21,7 @@ public class PlayerDataManager : MonoBehaviour
 
     public int PlayerGem;
 
+    public bool FinishLoadData;
 
     [System.Serializable]
     public class HeroDataDict
@@ -84,16 +85,15 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask LoadPlayerData(OnFinishInitializeEvent e)
     {
-        if(PlayerID != ""){
-            Debug.Log("Null ID");
-            await SyncHeroesWithDatabase();
-            await LoadHeroesFromJSON();
-            await LoadPlayerGemFromFirebase();
-            Debug.Log(PlayerID);
-        }
-        else{
-            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
-        }
+        FinishLoadData = false;
+        Debug.Log("Loading Player Data");
+        PlayerID = PlayerPrefs.GetString(PlayerPref.PLAYER_ID);
+
+        Debug.Log("Loaded from PlayerPref: " + PlayerID);
+        await SyncHeroesWithDatabase();
+        await LoadHeroesFromJSON();
+        await LoadPlayerGemFromFirebase();
+        FinishLoadData = true;
         await UniTask.CompletedTask;
     }
 
@@ -109,7 +109,6 @@ public class PlayerDataManager : MonoBehaviour
     {
         IsAuthenticated = status;
         PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
-        Debug.Log("Im " + IsAuthenticated);
         PlayerPrefs.Save();
     }
 
@@ -199,10 +198,9 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     // Method to load the global data from PlayerPrefs and extract the player's data
-    public async Task LoadHeroesFromJSON()
+    public async UniTask LoadHeroesFromJSON()
     {
         string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
-
         Debug.Log("Loading Global Data: " + globalJson);
 
         if (!string.IsNullOrEmpty(globalJson))
@@ -414,10 +412,11 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask SyncHeroesWithDatabase()
     {
+        Debug.Log("Syncing with database");
         var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
 
         // Reference to the player's collection (PlayerID is the collection name)
-        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        CollectionReference playerCollectionRef = db.Collection(PlayerPrefs.GetString(PlayerPref.PLAYER_ID));
 
         // Reference to the OwnedHero document inside the PlayerID collection
         DocumentReference ownedHeroDocRef = playerCollectionRef.Document("OwnedHero");
@@ -427,7 +426,6 @@ public class PlayerDataManager : MonoBehaviour
 
         if (docSnapshot.Exists)
         {
-            // Document exists, so let's compare and sync data
             Dictionary<string, object> heroDataFromFirestore = docSnapshot.ToDictionary();
             SyncLocalDataWithFirestore(heroDataFromFirestore);
         }
@@ -440,11 +438,14 @@ public class PlayerDataManager : MonoBehaviour
 
     private void SyncLocalDataWithFirestore(Dictionary<string, object> heroDataFromFirestore)
     {
-        // Assuming OwnedHero is a Dictionary<string, Hero> in your local data
-        Dictionary<string, Hero> newOwnedHeroes = new Dictionary<string, Hero>();
+        OwnedHero = new Dictionary<string, Hero>();
+
+        if(heroDataFromFirestore == null)
+            return;
 
         foreach (var kvp in heroDataFromFirestore)
         {
+            Debug.Log("Hero Key" + kvp.Key);
             string heroID = kvp.Key;
             var heroFields = kvp.Value as Dictionary<string, object>;
 
@@ -473,7 +474,7 @@ public class PlayerDataManager : MonoBehaviour
                 if (!OwnedHero.ContainsKey(hero.heroID))
                 {
                     OwnedHero.Add(hero.heroID, hero);
-                    //Debug.Log("Added new hero from Firestore: " + hero.heroID);
+                    Debug.Log("Added new hero from Firestore: " + hero.heroID);
                 }
                 else
                 {
@@ -483,6 +484,6 @@ public class PlayerDataManager : MonoBehaviour
                 }
             }
         }
-        SaveHeroesToJSON();
+        //SaveHeroesToJSON();
     }
 }
