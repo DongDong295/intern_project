@@ -18,8 +18,9 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     private StageManager _stageManager;
 
-    public override UniTask Initialize(Memory<object> args)
+    public override async UniTask Initialize(Memory<object> args)
     {
+        await SingleBehaviour.Of<AudioManager>().PlayMusic("music-battle");
         _stageManager = SingleBehaviour.Of<StageManager>();
         _bossMaxHP = _stageManager.BossHP;
         DisplayBossData();
@@ -29,7 +30,6 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _mainMenuButton.onClick.AddListener(() => {
             _stageManager.OnStageEnd();
         });
-        return UniTask.CompletedTask;
     }
 
     public void UpdateHealthBar(OnBossTakeDamageEvent e){

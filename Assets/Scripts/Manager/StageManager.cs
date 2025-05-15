@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using ZBase.Foundation.Pooling;
 using ZBase.Foundation.Singletons;

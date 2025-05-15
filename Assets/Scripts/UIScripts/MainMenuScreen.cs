@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
@@ -16,9 +17,10 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     [SerializeField] private Button _characterButton;
     [SerializeField] private Button _settingButton;
     [SerializeField] private TextMeshProUGUI _displayGem;
-    public override UniTask Initialize(Memory<object> args)
+    public override async UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
+        await SingleBehaviour.Of<AudioManager>().PlayMusic("music-menu");
         _displayGem.text = "Gem: " +  SingleBehaviour.Of<PlayerDataManager>().PlayerGem.ToString();
         Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUpdateGem>(OnUpdateGem);
         _playButton.onClick.AddListener(() =>
@@ -35,7 +37,6 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _shopButton.onClick.AddListener(() => {
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.SHOP_SCREEN, false));
         });
-        return UniTask.CompletedTask;
     }
 
     public override UniTask Cleanup(Memory<object> args)

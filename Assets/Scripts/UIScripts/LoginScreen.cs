@@ -17,7 +17,7 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     private ISubscription _subscription;
 
-    public override UniTask Initialize(Memory<object> args)
+    public override async UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
         Debug.Log("LoginScreen: Initialize");
@@ -37,20 +37,20 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         }
         else
         {
-            // Already authenticated
+            //ShowMainMenuScreen();
+           
             Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnFinishInitializeEvent());
         }
-        return UniTask.CompletedTask;
     }
 
     public async void OnFinishInitialize(OnFinishInitializeEvent e)
     {
+        Debug.Log("Whao i reached");
+        await UniTask.WaitUntil(() => SingleBehaviour.Of<PlayerDataManager>().FinishLoadData);
         if (!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
         {
             await WaitForAuthentication();
         }
-        _loginButton.gameObject.SetActive(false);
-        _tapToContinueText.gameObject.SetActive(true);
         StartBlinkingText();
         ShowMainMenuScreen(); // Waits for tap
     }
@@ -83,6 +83,8 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     private void StartBlinkingText()
     {
+        _loginButton.gameObject.SetActive(false);
+        _tapToContinueText.gameObject.SetActive(true);
         _tapToContinueText.alpha = 1f;
         _tapToContinueText.DOFade(0f, 0.8f)
             .SetLoops(-1, LoopType.Yoyo)
