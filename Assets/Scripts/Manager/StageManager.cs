@@ -200,10 +200,20 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    private async UniTask RandomBuff(){
-        while(!_isStageEnd){
+    public void OnLogOut()
+    {
+        foreach (var e in _ownedHeroVisual)
+        {
+            SingleBehaviour.Of<PoolingManager>().Return(e.Value);
+        }
+    }
+
+    private async UniTask RandomBuff()
+    {
+        while (!_isStageEnd)
+        {
             await UniTask.Delay(TimeSpan.FromSeconds(UnityEngine.Random.Range(10, 15)), cancellationToken: _cts.Token);
-            if(CurrentBuff != null)
+            if (CurrentBuff != null)
                 return;
             var selectedBuff = _buffData.items[UnityEngine.Random.Range(0, _buffData.items.Length)];
             var buff = await SingleBehaviour.Of<PoolingManager>().Rent("buff-sphere");

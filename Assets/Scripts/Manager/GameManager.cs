@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+
     }
 
     public async void Start()
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
             _hasShownLoginScreen = true;
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
         }
+            //SingleBehaviour.Of<PlayerDataManager>().PlayerGem += (int)1000;
+            //Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(1000));
     }
 
     public async UniTask StartApplication()

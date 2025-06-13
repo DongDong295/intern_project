@@ -54,11 +54,11 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_SELECTION_MODAL, false));
         }
         else{
-            SingleBehaviour.Of<UIManager>().ShowWarningNoHero();
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.HERO_NOTIFY, false));
         }
     }
 
     private void OnUpdateGem(OnUpdateGem e){
-        _displayGem.text = SingleBehaviour.Of<PlayerDataManager>().PlayerGem.ToString();
+        _displayGem.text = "Gem: " + SingleBehaviour.Of<PlayerDataManager>().PlayerGem.ToString();
     }
 }

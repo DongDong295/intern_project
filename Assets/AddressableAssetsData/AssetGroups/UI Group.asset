@@ -92,6 +92,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce0f7a8df9ae29b499b9798e8c8ab089
+    m_Address: ui-hero-notification-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e353e443dd4c79b44b04d6c3b7345a03
+    m_Address: ui-gem-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f72e5c23ff5a4c944855e84ef546237a
     m_Address: ui-login-screen
     m_ReadOnly: 0

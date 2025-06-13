@@ -127,17 +127,25 @@ public class PlayerDataManager : MonoBehaviour
     }
     public async UniTask GenerateNewHero(OnGachaEvent e)
     {
-        var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
-        var heroData = data.heroDataItems;
-        var heroID = GenerateUniqueHeroID();
-        var hero = new Hero(heroID, heroData[UnityEngine.Random.Range(0, heroData.Length)]);
-        OwnedHero[heroID] = hero;
-        Debug.Log($"Generated new hero with ID: {heroID}");
+        if(PlayerGem < 500){
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.GEM_NOTIFY, false));
+            return;
+        }
+        else{
+            PlayerGem -= 500;
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(-500));
+            var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
+            var heroData = data.heroDataItems;
+            var heroID = GenerateUniqueHeroID();
+            var hero = new Hero(heroID, heroData[UnityEngine.Random.Range(0, heroData.Length)]);
+            OwnedHero[heroID] = hero;
+            Debug.Log($"Generated new hero with ID: {heroID}");
 
-        // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
-        await SaveHeroesToFirebase();
-        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGenerateHero());
-        await UniTask.CompletedTask;
+            // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
+            await SaveHeroesToFirebase();
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGenerateHero());
+            await UniTask.CompletedTask;
+        }
     }
 
     private string GenerateUniqueHeroID()
@@ -352,6 +360,7 @@ public class PlayerDataManager : MonoBehaviour
         if (docSnapshot.Exists && docSnapshot.TryGetValue("PlayerGem", out int gemValue))
         {
             PlayerGem = gemValue;
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(PlayerGem));
         }
         else
         {

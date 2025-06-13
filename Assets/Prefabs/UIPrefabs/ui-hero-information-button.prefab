@@ -505,6 +505,10 @@ MonoBehaviour:
   onBecomeInvisible:
     m_PersistentCalls:
       m_Calls: []
+  _icon:
+  - {fileID: 21300000, guid: 3afd499a46b8f9849acf5a4cde66a0f4, type: 3}
+  - {fileID: 21300000, guid: 7de16a85b1bfa4f4eb55e7906829f556, type: 3}
+  - {fileID: 21300000, guid: 7fae772a7294ef74ca75a7d39a209104, type: 3}
   level: {fileID: 7082634075983523021}
   equipStatus: {fileID: 4592519514432190983}
 --- !u!225 &2269799223546196967
