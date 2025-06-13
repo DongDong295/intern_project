@@ -30,11 +30,13 @@ public class SettingsModal : BasicModal
         return UniTask.CompletedTask;
     }
 
-    public void Logout(){
-        
+    public void Logout()
+    {
+
         Pubsub.Publisher.Scope<UIEvent>().Publish(new CloseModalEvent());
         SingleBehaviour.Of<FirebaseAuthentication>().SignOut();
         Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
+        SingleBehaviour.Of<StageManager>().OnLogOut();
     }
 
     private void OnAudioToggleChanged(bool isOn)

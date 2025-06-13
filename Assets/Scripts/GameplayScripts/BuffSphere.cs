@@ -21,7 +21,6 @@ public class BuffSphere : MonoBehaviour, IDispose
     private Vector3 _baseScale;
     public async UniTask InitiateBuff(BuffDataItems data)
     {
-        Debug.Log("Initiate the buff");
         _baseScale = transform.localScale;
         _stageManager = SingleBehaviour.Of<StageManager>();
         this.data = data;

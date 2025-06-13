@@ -21,12 +21,13 @@ public class LoginScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     {
         base.Initialize(args);
         Debug.Log("LoginScreen: Initialize");
+        _tapToContinueText.gameObject.SetActive(false);
         _subscription = Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnFinishInitializeEvent>(OnFinishInitialize);
 
         if (!SingleBehaviour.Of<PlayerDataManager>().IsAuthenticated)
         {
             // Player is not logged in yet
-            _tapToContinueText.gameObject.SetActive(false);
+  
             _loginButton.gameObject.SetActive(true);
 
             _loginButton.onClick.AddListener(() =>
