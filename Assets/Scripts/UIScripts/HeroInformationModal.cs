@@ -13,6 +13,8 @@ using ZBase.Foundation.Singletons;
 
 public class HeroInformationModal : BasicModal
 {
+    [SerializeField] private Image _display;
+    [SerializeField] private Sprite[] _icon;
     [SerializeField] private GridUnlimitedScroller _scroller;
     [SerializeField] private Button _equipButton;
     [SerializeField] private Button _levelUpButton;
@@ -60,6 +62,17 @@ public class HeroInformationModal : BasicModal
     }
 
     public async UniTask DisplayHeroInformation(OnShowHeroInformationEvent e){
+        switch(e.HeroRef.heroVisualID){
+            case 0:
+                _display.sprite = _icon[0];
+                break;
+            case 1:
+                _display.sprite = _icon[1];
+                break;
+            case 2:
+                _display.sprite = _icon[2];
+                break;
+        }
         _currentHero = e.HeroRef;
          _heroOption.Remove(_currentHero.heroID);
         _damage.text = _damage.text + ": " + e.HeroRef.attackDamageStep.ToString();

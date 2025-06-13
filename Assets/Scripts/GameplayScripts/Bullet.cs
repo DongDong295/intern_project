@@ -5,7 +5,8 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using ZBase.Foundation.Singletons;
 using System.Threading;
-using System.Threading.Tasks;  // Needed for CancellationToken
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks.Triggers;  // Needed for CancellationToken
 
 public class Bullet : MonoBehaviour, IDispose
 {
@@ -61,11 +62,22 @@ public class Bullet : MonoBehaviour, IDispose
         SingleBehaviour.Of<PoolingManager>().Return(this.gameObject);
     }
 
-    public async UniTask BulletHitVfx(){
+    public async UniTask BulletHitVfx()
+    {
         var vfx = await SingleBehaviour.Of<PoolingManager>().Rent("bullet-hit-vfx");
         vfx.transform.position = transform.position;
 
+        var ps = vfx.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            ps.Play();
+            // Wait until the particle system finishes
+            await UniTask.WaitUntil(() => !ps.IsAlive(true));
+        }
+
+        SingleBehaviour.Of<PoolingManager>().Return(vfx);
     }
+
     public void Dispose()
     {
         _cancellationTokenSource?.Cancel();

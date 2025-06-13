@@ -19,6 +19,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public Dictionary<string, Hero> OwnedHeroDict = new Dictionary<string, Hero>();
 
+    public int PlayerGem;
+
+    public bool FinishLoadData;
 
     [System.Serializable]
     public class HeroDataDict
@@ -82,15 +85,15 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask LoadPlayerData(OnFinishInitializeEvent e)
     {
-        if(PlayerID != ""){
-            Debug.Log("Null ID");
-            await SyncHeroesWithDatabase();
-            await LoadHeroesFromJSON();
-            Debug.Log(PlayerID);
-        }
-        else{
-            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.LOGIN_SCREEN, false));
-        }
+        FinishLoadData = false;
+        Debug.Log("Loading Player Data");
+        PlayerID = PlayerPrefs.GetString(PlayerPref.PLAYER_ID);
+
+        Debug.Log("Loaded from PlayerPref: " + PlayerID);
+        await SyncHeroesWithDatabase();
+        await LoadHeroesFromJSON();
+        await LoadPlayerGemFromFirebase();
+        FinishLoadData = true;
         await UniTask.CompletedTask;
     }
 
@@ -106,7 +109,6 @@ public class PlayerDataManager : MonoBehaviour
     {
         IsAuthenticated = status;
         PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
-        Debug.Log("Im " + IsAuthenticated);
         PlayerPrefs.Save();
     }
 
@@ -115,6 +117,7 @@ public class PlayerDataManager : MonoBehaviour
         Debug.Log("Save!");
         PlayerPrefs.SetInt(PlayerPref.IS_AUTHENTICATED, IsAuthenticated ? 1 : 0);
         //SaveHeroesToJSON();
+        SavePlayerGemToFirebase().Forget();
         SaveHeroes().Forget();
         PlayerPrefs.Save();
     }
@@ -124,17 +127,25 @@ public class PlayerDataManager : MonoBehaviour
     }
     public async UniTask GenerateNewHero(OnGachaEvent e)
     {
-        var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
-        var heroData = data.heroDataItems;
-        var heroID = GenerateUniqueHeroID();
-        var hero = new Hero(heroID, heroData[UnityEngine.Random.Range(0, heroData.Length)]);
-        OwnedHero[heroID] = hero;
-        Debug.Log($"Generated new hero with ID: {heroID}");
+        if(PlayerGem < 500){
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.GEM_NOTIFY, false));
+            return;
+        }
+        else{
+            PlayerGem -= 500;
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(-500));
+            var data = await Singleton.Of<DataManager>().Load<HeroData>(Data.HERO_DATA);
+            var heroData = data.heroDataItems;
+            var heroID = GenerateUniqueHeroID();
+            var hero = new Hero(heroID, heroData[UnityEngine.Random.Range(0, heroData.Length)]);
+            OwnedHero[heroID] = hero;
+            Debug.Log($"Generated new hero with ID: {heroID}");
 
-        // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
-        await SaveHeroesToFirebase();
-        Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGenerateHero());
-        await UniTask.CompletedTask;
+            // Save the updated hero dictionary to PlayerPrefs as JSON after generating a new hero
+            await SaveHeroesToFirebase();
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnGenerateHero());
+            await UniTask.CompletedTask;
+        }
     }
 
     private string GenerateUniqueHeroID()
@@ -195,10 +206,9 @@ public class PlayerDataManager : MonoBehaviour
     }
 
     // Method to load the global data from PlayerPrefs and extract the player's data
-    public async Task LoadHeroesFromJSON()
+    public async UniTask LoadHeroesFromJSON()
     {
         string globalJson = PlayerPrefs.GetString("GlobalPlayerData");
-
         Debug.Log("Loading Global Data: " + globalJson);
 
         if (!string.IsNullOrEmpty(globalJson))
@@ -325,6 +335,40 @@ public class PlayerDataManager : MonoBehaviour
         return new GlobalData();
     }
 
+    public async UniTask SavePlayerGemToFirebase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        DocumentReference gemDocRef = playerCollectionRef.Document("PlayerData");
+
+        Dictionary<string, object> playerData = new Dictionary<string, object>
+        {
+            { "PlayerGem", PlayerGem }
+        };
+
+        await gemDocRef.SetAsync(playerData, SetOptions.MergeAll);
+    }
+
+    public async UniTask LoadPlayerGemFromFirebase()
+    {
+        var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
+        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        DocumentReference gemDocRef = playerCollectionRef.Document("PlayerData");
+
+        DocumentSnapshot docSnapshot = await gemDocRef.GetSnapshotAsync();
+
+        if (docSnapshot.Exists && docSnapshot.TryGetValue("PlayerGem", out int gemValue))
+        {
+            PlayerGem = gemValue;
+            Pubsub.Publisher.Scope<PlayerEvent>().Publish(new OnUpdateGem(PlayerGem));
+        }
+        else
+        {
+            Debug.Log("No PlayerGem data found in Firebase.");
+        }
+    }
+
+
     public async UniTask SaveHeroesToFirebase()
     {
         var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
@@ -377,10 +421,11 @@ public class PlayerDataManager : MonoBehaviour
 
     public async UniTask SyncHeroesWithDatabase()
     {
+        Debug.Log("Syncing with database");
         var db = SingleBehaviour.Of<FirebaseDatabase>().Database;
 
         // Reference to the player's collection (PlayerID is the collection name)
-        CollectionReference playerCollectionRef = db.Collection(PlayerID);
+        CollectionReference playerCollectionRef = db.Collection(PlayerPrefs.GetString(PlayerPref.PLAYER_ID));
 
         // Reference to the OwnedHero document inside the PlayerID collection
         DocumentReference ownedHeroDocRef = playerCollectionRef.Document("OwnedHero");
@@ -390,7 +435,6 @@ public class PlayerDataManager : MonoBehaviour
 
         if (docSnapshot.Exists)
         {
-            // Document exists, so let's compare and sync data
             Dictionary<string, object> heroDataFromFirestore = docSnapshot.ToDictionary();
             SyncLocalDataWithFirestore(heroDataFromFirestore);
         }
@@ -403,11 +447,14 @@ public class PlayerDataManager : MonoBehaviour
 
     private void SyncLocalDataWithFirestore(Dictionary<string, object> heroDataFromFirestore)
     {
-        // Assuming OwnedHero is a Dictionary<string, Hero> in your local data
-        Dictionary<string, Hero> newOwnedHeroes = new Dictionary<string, Hero>();
+        OwnedHero = new Dictionary<string, Hero>();
+
+        if(heroDataFromFirestore == null)
+            return;
 
         foreach (var kvp in heroDataFromFirestore)
         {
+            Debug.Log("Hero Key" + kvp.Key);
             string heroID = kvp.Key;
             var heroFields = kvp.Value as Dictionary<string, object>;
 
@@ -436,7 +483,7 @@ public class PlayerDataManager : MonoBehaviour
                 if (!OwnedHero.ContainsKey(hero.heroID))
                 {
                     OwnedHero.Add(hero.heroID, hero);
-                    //Debug.Log("Added new hero from Firestore: " + hero.heroID);
+                    Debug.Log("Added new hero from Firestore: " + hero.heroID);
                 }
                 else
                 {
@@ -446,6 +493,6 @@ public class PlayerDataManager : MonoBehaviour
                 }
             }
         }
-        SaveHeroesToJSON();
+        //SaveHeroesToJSON();
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,11 +13,16 @@ using ZBase.UnityScreenNavigator.Core.Modals;
 public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 {
     [SerializeField] private Button _playButton;
+    [SerializeField] private Button _shopButton;
     [SerializeField] private Button _characterButton;
     [SerializeField] private Button _settingButton;
-    public override UniTask Initialize(Memory<object> args)
+    [SerializeField] private TextMeshProUGUI _displayGem;
+    public override async UniTask Initialize(Memory<object> args)
     {
         base.Initialize(args);
+        await SingleBehaviour.Of<AudioManager>().PlayMusic("music-menu");
+        _displayGem.text = "Gem: " +  SingleBehaviour.Of<PlayerDataManager>().PlayerGem.ToString();
+        Pubsub.Subscriber.Scope<PlayerEvent>().Subscribe<OnUpdateGem>(OnUpdateGem);
         _playButton.onClick.AddListener(() =>
         {
             CheckForPlayCondition();
@@ -27,7 +34,9 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _settingButton.onClick.AddListener(()=>{
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.SETTINGS, false));
         });
-        return UniTask.CompletedTask;
+        _shopButton.onClick.AddListener(() => {
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowScreenEvent(ScreenUI.SHOP_SCREEN, false));
+        });
     }
 
     public override UniTask Cleanup(Memory<object> args)
@@ -35,6 +44,7 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _settingButton.onClick.RemoveAllListeners();
         _playButton.onClick.RemoveAllListeners();
         _characterButton.onClick.RemoveAllListeners();
+        _shopButton.onClick.RemoveAllListeners();
         return base.Cleanup(args);
     }
     
@@ -44,7 +54,11 @@ public class MainMenuSreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
             Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.STAGE_SELECTION_MODAL, false));
         }
         else{
-            SingleBehaviour.Of<UIManager>().ShowWarningNoHero();
+            Pubsub.Publisher.Scope<UIEvent>().Publish(new ShowModalEvent(ModalUI.HERO_NOTIFY, false));
         }
+    }
+
+    private void OnUpdateGem(OnUpdateGem e){
+        _displayGem.text = "Gem: " + SingleBehaviour.Of<PlayerDataManager>().PlayerGem.ToString();
     }
 }

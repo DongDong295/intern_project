@@ -20,6 +20,8 @@ public class Data
 
 public class ScreenUI{
     private string platform;
+
+    public const string SHOP_SCREEN = "ui-shop-screen";
     public const string LOGIN_SCREEN = "ui-login-screen";
     public const string LOADING_SCREEN = "ui-loading-screen-{0}";
 
@@ -38,7 +40,8 @@ public class ModalUI{
 
     public const string HERO_INFORMATION_MODAL = "ui-hero-information-modal";
     public const string STAGE_END_MODAL = "ui-stage-end-modal";
-
+    public const string HERO_NOTIFY = "ui-hero-notification-modal";
+    public const string GEM_NOTIFY = "ui-gem-modal";
     public const string SETTINGS = "ui-settings-modal";
 }
 

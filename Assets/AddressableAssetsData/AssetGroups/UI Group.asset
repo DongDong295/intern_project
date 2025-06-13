@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1206fdeb773f64540856530f688616a3
+    m_Address: ui-shop-screen
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 267d7bfd2688df3449f36a34c5fca0f5
     m_Address: ui-main-gameplay-screen
     m_ReadOnly: 0
@@ -34,6 +39,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4243b69f598c8454496b7a6a979c3023
     m_Address: ui-loading-screen-android
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 554bcadd61ac02e43908209a45b1a2ff
+    m_Address: main-menu-background
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -79,6 +89,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c9ef0b2b8fc4078499cd386c8420ae20
     m_Address: ui-stage-button
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ce0f7a8df9ae29b499b9798e8c8ab089
+    m_Address: ui-hero-notification-modal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e353e443dd4c79b44b04d6c3b7345a03
+    m_Address: ui-gem-modal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

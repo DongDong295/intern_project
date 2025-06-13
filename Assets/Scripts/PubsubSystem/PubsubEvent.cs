@@ -40,6 +40,13 @@ public struct OnRemoveHero : IMessage{
     
 }
 
+public struct OnUpdateGem : IMessage{
+    public float Gem;
+    public OnUpdateGem(float gem){
+        Gem = gem;
+    }
+}
+
 public struct OnPlayerEquipHero : IMessage{
     public string HeroID;
     public bool IsEquip;

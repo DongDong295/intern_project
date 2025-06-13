@@ -12,14 +12,15 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
     [SerializeField] private Button _mainMenuButton;
     [SerializeField] private TextMeshProUGUI _time;
     [SerializeField] private TextMeshProUGUI _bossHPText;  
-    [SerializeField] private TextMeshProUGUI _bossIDText;
+    [SerializeField] private TextMeshProUGUI _bossNameText;
     [SerializeField] private Image _healthDisplayer;
     private float _bossMaxHP;
 
     private StageManager _stageManager;
 
-    public override UniTask Initialize(Memory<object> args)
+    public override async UniTask Initialize(Memory<object> args)
     {
+        await SingleBehaviour.Of<AudioManager>().PlayMusic("music-battle");
         _stageManager = SingleBehaviour.Of<StageManager>();
         _bossMaxHP = _stageManager.BossHP;
         DisplayBossData();
@@ -29,7 +30,6 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
         _mainMenuButton.onClick.AddListener(() => {
             _stageManager.OnStageEnd();
         });
-        return UniTask.CompletedTask;
     }
 
     public void UpdateHealthBar(OnBossTakeDamageEvent e){
@@ -39,7 +39,7 @@ public class MainGameplayScreen : ZBase.UnityScreenNavigator.Core.Screens.Screen
 
     private void DisplayBossData(){
         _bossHPText.text = $"{_stageManager.BossHP.ToString()} / {_bossMaxHP.ToString()}";
-        _bossIDText.text = _stageManager.BossVisualID.ToString();
+        _bossNameText.text = _stageManager.BossName.ToString();
     }
 
     public async UniTask DisplayTime(){
